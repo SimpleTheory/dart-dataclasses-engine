@@ -1,6 +1,6 @@
 import re
-import src.domain as domain
-import src.parsing.file_content_cleaning as cc
+import dart_dataclasses.domain as domain
+import dart_dataclasses.parsing.file_content_cleaning as cc
 
 type_regex = r'(\w+(\<(?:[^<>]+|\<(?:[^<>]+|\<[^<>]*\>)*\>)*\>)?)'
 
@@ -239,6 +239,7 @@ def parse_attr(attr: str, annotations: list[domain.Annotation],
         type=type_,
         final='final' in keywords,
         static='static' in keywords,
+        external='external' in keywords,
         const='const' in keywords,
         late='late' in keywords,
         default_value=default_value,

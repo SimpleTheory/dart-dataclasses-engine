@@ -132,6 +132,10 @@ def body_seperator(body: str) -> list[str]:
     bracket_cnt = 0
     embed = 0
     for index, char in enumerate(body):
+        try:
+            next_char = body[index + 1]
+        except IndexError:
+            next_char = None
         if char == '(':
             embed += 1
         if char == ')':
@@ -142,7 +146,7 @@ def body_seperator(body: str) -> list[str]:
             bracket_cnt += 1
         if char == '}':
             bracket_cnt -= 1
-            if not bracket_cnt and not embed:
+            if all([not bracket_cnt, not embed, next_char != ';']):
                 split_points.append(index)
     for i, point in enumerate(split_points):
         if i == 0:
@@ -155,6 +159,9 @@ def body_seperator(body: str) -> list[str]:
         else:
             separation.append(body[last_point:point+1].strip())
             last_point = point+1
+    # if separation[-1] == ';':
+    #     separation = separation[:-1]
+    #     separation[-1] += ';'
     return separation
 
 

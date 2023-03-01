@@ -39,7 +39,7 @@ class Annotation:
         return cls(annotation_tuple[0], pos, kwarg)
 
     def restore_strings(self, stored_strings: dict[str:str]):
-        import src.parsing.file_content_cleaning as cc
+        import dart_dataclasses.parsing.file_content_cleaning as cc
         for i in range(len(self.positional_params)):
             self.positional_params[i] = cc.restore_strings_while_loop(self.positional_params[i], stored_strings)
             # string = cc.stored_string_regex.search(self.positional_params[i])
@@ -56,10 +56,12 @@ class Annotation:
             #     string = cc.stored_string_regex.search(self.keyword_params[k])
         return self
 
+
 @dataclass()
 class DartEnum:
     name: str
     options: list[str]
+
 
 # class Annotation:
 #     pass
@@ -139,6 +141,14 @@ class Type:
         #             cnt-=1
         #         if start and not cnt:
 
+    def to_str(self):
+        result = self.type
+        generics = ''
+        if self.generics:
+            generics = f'<{", ".join([t.to_str() for t in self.generics])}>'
+        null = '?' if self.nullable else ''
+        return result + generics + null
+
 
 @dataclass()
 class Attribute:
@@ -148,7 +158,8 @@ class Attribute:
     static: bool
     const: bool
     late: bool
-    default_value: str
+    external: bool
+    default_value: str | None
     private: bool = field(init=False)
     super_param: str = None
 
@@ -197,3 +208,17 @@ class Class:
 
 json_safe_types = ['List', 'Map', 'int', 'String', 'double', 'num', 'bool']
 types_with_extensions = ['DateTime', 'BigInt', 'Enum', 'Uri', 'Duration']
+iterable_types = [
+    'List',
+    'Map',
+    'Set',
+    'Iterable',
+    'HashMap',
+    'LinkedHashSet',
+    'LinkedHashMap',
+    'Queue',
+    'ListQueue',
+    'SplayTreeSet',
+    'SplayTreeMap'
+]
+# reset_iterable_types
