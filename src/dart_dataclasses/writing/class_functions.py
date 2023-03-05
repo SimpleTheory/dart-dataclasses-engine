@@ -1,6 +1,4 @@
 import dart_dataclasses.domain as domain
-import json
-
 
 def constructor(dart_class: domain.Class) -> str:
     attrs_to_initialize = list(filter(
@@ -45,7 +43,7 @@ def equality_operator(dart_class: domain.Class) -> str:
     dynamic_attributes = get_dynamic_attributes(dart_class)
     base = f'@override\n' \
            f'bool operator ==(Object other) =>\n' \
-           f'  identical(this, other) || '
+           f'  identical(this, other) ||\n  '
     dynamic_attributes_equality = [f'equals({attr.name}, other.{attr.name})' for attr in dynamic_attributes]
     dynamics = [f'other is {dart_class.name}', 'runtimeType == other.runtimeType', *dynamic_attributes_equality]
     return f'{base}({" && ".join(dynamics)});'
@@ -55,83 +53,6 @@ def hashcode(dart_class: domain.Class) -> str:
     base = '@override\nint get hashCode => '
     body = " ^ ".join([f'{attr.name}.hashCode' for attr in get_dynamic_attributes(dart_class)])
     return base + body + ';'
-
-
-# JSON SKELLY FACEEEEE!!!!! -----------------------
-def to_json(dart_class: domain.Class) -> str:
-    return '''
-String toJson()=>jsonEncode(toMap());
-Map toMap()=> {'__type': 'ClassName', ...nestedJsonMap(__attributes)}'''.replace('ClassName', dart_class.name)
-
-def part_declaration_procedure(attr: domain.Attribute) -> str:
-    if type_is_iterable(attr.type):
-        temp_type = 'List'
-        if 'map' in attr.type.type.lower():
-            temp_type = 'Map'
-        return f'{temp_type}? {attr.name}_temp = recursiveFromJsonIterable(map[{attr.name}]);'
-    if attr.type.type in domain.json_safe_types:
-        return f'{attr.type.to_str()} {attr.name} = map[{attr.name}];'
-    if attr.type.nullable:
-        return f'{attr.type.to_str()} {attr.name} = ' \
-               f'jsonFactoryMap[\'{attr.type.type}\'] == null ? null : (map[{attr.name}]);'
-    return f'{attr.type.to_str()} {attr.name} = jsonFactoryMap[\'{attr.type.type}\']!(map[{attr.name}]);'
-
-
-def part_declaration(dynamic_attributes: list[domain.Attribute]) -> str:
-    """
-    Declare all the parts for the constructor:
-        If a part is supposed to be iterable recursively instantiate the objects therein
-        If a part is a default json part leave as is
-        Else call from Json
-    ex:
-----------
-    class Person {
-        Address address;
-        List<Person> family;
-        String name;
-    }
-    Address address = json[address].fromJson();
-    List family = recursiveFromJsonIterable(json[family]);
-    String name = json[name]
-----------
-    Let it be that recursiveFromJsonIterable(Iterable iter) is a fx that takes in a Map or List and returns that same Map
-    or List as is with the same level of recursion, but with all valid objects instantiated therein! Such
-    that the only uninitialized things there are Iterable types and the correct type castings.
-
-    However, if it receives a null value arg then let it return null as well.
-
-    Let it be that a map called jsonFactoryMap<String, Function> maps the Class names to their respective
-     factory method 'Person': Person.fromMap, such that jsonFactoryMap
-    """
-    return "\n".join([part_declaration_procedure(attr) for attr in dynamic_attributes])
-
-def type_casting(iterable_types: list[domain.Attribute]) -> str:
-    if not iterable_types:
-        return ''
-    # TODO IMPLEMENT ITERABLE TYPES
-
-def return_constructor(dart_class: domain.Class) -> str:
-    return f'{dart_class.name}' \
-           f'({", ".join([f"{attr.name}: {attr.name}" for attr in get_dynamic_attributes(dart_class)])})'
-def from_json(dart_class: domain.Class) -> str:
-    return '''
-factory fromJson(String json) => ClassName.fromMap(jsonDecode(json));
-
-factory fromMap(Map map){    
-
-    part_declaration
-    
-    type_casting
-    
-    return return_constructor;
-}
-    '''.replace('part_declaration', part_declaration(get_dynamic_attributes(dart_class))) \
-       .replace('type_casting', type_casting([i for i in get_dynamic_attributes(dart_class) if type_is_iterable(i.type)])) \
-       .replace('return_constructor', return_constructor(dart_class)) \
-       .replace('ClassName', dart_class.name)
-
-# ---------------------------------------------------------------------------
-# Sub writing
 
 # ----------------------------------------------------------------------------
 # Utility Functions
@@ -170,10 +91,23 @@ def get_dynamic_attributes(attrs: list[domain.Attribute] | domain.Class) -> list
 def type_is_iterable(type_: domain.Type) -> bool:
     return type_.type in domain.iterable_types
 
+def type_is_map(type_: domain.Type) -> bool:
+    return 'map' in type_.type.lower()
 
 def iterable_factory(type_: domain.Type) -> str:
-    return type_.type + '.from(' if type_.type != 'Iterable' else type_.type + '.castFrom('
+    return type_.to_str() + ('.from(' if type_.type != 'Iterable' else '.castFrom(')
 
+# def get_type_casting_line(type_: domain.Type, result=None) -> list[domain.Type]:
+#     if result is None:
+#         result = []
+#     result.append(type_)
+#     if not type_.generics:
+#         return result
+#     cascade_type_index = 0 if len(type_.generics) == 1 else 1
+#     if type_is_iterable(type_.generics[cascade_type_index]):
+#         return get_type_casting_line(type_.generics[cascade_type_index], result)
+#     else:
+#         return result
 
 if __name__ == '__main__':
     from dart_dataclasses.file_level.file_level import file_reading_procedure_for_classes

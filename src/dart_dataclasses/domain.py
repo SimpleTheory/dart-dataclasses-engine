@@ -124,10 +124,14 @@ class Type:
 
     @staticmethod
     def get_type_list(generics_string: str) -> list['Type']:
+        # Clean
         generics_string = generics_string.strip()
         generics_string = generics_string[1:] if generics_string.startswith('<') else generics_string
         generics_string = generics_string[:-1] if generics_string.endswith('>') else generics_string
-        generics = [i.strip() for i in re.split(r',(?![^<>]*>)', generics_string)]
+        # Sub
+        generics_string, saved_sub_generics = Type.clean_generics_in_generics_string(generics_string)
+        # Parse
+        generics = [Type.reinsert_subgeneric(i.strip(), saved_sub_generics) for i in generics_string.split(',')]
         list_of_types = [Type.from_isolated_string(type_) for type_ in generics]
         return list_of_types
         # if '<' in type_:
@@ -140,6 +144,35 @@ class Type:
         #         elif char == '>':
         #             cnt-=1
         #         if start and not cnt:
+
+    @staticmethod
+    def clean_generics_in_generics_string(generics_string: str) -> tuple[str, list[str]]:
+        bracket_cnt = 0
+        sub_generics = []
+        starts = []
+        ends = []
+        for index, char in enumerate(generics_string):
+            if char == '<':
+                if not bracket_cnt:
+                    starts.append(index)
+                bracket_cnt += 1
+            if char == '>':
+                bracket_cnt -= 1
+                if not bracket_cnt:
+                    ends.append(index)
+        for start, end in zip(starts, ends):
+            sub_generics.append(generics_string[start:end+1])
+        for index, sub_generic in enumerate(sub_generics):
+            generics_string = generics_string.replace(sub_generic, f'____sub_{index}____', 1)
+        return generics_string, sub_generics
+
+    @staticmethod
+    def reinsert_subgeneric(str_to_sub: str, saved_subs: list[str]) -> str:
+        match = re.search('____sub_(\d+)____', str_to_sub)
+        while match:
+            str_to_sub = str_to_sub.replace(match.group(0), saved_subs[int(match.group(1))])
+            match = re.search('____sub_(\d+)____', str_to_sub)
+        return str_to_sub
 
     def to_str(self):
         result = self.type

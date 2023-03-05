@@ -28,3 +28,10 @@ def test_hashcode():
     result = '@override\nint get hashCode => a.hashCode ^ b.hashCode ^ c.hashCode ^ winning.hashCode;'
     assert hashcode(trial_class) == result
 
+def test_get_type_casting_line():
+    test_type = domain.Type.from_isolated_string('Map<int, Queue<List<String>>>')
+    assert get_type_casting_line(test_type) == [
+        domain.Type.from_isolated_string('Map<int, Queue<List<String>>>'),
+        domain.Type.from_isolated_string('Queue<List<String>>'),
+        domain.Type.from_isolated_string('List<String>')
+    ]

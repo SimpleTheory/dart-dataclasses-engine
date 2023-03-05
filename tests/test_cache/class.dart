@@ -72,3 +72,10 @@ class MyClass {
     print('Hello, world!');
   }
 }
+
+@Dataclass()
+class Person {
+    Address address;
+    List<Person>? family;
+    String name;
+}

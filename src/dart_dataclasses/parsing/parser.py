@@ -298,7 +298,7 @@ def parse_method(method: str, keywords: list[str], method_type: domain.MethodTyp
         x = re.search(f'{type_regex}\s+(\w+)', method)
         # type_ = x.group(1) + x.group(2) if x.group(2) else x.group(1)
         type_ = x.group(1)
-        print(type_)
+        # print(type_)
         name = x.group(3)
 
     return domain.Method(
