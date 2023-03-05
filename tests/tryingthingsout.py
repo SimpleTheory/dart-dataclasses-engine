@@ -9,7 +9,6 @@ trial_class = file_stuff.file_reading_procedure_for_classes(r'D:\StudioProjects\
 trial_class2 = file_stuff.file_reading_procedure_for_classes('./test_cache/class.dart')[-1]
 
 
-
 def generate_casting_code(type_list: list[domain.Type], var_name):
     """
     Generate Dart code for casting a nested dynamic List or Map to the correct type.
@@ -46,6 +45,9 @@ def format_type_cast(func):
 
 @format_type_cast
 def type_cast_iterable(taipu: domain.Type, var_name: str, recursion_level=0) -> str:
+    # nullability_code = ''
+    # if taipu.nullable:
+    # # nullability_code =
     # generic listlike
     if len(taipu.generics) == 1 and taipu.generics[0].generics:
         return \
@@ -70,32 +72,32 @@ def type_cast_iterable(taipu: domain.Type, var_name: str, recursion_level=0) -> 
 
 if __name__ == '__main__':
     # Variable to cast
-    # var_name = 'myVar'
-    # test_type_2 = domain.Type.from_isolated_string('Map<int, Map<int, Map<int, List<String>>>>')
+    var_name = 'myVar'
+    test_type_2 = domain.Type.from_isolated_string('Map<int, Map<int, Map<int, List<String>?>>?>?')
     # print(test_type_2.to_str())
     #
     # # Generate casting code
     # casting_code = type_cast_iterable(test_type, var_name)
-    # casting_code_2 = type_cast_iterable(test_type_2, var_name)
+    casting_code_2 = js.type_cast_iterable(test_type_2, var_name)
     #
     # # Print result
     # print(casting_code)
     # print()
-    # print(casting_code_2)
-    fun_funcs_to_try = [
-        cf.constructor,
-        cf.attributes,
-        cf.hashcode,
-        cf.equality_operator,
-        cf.copy_with,
-        js.to_json,
-        js.from_json
-    ]
-    print()
-    print('-------------')
-    print()
-    for func in fun_funcs_to_try:
-        print(func(trial_class2))
-        print()
-        print('-------------')
-        print()
+    print(casting_code_2)
+    # fun_funcs_to_try = [
+    #     cf.constructor,
+    #     cf.attributes,
+    #     cf.hashcode,
+    #     cf.equality_operator,
+    #     cf.copy_with,
+    #     js.to_json,
+    #     js.from_json
+    # ]
+    # print()
+    # print('-------------')
+    # print()
+    # for func in fun_funcs_to_try:
+    #     print(func(trial_class2))
+    #     print()
+    #     print('-------------')
+    #     print()
