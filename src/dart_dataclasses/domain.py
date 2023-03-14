@@ -88,6 +88,15 @@ class DartEnum:
     name: str
     options: list[str]
 
+    def to_dart(self):
+        from dart_dataclasses.writing.json_serialization import dart_enum_methods, enum_to_reflected_type
+        return f'''
+EnumExtension(
+    name: '{self.name}',
+    referenceType: {enum_to_reflected_type(self)},
+    options: {self.options},
+    methods: {dart_enum_methods(self)}
+  )'''.strip()
 
 @dataclass()
 class Type:

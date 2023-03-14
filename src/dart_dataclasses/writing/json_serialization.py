@@ -19,10 +19,10 @@ class Person {
         Map map = jsonDecode(json);
         
         Address address = map[address].fromMap();
-        List family_temp = recursiveFromJsonIterable(json[family]);
+        List familyTemp = recursiveFromJsonIterable(json[family]);
         String name = map[name]
         
-        List<Person> family = iterable_type_cast(family.type, f'{family.name}_temp')
+        List<Person> family = iterable_type_cast(family.type, f'{family.name}Temp')
         
         return Person(address: address, family: family, name: name);
     }
@@ -52,15 +52,15 @@ def part_declaration_procedure(attr: domain.Attribute, space='    ') -> str:
         temp_type = 'List'
         if 'map' in attr.type.type.lower():
             temp_type = 'Map'
-        return f'{temp_type}? {attr.name}_temp = recursiveFromJsonIterable(map[\'{attr.name}\']);'
+        return f'{temp_type}? {attr.name}Temp = dejsonify(map[\'{attr.name}\']);'
     if attr.type.type in domain.json_safe_types:
         return f'{attr.type.to_str()} {attr.name} = map[\'{attr.name}\'];'
     # Must keep lines like this to keep integrity of extension types, like enumJsons or BigIntJson, etc...
     if attr.type.nullable:
         return f'{attr.type.to_str()} {attr.name} = ' \
                f'map[\'{attr.name}\'] == null ? null : mapFactory[\'{attr.type.type}\'](map[\'{attr.name}\']);'
-    return f'{attr.type.to_str()} {attr.name} = mapFactory[\'{attr.type.type}\']!(map[\'{attr.name}\']);'
-
+    # return f'{attr.type.to_str()} {attr.name} = str2reflection[map[\'{attr.name}\']["__type"]]!.fromMap!(map[\'{attr.name}\']);'
+    return f'{attr.type.to_str()} {attr.name} = dejsonify(map[\'{attr.name}\']);'
 
 def part_declaration(dynamic_attributes: list[domain.Attribute], padding=4) -> str:
     space = padding * ' '
@@ -120,10 +120,10 @@ def type_cast(list_of_attributes_to_cast: list[domain.Attribute], base_padding=4
     for attribute in list_of_attributes_to_cast:
         # if attribute.type.nullable:
         #     casts.append(
-        #         f'if ({attribute.name}_temp == null)***{attribute.type.to_str()} '
+        #         f'if ({attribute.name}Temp == null)***{attribute.type.to_str()} '
         #         f'{attribute.name} = null;%%%\n{space}'
         #         f'else***{attribute.type.to_str()} {attribute.name} =\n'
-        #         f'{type_cast_iterable(attribute.type, f"{attribute.name}_temp", base_padding=base_padding+4)}'
+        #         f'{type_cast_iterable(attribute.type, f"{attribute.name}Temp", base_padding=base_padding+4)}'
         #         f'\n{space}%%%'
         #         .replace('***', '{')
         #         .replace('%%%', '}')
@@ -131,13 +131,13 @@ def type_cast(list_of_attributes_to_cast: list[domain.Attribute], base_padding=4
         # else:
         #     casts.append(
         #         f'{"Map" if cf.type_is_map(attribute.type) else "List"} '
-        #         f'{attribute.name}_temp_2 = {attribute.name}_temp!;\n{space}'
+        #         f'{attribute.name}Temp_2 = {attribute.name}Temp!;\n{space}'
         #         f'{attribute.type.to_str()} {attribute.name} =\n'
-        #         f'{type_cast_iterable(attribute.type, f"{attribute.name}_temp_2", base_padding=base_padding+4)}'
+        #         f'{type_cast_iterable(attribute.type, f"{attribute.name}Temp_2", base_padding=base_padding+4)}'
         #     )
         casts.append(
             f'{attribute.type.to_str()} {attribute.name} =\n'
-            f'{type_cast_iterable(attribute.type, f"{attribute.name}_temp", base_padding=base_padding + pad_amount, pad_amount=pad_amount)}'
+            f'{type_cast_iterable(attribute.type, f"{attribute.name}Temp", base_padding=base_padding + pad_amount, pad_amount=pad_amount)}'
         )
 
     return f'\n{base_padding * " "}'.join(casts)
@@ -167,3 +167,21 @@ factory ClassName.fromMap(Map map){
         .replace('return_constructor', return_constructor(dart_class)) \
         .replace('ClassName', dart_class.name) \
         .strip()
+
+
+def enum_from_map(dart_enum: domain.DartEnum):
+    option_ifs = ' '.join([f'if (map[\'value\'] == \'{enum_option}\'){{return {dart_enum.name}.{enum_option};}}'
+                           for enum_option in dart_enum.options])
+    return f'(Map<String, dynamic> map){{{option_ifs} throw Exception("Enum {dart_enum.name} can not instantiate ' \
+           f'from map $map");}}'
+
+
+def enum_to_reflected_type(dart_enum: domain.DartEnum):
+    return f'ReflectedType.create({dart_enum.name}, "{dart_enum.name}")'
+
+
+def dart_enum_methods(dart_enum: domain.DartEnum):
+    return f'[\n' \
+           f'      Method.create("fromMap", {enum_to_reflected_type(dart_enum)}, MethodType.factory, false, null,' \
+           f' false, {enum_from_map(dart_enum)}),\n' \
+           f'    ]'

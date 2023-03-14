@@ -4,7 +4,7 @@ import functools
 import dart_dataclasses.writing.json_serialization as js
 import dart_dataclasses.file_level.file_level as file_stuff
 
-# test_type = domain.Type.from_isolated_string('Map<int, Queue<List<String>>>')
+test_type = domain.Type.from_isolated_string('Map<int, Queue<List<String>>>')
 # trial_class = file_stuff.file_reading_procedure_for_classes(r'D:\StudioProjects\ari_utils\test\trying_things.dart')[1]
 trial_class2 = file_stuff.file_reading('./test_cache/class.dart')['dataclasses'][-1]
 # trial_class3 = file_stuff.file_reading('./../tests/test_cache/dart_core_datetime.dart')['dataclasses'][0]
@@ -78,11 +78,11 @@ if __name__ == '__main__':
     # print(test_type_2.to_str())
     #
     # # Generate casting code
-    # casting_code = type_cast_iterable(test_type, var_name)
+    casting_code = type_cast_iterable(test_type, var_name)
     casting_code_2 = js.type_cast_iterable(test_type_2, var_name)
     #
     # # Print result
-    # print(casting_code)
+    print(casting_code)
     # print()
     # print(casting_code_2)
     fun_funcs_to_try = [

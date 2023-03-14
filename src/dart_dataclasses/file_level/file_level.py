@@ -43,9 +43,9 @@ def dir_procedure(dir: str | Path) -> dict[Path: dict[str:list[domain.Class] | l
 
 if __name__ == '__main__':
     a = r'D:\PycharmProjects\dart_dataclasses\tests\test_cache\class.dart'
-    a2 = r'D:\StudioProjects\ari_utils\test\trying_things.dart'
-    b = file_reading_procedure_for_classes(a)
-    c = file_reading_procedure_for_enums(a)
-    b2 = file_reading_procedure_for_classes(a2)
-    c2 = file_reading_procedure_for_enums(a2)
+    a2 = r'D:\PycharmProjects\dart_dataclasses\tests\test_cache\trying_things_out_ari_utils_2-27-2023.dart'
+    b = file_reading(a)
+    # c = file_reading_procedure_for_enums(a)
+    b2 = file_reading(a2)
+    # c2 = file_reading_procedure_for_enums(a2)
     pass
