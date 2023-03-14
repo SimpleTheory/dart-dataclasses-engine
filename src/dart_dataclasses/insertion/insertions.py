@@ -4,6 +4,7 @@ from pathlib import Path
 import re
 import dart_dataclasses.parsing.config_file as conf
 import dart_dataclasses.writing.class_functions as cf
+import dart_dataclasses.file_level.cmd_line_level as cmd
 
 # TODO ADD IMPORTS TO PAGE
 
@@ -35,6 +36,9 @@ def dir_level_insertions(file_dataclasses: dict[Path: dict[str:list[domain.Class
         dataclasses = file_objects['dataclasses']
         if dataclasses:
             dataclass_insertions(file, dataclasses)
+            insert_imports_if_not_there(file)
+            if conf.format_files_with_insertion:
+                cmd.format_file(file)
 
 
 def dataclass_insertions(file: Path, dataclasses: list[domain.Class]):
@@ -80,3 +84,12 @@ def write_class_functions_main(dart_class: domain.Class) -> str:
 {cf.class_functions(dart_class)}
 // </Dataclass>
     '''.lstrip()), 2)
+
+
+def insert_imports_if_not_there(path: Path):
+    with open(path, 'r+') as f:
+        for import_str in conf.insertion_imports_strings:
+            content = f.read()
+            if not import_str in content:
+                f.write(f'{import_str}\n{content}')
+

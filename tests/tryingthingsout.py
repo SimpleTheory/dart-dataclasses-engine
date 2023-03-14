@@ -109,5 +109,5 @@ if __name__ == '__main__':
     print()
     print('------------')
     print()
-    from dart_dataclasses.insertion.insertion_parsing import write_class_functions_main
+    from dart_dataclasses.insertion.insertions import write_class_functions_main
     print(write_class_functions_main(trial_class2))

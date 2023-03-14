@@ -57,6 +57,10 @@ try:
 // disable the code generation, change the annotation to @Metaclass).
     '''.strip() if config_file_dict['warning_message'].lower() == 'true' else ''
     reference_private_methods: bool = config_file_dict['reference_private_methods'].lower() == 'true'
+    format_files_with_insertion: bool = config_file_dict['format_files_with_insertion'].lower() == 'true'
+
+    insertion_imports = [config_file_dict['parsing_path'] + '/mydataclasses.dart']
+    insertion_imports_strings = [f'import \'{file}\';' for file in insertion_imports]
 
 except:
     raise ConfigParseError()
@@ -72,3 +76,5 @@ def encapsulate_region(name, text):
 
 if __name__ == '__main__':
     print(config_file_dict)
+    print(parsing_path)
+    print(output_path)

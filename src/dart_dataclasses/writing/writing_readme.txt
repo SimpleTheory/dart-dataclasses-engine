@@ -15,7 +15,7 @@ Regarding boilerplate generation:
     Are generated for a dataclass and replace either the @Generate tag within the class
     or the <Dataclass>...</Dataclass> tags.
 
-    The AST parser is then re-run to generate the reflection objects for the program
+    The AST parser is then re-run to generate the reflection objects for the program.
 
 The additional code generation falls into the following camps:
     reflection_lists and derived maps/lists:
@@ -29,12 +29,11 @@ The additional code generation falls into the following camps:
         type2enum
 
         reflectedClasses = [...dataclasses, ...supported_defaults, ...enum_exts]
-        ^str2reflection String, class
-        ^ Type, class
+        str2reflection
+        type2reflection
 
     dependencies for code-generation
-        str2fromMap = str2reflection.where((e)=>e.value.fromMap != null)
-        recursiveFromIter
+        recursiveFromIter ✓
 
 
 TODO: Write accessory functions for reflection objects for filtering them
