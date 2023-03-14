@@ -4,9 +4,10 @@ import functools
 import dart_dataclasses.writing.json_serialization as js
 import dart_dataclasses.file_level.file_level as file_stuff
 
-test_type = domain.Type.from_isolated_string('Map<int, Queue<List<String>>>')
-trial_class = file_stuff.file_reading_procedure_for_classes(r'D:\StudioProjects\ari_utils\test\trying_things.dart')[1]
-trial_class2 = file_stuff.file_reading_procedure_for_classes('./test_cache/class.dart')[-1]
+# test_type = domain.Type.from_isolated_string('Map<int, Queue<List<String>>>')
+# trial_class = file_stuff.file_reading_procedure_for_classes(r'D:\StudioProjects\ari_utils\test\trying_things.dart')[1]
+trial_class2 = file_stuff.file_reading('./test_cache/class.dart')['dataclasses'][-1]
+# trial_class3 = file_stuff.file_reading('./../tests/test_cache/dart_core_datetime.dart')['dataclasses'][0]
 
 
 def generate_casting_code(type_list: list[domain.Type], var_name):
@@ -83,21 +84,30 @@ if __name__ == '__main__':
     # # Print result
     # print(casting_code)
     # print()
-    print(casting_code_2)
-    # fun_funcs_to_try = [
-    #     cf.constructor,
-    #     cf.attributes,
-    #     cf.hashcode,
-    #     cf.equality_operator,
-    #     cf.copy_with,
-    #     js.to_json,
-    #     js.from_json
-    # ]
+    # print(casting_code_2)
+    fun_funcs_to_try = [
+        cf.constructor,
+        cf.static_constructor,
+        cf.attributes,
+        cf.hashcode,
+        cf.equality_operator,
+        cf.copy_with,
+        cf.to_str,
+        js.to_json,
+        js.from_json
+    ]
     # print()
     # print('-------------')
     # print()
-    # for func in fun_funcs_to_try:
-    #     print(func(trial_class2))
-    #     print()
-    #     print('-------------')
-    #     print()
+    print(trial_class2)
+    for func in fun_funcs_to_try:
+        print(func(trial_class2))
+        print()
+        print('-------------')
+        print()
+    print(trial_class2.to_dart())
+    print()
+    print('------------')
+    print()
+    from dart_dataclasses.insertion.insertion_parsing import write_class_functions_main
+    print(write_class_functions_main(trial_class2))

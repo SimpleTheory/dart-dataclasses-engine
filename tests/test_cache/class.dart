@@ -71,6 +71,7 @@ class MyClass {
   void myMethod() {
     print('Hello, world!');
   }
+  bruh(){}
 }
 
 @Dataclass()

@@ -1,21 +1,26 @@
-Fundamentally there are 3 files that need to be written:
-    - The extensions on the dataclasses themselves
-    - Metadata regarding the Classes
-    - A library declaration that glues together the class definitions, the extensions, and the metadata file.
+There are 2 parts to this project:
+    Reflection
+    BoilerPlate Generation
 
-The extensions should be:
-    organized by file alphabetically (using editor-fold="", //region desc //endregion, # --- Desc ------------)
-    organized by class therein alphabetically
-    the functions to write are as follows: (functions should also be organized alphabetically under classes)
-        toJson (hard, cascading issue and nesting issue)
-        fromJson (hard, ^)
+Regarding boilerplate generation:
+    The following functions:
+        toJson
+        fromJson
+        static Constructor
         toString
         operator ==
         get hashCode
         get attributes
         copyWith
+    Are generated for a dataclass and replace either the @Generate tag within the class
+    or the <Dataclass>...</Dataclass> tags.
 
-        constructor(in file proper)(has to find where to place constructor)
+    The AST parser is then re-run to generate the reflection objects for the program
+
+The additional code generation falls into the following camps:
+    code generation for the enums (fromMap, fromJson, extensions)
+    reflection_lists and derived maps/lists
+    dependencies for code-generation (recursiveFromIter)
 
 
-
+TODO: Write accessory functions for reflection objects for filtering them

@@ -2,7 +2,7 @@ import re
 import dart_dataclasses.domain as domain
 import dart_dataclasses.parsing.file_content_cleaning as cc
 
-type_regex = r'(\w+(\<(?:[^<>]+|\<(?:[^<>]+|\<[^<>]*\>)*\>)*\>)?)'
+type_regex = r'(\w+(\<(?:[^<>]+|\<(?:[^<>]+|\<[^<>]*\>)*\>)*\>)?\??)'
 
 
 def class_isolate_parsing_main(class_isolate, stored_strings):
@@ -59,6 +59,10 @@ def get_name(name_part: str, stored_strings: dict[str:str]) -> tuple[str, str | 
     dataclass_annotation = annotations[0]
     name = re.search('class\s+(\w+)', name_part).group(1)
     parent = re.search('extends\s+(\w+)', name_part).group(1) if 'extends' in name_part else None
+    # Since classes can mixin or implement multiple classes have to think of way to capture them all
+
+    # mixin = re.search('with\s+([\s\w,]+)', name_part) if 'with' in name_part else None
+    # implements = re.search('implements\s+(\w+)', name_part).group(1) if 'implements' in name_part else None
     return name, parent, dataclass_annotation
 
 
@@ -283,23 +287,27 @@ def parse_method(method: str, keywords: list[str], method_type: domain.MethodTyp
     if generics_match:
         generics = generics_match.group()
         method = method.replace(generics, '').strip()
+    # External Default Constructor Clause
+    if all(['external' in keywords, 'factory' in keywords, method == classname]):
+        method_type = domain.MethodType.constructor
     if method_type == domain.MethodType.named_constructor or method_type == domain.MethodType.factory:
         type_ = classname
         name = method.split('.')[1]
+
     elif method_type == domain.MethodType.constructor:
         type_ = classname
         name = classname
     elif method_type == domain.MethodType.operator:
         pass
     elif method_type == domain.MethodType.setter:
-        type_ = None
+        type_ = domain.Type('void', False)
         name = method
     else:
         x = re.search(f'{type_regex}\s+(\w+)', method)
         # type_ = x.group(1) + x.group(2) if x.group(2) else x.group(1)
-        type_ = x.group(1)
+        type_ = x.group(1) if x else 'dynamic'
         # print(type_)
-        name = x.group(3)
+        name = x.group(3) if x else method
 
     return domain.Method(
         name=name,
@@ -332,10 +340,10 @@ def parse_enum_options(enum_options: str) -> list[str]:
     enum_options_list = [i.strip() for i in enum_options.split(',')]
     result = []
     for option in enum_options_list:
-        print('-------')
-        print(option)
+        # print('-------')
+        # print(option)
         if '(' in option:
-            print(option[0])
+            # print(option[0])
             result.append(option.split('(')[0].strip())
         else:
             result.append(option.strip())

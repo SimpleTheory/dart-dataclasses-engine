@@ -1,5 +1,53 @@
 import dart_dataclasses.domain as domain
 
+
+def class_functions(dart_class: domain.Class) -> str:
+    """
+    Generation order
+
+    constructor
+    staticConstructor
+    attributes
+    eq (+ hashcode)
+    toString
+    copyWith
+    toJson
+    fromJson
+
+    """
+    import dart_dataclasses.writing.json_serialization as js
+    generated_code = []
+    if not check_for_bool_dataclass_args('all', dart_class):
+        return ''
+
+    if check_for_bool_dataclass_args('constructor', dart_class):
+        generated_code.append(constructor(dart_class))
+
+        if check_for_bool_dataclass_args('staticConstructor', dart_class):
+            generated_code.append(static_constructor(dart_class))
+
+    if check_for_bool_dataclass_args('attributes', dart_class):
+        generated_code.append(attributes(dart_class))
+
+    if check_for_bool_dataclass_args('eq', dart_class):
+        if dart_class.attributes:
+            generated_code.append(equality_operator(dart_class))
+            generated_code.append(hashcode(dart_class))
+
+    if check_for_bool_dataclass_args('toStr', dart_class):
+        generated_code.append(to_str(dart_class))
+
+    if check_for_bool_dataclass_args('copyWith', dart_class):
+        generated_code.append(copy_with(dart_class))
+
+    if check_for_bool_dataclass_args('toJson', dart_class):
+        generated_code.append(js.to_json(dart_class))
+
+    if check_for_bool_dataclass_args('fromJson', dart_class):
+        generated_code.append(js.from_json(dart_class))
+    return ('\n'*2).join(generated_code)
+
+
 def constructor(dart_class: domain.Class) -> str:
     attrs_to_initialize = list(filter(
         lambda attribute: not any([attribute.external, attribute.static, attribute.late, attribute.const]),
@@ -13,11 +61,11 @@ def constructor(dart_class: domain.Class) -> str:
 
     if dart_class.parent:
         try:
-            call_to_super = 'super.' + dart_class.dataclass_annotation.keyword_params['superFactory'][1:-1].strip()
+            call_to_super = 'super.' + dart_class.dataclass_annotation.keyword_params['superFactory'].strip()
         except KeyError:
             call_to_super = 'super'
         super_pos, super_kwarg = separate_pos_and_kwarg_super(attrs_to_initialize)
-        print(super_pos, super_kwarg)
+        # print(super_pos, super_kwarg)
 
         parent = f'{call_to_super}({"".join([f"{pos.name}, " for pos in super_pos])}' \
                  f'{", ".join([f"{kwarg.super_param}: {kwarg.name}" for kwarg in super_kwarg])})'
@@ -26,9 +74,24 @@ def constructor(dart_class: domain.Class) -> str:
     return base + ';'
 
 
+def static_constructor(dart_class: domain.Class) -> str:
+    attrs_to_initialize = list(filter(
+        lambda attribute: not any([attribute.external, attribute.static, attribute.late, attribute.const]),
+        dart_class.attributes
+    ))
+    required, null = separate_null_required(attrs_to_initialize)
+
+    base = f'{dart_class.name}.staticConstructor(***{"".join([f"required {attr.name}, " for attr in required])}' \
+           f'{", ".join([f"{attr.name}" for attr in null])}%%%)'.replace('***', '{').replace('%%%', '}')
+    returns = f'{dart_class.name}({", ".join([f"{attr.name}: {attr.name}" for attr in required+null])})'
+    return f'factory {base} => {returns};'
+
+
 def attributes(dart_class: domain.Class) -> str:
     attr_strs = [f'"{attr.name}": {attr.name}' for attr in get_dynamic_attributes(dart_class)]
-    return f'Map get __attributes => ***{", ".join(attr_strs)}%%%;'.replace('***', '{').replace('%%%', '}')
+    return f'Map<String, dynamic> get attributes__ => ***{", ".join(attr_strs)}%%%;' \
+        .replace('***', '{') \
+        .replace('%%%', '}')
 
 
 def copy_with(dart_class: domain.Class) -> str:
@@ -54,6 +117,15 @@ def hashcode(dart_class: domain.Class) -> str:
     body = " ^ ".join([f'{attr.name}.hashCode' for attr in get_dynamic_attributes(dart_class)])
     return base + body + ';'
 
+
+def to_str(dart_class: domain.Class) -> str:
+    attr_strs = [f'{attr.name}: ${attr.name}' for attr in get_dynamic_attributes(dart_class)]
+    return f'@override\n' \
+           f'String toString() => \'{dart_class.name}({", ".join(attr_strs)})\';' \
+        .replace('***', '{') \
+        .replace('%%%', '}')
+
+
 # ----------------------------------------------------------------------------
 # Utility Functions
 def separate_null_required(attrs: list[domain.Attribute]) -> tuple[list[domain.Attribute], list[domain.Attribute]]:
@@ -67,7 +139,7 @@ def separate_null_required(attrs: list[domain.Attribute]) -> tuple[list[domain.A
 def separate_pos_and_kwarg_super(attrs: list[domain.Attribute]) -> tuple[
     list[domain.Attribute], list[domain.Attribute]]:
     super_attrs = list(filter(lambda attribute: attribute.super_param, attrs))
-    print(list(super_attrs))
+    # print(list(super_attrs))
     pos = sorted(
         filter(lambda attr: attr.super_param[0] == '+', super_attrs),
         key=lambda attr: len(attr.super_param)
@@ -91,23 +163,39 @@ def get_dynamic_attributes(attrs: list[domain.Attribute] | domain.Class) -> list
 def type_is_iterable(type_: domain.Type) -> bool:
     return type_.type in domain.iterable_types
 
+
 def type_is_map(type_: domain.Type) -> bool:
     return 'map' in type_.type.lower()
+
 
 def iterable_factory(type_: domain.Type) -> str:
     return type_.to_str() + ('.from(' if type_.type != 'Iterable' else '.castFrom(')
 
-# def get_type_casting_line(type_: domain.Type, result=None) -> list[domain.Type]:
-#     if result is None:
-#         result = []
-#     result.append(type_)
-#     if not type_.generics:
-#         return result
-#     cascade_type_index = 0 if len(type_.generics) == 1 else 1
-#     if type_is_iterable(type_.generics[cascade_type_index]):
-#         return get_type_casting_line(type_.generics[cascade_type_index], result)
-#     else:
-#         return result
+
+def check_for_bool_dataclass_args(arg_name: str, dart_dataclass: domain.Class):
+    try:
+        arg_value = dart_dataclass.dataclass_annotation.keyword_params[arg_name]
+        return arg_value.strip().lower() == 'true'
+    except KeyError:
+        return True
+
+
+def left_pad_string(string: str, num_spaces: int) -> str:
+    """
+    Left pads a multiline string with spaces. (Chatgpt generated)
+    """
+    # Split the string into individual lines.
+    lines = string.split("\n")
+
+    # Loop over each line and add the desired number of spaces to the beginning.
+    for i in range(len(lines)):
+        lines[i] = " " * num_spaces + lines[i]
+
+    # Join the lines back together into a single string.
+    padded_string = "\n".join(lines)
+
+    return padded_string
+
 
 if __name__ == '__main__':
     from dart_dataclasses.file_level.file_level import file_reading_procedure_for_classes

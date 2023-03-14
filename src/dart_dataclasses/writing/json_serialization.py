@@ -43,7 +43,8 @@ Let it be that a map called jsonFactoryMap<String, Function> maps the Class name
 def to_json(dart_class: domain.Class) -> str:
     return '''
 String toJson()=>jsonEncode(toMap());
-Map toMap()=> {'__type': 'ClassName', ...nestedJsonMap(__attributes)};'''.replace('ClassName', dart_class.name).strip()
+Map<String, dynamic> toMap()=> {'__type': 'ClassName', ...nestedJsonMap(attributes__)};''' \
+        .replace('ClassName', dart_class.name).strip()
 
 
 def part_declaration_procedure(attr: domain.Attribute, space='    ') -> str:
@@ -51,17 +52,14 @@ def part_declaration_procedure(attr: domain.Attribute, space='    ') -> str:
         temp_type = 'List'
         if 'map' in attr.type.type.lower():
             temp_type = 'Map'
-        return f'{attr.type.to_str()} {attr.name};' \
-               f'\n{space}{temp_type}? {attr.name}_temp = recursiveFromJsonIterable(map[\'{attr.name}\']);'
+        return f'{temp_type}? {attr.name}_temp = recursiveFromJsonIterable(map[\'{attr.name}\']);'
     if attr.type.type in domain.json_safe_types:
         return f'{attr.type.to_str()} {attr.name} = map[\'{attr.name}\'];'
-    # TODO MODIFY BELOW LINES IN THIS FUNCTION SUCH THAT:
-    # Address address = jsonFactoryMap['Address']!(map[address]); NOT THIS!! Rather
-    # Address address = Address.fromMap(map[address])
+    # Must keep lines like this to keep integrity of extension types, like enumJsons or BigIntJson, etc...
     if attr.type.nullable:
         return f'{attr.type.to_str()} {attr.name} = ' \
-               f'jsonFactoryMap[\'{attr.type.type}\'] == null ? null : (map[\'{attr.name}\']);'
-    return f'{attr.type.to_str()} {attr.name} = jsonFactoryMap[\'{attr.type.type}\']!(map[\'{attr.name}\']);'
+               f'map[\'{attr.name}\'] == null ? null : mapFactory[\'{attr.type.type}\'](map[\'{attr.name}\']);'
+    return f'{attr.type.to_str()} {attr.name} = mapFactory[\'{attr.type.type}\']!(map[\'{attr.name}\']);'
 
 
 def part_declaration(dynamic_attributes: list[domain.Attribute], padding=4) -> str:
@@ -117,7 +115,7 @@ def type_cast_iterable(taipu: domain.Type, var_name: str, recursion_level=0, bas
 
 def type_cast(list_of_attributes_to_cast: list[domain.Attribute], base_padding=4, pad_amount=2):
     if not list_of_attributes_to_cast:
-        return '\\\\ No casting'
+        return '// No casting'
     casts = []
     for attribute in list_of_attributes_to_cast:
         # if attribute.type.nullable:
@@ -161,7 +159,7 @@ factory ClassName.fromMap(Map map){
     type_casting
 
     return return_constructor;
-}
+  }
     '''.replace('part_declaration', part_declaration(cf.get_dynamic_attributes(dart_class))) \
         .replace('type_casting',
                  type_cast([i for i in cf.get_dynamic_attributes(dart_class) if cf.type_is_iterable(i.type)])

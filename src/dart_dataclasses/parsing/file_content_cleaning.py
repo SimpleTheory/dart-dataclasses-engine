@@ -1,6 +1,8 @@
 import re
 stored_string_regex = re.compile('____\w+_\w+:\d+____')
 
+symbols_to_eliminate = ['@Generate']
+
 def substitute_strings(file_content: str) -> tuple[str, dict[str:str]]:
     """
     Replace order:
@@ -61,17 +63,21 @@ def remove_comments(code):
 
     return code_without_comments
 
+def remove_symbols_to_eliminate(file_content: str) -> str:
+    for symbol in symbols_to_eliminate:
+        file_content = file_content.replace(symbol, '')
+    return file_content
 
 def clean_file(file) -> tuple[str, dict[str:str]]:
     with open(file, 'r') as f:
         file_content = f.read()
     subbed, stored_strings = substitute_strings(file_content)
-    removed = remove_comments(subbed)
+    removed = remove_symbols_to_eliminate(remove_comments(subbed))
     return removed, stored_strings
 
 
 def isolate_marked_classes(file_content):
-    class_isolates = ['@dataclass' + i.strip() for i in re.split('@Dataclass', file_content)[1:]]
+    class_isolates = [i.strip() for i in re.split('(?=@Dataclass|@Metaclass)', file_content)[1:]]
     return class_isolates
 
 def isolate_enums(file_content):
@@ -114,7 +120,7 @@ def clean_class_from_isolate_chunk(class_iso_chunk: str) -> tuple[str, str]:
                 break
 
     name = class_iso_chunk[:name_final_index].strip()
-    body = class_iso_chunk[name_final_index : body_final_index]
+    body = class_iso_chunk[name_final_index:body_final_index]
 
     return name, body
 

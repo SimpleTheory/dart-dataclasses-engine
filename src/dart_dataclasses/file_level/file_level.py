@@ -4,38 +4,45 @@ import dart_dataclasses.parsing.file_content_cleaning as cc
 import dart_dataclasses.parsing.parser as par
 from pathlib import Path
 
-
-def file_reading_procedure_for_classes(file: Path | str) -> list[domain.Class] | None:
-    if not str(file).endswith('.dart'):
+def file_reading(file: Path | str) -> dict[str:list[domain.Class] | list[domain.Enum]]:
+    file = Path(file)
+    if file.suffix != '.dart':
         return
     file_content, strings = cc.clean_file(file)
-    if '@Dataclass' not in file_content:
+    temp = file_reading_procedure_for_classes(file_content, strings)
+    if temp is None:
+        return
+    dataclasses, metaclasses = temp
+    enums = file_reading_procedure_for_enums(file_content)
+    return {
+        'dataclasses': dataclasses,
+        'metaclasses': metaclasses,
+        'enums': enums,
+    }
+
+
+def file_reading_procedure_for_classes(file_content: str, strings: dict[str:list[str]]) -> \
+        tuple[list[domain.Class], list[domain.Class]] | None:
+    if ('@Dataclass' not in file_content) and ('@Metaclass' not in file_content):
         return
     pre_parsed_classes = cc.get_class_isolates(file_content)
     classes = [par.class_isolate_parsing_main(class_isolate, strings) for class_isolate in pre_parsed_classes]
-    return classes
+    return [dataclass for dataclass in classes if dataclass.dataclass_annotation.name == 'Dataclass'], \
+           [metaclass for metaclass in classes if metaclass.dataclass_annotation.name == 'Metaclass']
 
-def file_reading_procedure_for_enums(file: Path | str) -> list[domain.DartEnum] | None:
-    if not str(file).endswith('.dart'):
-        return
-    file_content, strings = cc.clean_file(file)
+def file_reading_procedure_for_enums(file_content: str) -> list[domain.DartEnum] | None:
     if not re.search('\s*enum\s+', file_content):
         return
     pre_parsed_enums = cc.get_enums(file_content)
     enums = [par.parse_enum(*enum_iso) for enum_iso in pre_parsed_enums]
     return enums
 
-def dir_procedure(dir: str | Path):
-    dir = Path(dir)
-    file_classes = {file: file_reading_procedure_for_classes(file) for file in dir.glob('*/**.dart')}
-    file_classes = {k: v for k, v in file_classes.items() if v}
-    file_enums = {file: file_reading_procedure_for_enums(file) for file in dir.glob('*/**.dart')}
-    file_enums = {k: v for k, v in file_enums.items() if v}
-    return file_classes, file_enums
+def dir_procedure(dir: str | Path) -> dict[Path: dict[str:list[domain.Class] | list[domain.Enum]]]:
+    return {Path(file): file_reading(file) for file in Path(dir).glob('*/**.dart')}
 
 
 if __name__ == '__main__':
-    a = r'D:\PycharmProjects\dart_dataclasses\test\test_cache\class.dart'
+    a = r'D:\PycharmProjects\dart_dataclasses\tests\test_cache\class.dart'
     a2 = r'D:\StudioProjects\ari_utils\test\trying_things.dart'
     b = file_reading_procedure_for_classes(a)
     c = file_reading_procedure_for_enums(a)
