@@ -92,6 +92,7 @@ def write_class_functions_main(dart_class: domain.Class, encapsulate=True) -> st
             conf.encapsulate_region(name='Dataclass Section',
                                     text=f'''
     //<Dataclass>
+    
     {conf.warning_message}
     
     {cf.class_functions(dart_class)}
@@ -100,6 +101,7 @@ def write_class_functions_main(dart_class: domain.Class, encapsulate=True) -> st
     return cf.left_pad_string(
         f'''
     //<Dataclass>
+    
     {conf.warning_message}
 
     {cf.class_functions(dart_class)}

@@ -40,8 +40,7 @@ def config_var_declarations(inputted_cwd: Path | str):
     global warning_message
     global reference_private_methods
     global format_files_with_insertion
-    # TODO: Implement config file and parsing
-    # TODO GET CWD AND BE ABLE TO PARSE ABS OR RELATIVE PATHES AND ASSERT SAID PATHES EXIST
+
     try:
         cwd = Path(inputted_cwd)
         config_file_dict = parse_config_file(cwd.joinpath('dataclasses.config'))
@@ -61,7 +60,6 @@ def config_var_declarations(inputted_cwd: Path | str):
         '''.strip() if config_file_dict['warning_message'].lower() == 'true' else ''
         reference_private_methods = config_file_dict['reference_private_methods'].lower() == 'true'
         format_files_with_insertion = config_file_dict['format_files_with_insertion'].lower() == 'true'
-
 
     except:
         raise ConfigParseError()

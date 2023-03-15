@@ -6,6 +6,9 @@ import re
 import functools
 
 static = '''
+
+// All together
+
 List<SupportedClasses> reflectedClasses = [...dataclasses, ...metaclasses, ...supportedDefaults, ...enumExtensions];
 Map<String, SupportedClasses> str2reflection = {...str2dataclasses, ...str2metaclasses, ...str2defaults, ...str2enumExtensions};
 Map<Type, SupportedClasses> type2reflection = {...type2dataclasses, ...type2metaclasses, ...type2defaults, ...type2enumExtensions};
@@ -119,7 +122,8 @@ def accessory_maps(map_names=None) -> str:
         type_ = 'ReflectedClass' if name != 'enumExtensions' else 'EnumExtension'
         lst.append(f'Map<String, {type_}>str2{name} = {{for ({type_} x in {name}) x.name: x}};')
         lst.append(f'Map<Type, {type_}>type2{name} = {{for ({type_} x in {name}) x.referenceType.referenceType!: x}};')
-    return '\n'.join(lst)
+        lst.append('\n')
+    return '\n'.join(lst).rstrip()
 
 def generate_metadata_text(file_dataclasses: dict[Path: dict[str:list[domain.Class] | list[domain.Enum]]]) \
         -> str:
@@ -136,14 +140,17 @@ def generate_metadata_text(file_dataclasses: dict[Path: dict[str:list[domain.Cla
     return f'''
 {strings_dict['imports']}
 
-{dynamic_lists(strings_dict)}
-{accessory_maps()}
 
+{dynamic_lists(strings_dict)}
+
+{accessory_maps()}
 {static}
 '''.strip()
 
 def write_metadata_file(file_dataclasses: dict[Path: dict[str:list[domain.Class] | list[domain.Enum]]]):
     from dart_dataclasses.parsing.config_file import output_path
+    from dart_dataclasses.file_level.cmd_line_level import format_file
     metadata_file = output_path.joinpath('metadata.dart')
     with open(metadata_file, 'w') as f:
         f.write(generate_metadata_text(file_dataclasses))
+    format_file(metadata_file)

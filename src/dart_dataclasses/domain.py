@@ -282,9 +282,8 @@ class Class:
     methods: list[Method]  # = field(default_factory=list)
     getters: list[Getter]  # = field(default_factory=list)
     parent: str = None
-
-    # mixin: list[str] = None
-    # implements: list[str] = None
+    mixins: list[str] = None
+    implementations: list[str] = None
 
     def to_dart(self, padding=2):
         result = f'''ReflectedClass(
@@ -294,7 +293,9 @@ class Class:
     attributes: {list_to_string([attr.to_dart(self) for attr in self.attributes])},
     getters: {list_to_string([gettr.to_dart(self) for gettr in self.getters])},
     methods: {list_to_string([method.to_dart(self) for method in self.methods], True)},
-    parent: {self.parent if self.parent else "null"}
+    parent: {self.parent if self.parent else "null"},
+    mixins: {list_to_string(self.mixins, extra_lines=False) if self.mixins else "null"},
+    implementations: {list_to_string(self.implementations, extra_lines=False) if self.implementations else "null"}
   )
             
         '''.strip()

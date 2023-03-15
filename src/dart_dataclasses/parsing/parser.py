@@ -6,7 +6,7 @@ type_regex = r'(\w+(\<(?:[^<>]+|\<(?:[^<>]+|\<[^<>]*\>)*\>)*\>)?\??)'
 
 
 def class_isolate_parsing_main(class_isolate, stored_strings):
-    name, parent, dataclass_annotation = get_name(class_isolate[0], stored_strings)
+    name, parent, dataclass_annotation, mixins, implementations = get_name(class_isolate[0], stored_strings)
     getters, attr, methods = retun_body_ast(class_isolate[1], name, stored_strings)
     return domain.Class(
         name=name,
@@ -14,7 +14,9 @@ def class_isolate_parsing_main(class_isolate, stored_strings):
         attributes=attr,
         methods=methods,
         getters=getters,
-        parent=parent
+        parent=parent,
+        mixins=mixins,
+        implementations=implementations
     )
 
 
@@ -54,16 +56,32 @@ def turn_annotation_strs_to_annotation_list(annotations: list[tuple[str, str]]) 
 #     return cleaned_annotations
 
 
-def get_name(name_part: str, stored_strings: dict[str:str]) -> tuple[str, str | None, domain.Annotation]:
+def get_name(name_part: str, stored_strings: dict[str:str]) -> \
+        tuple[str, str | None, domain.Annotation, list[str] | None, list[str] | None]:
     name_part, annotations = separate_annotations(name_part, stored_strings=stored_strings)
     dataclass_annotation = annotations[0]
     name = re.search('class\s+(\w+)', name_part).group(1)
     parent = re.search('extends\s+(\w+)', name_part).group(1) if 'extends' in name_part else None
     # Since classes can mixin or implement multiple classes have to think of way to capture them all
-
-    # mixin = re.search('with\s+([\s\w,]+)', name_part) if 'with' in name_part else None
+    # TODO: add mixins and implements
+    # mixin = re.search(r'with\s+\w+\s*(\,\s*\w+\s*)*(?={|extends|implements)', name_part) if 'with' in name_part else None
     # implements = re.search('implements\s+(\w+)', name_part).group(1) if 'implements' in name_part else None
-    return name, parent, dataclass_annotation
+    return name, parent, dataclass_annotation, \
+        get_mixin_or_implements(name_part, 'with'), get_mixin_or_implements(name_part, 'implements')
+
+
+def get_mixin_or_implements(name_part: str, get_type: str) -> list[str] | None:
+    # regex_string = r'with\s+\w+\s*(\,\s*\w+\s*)*(?={|extends|implements)'
+    keywords = ['with', 'extends', 'implements']
+    keywords.remove(get_type)
+    keywords_string = '|'.join(keywords)
+    regex = re.compile('(?<=get_type)\s+\w+\s*(\,\s*\w+\s*)*(?={|keywords_string)'
+                       .replace('get_type', get_type)
+                       .replace('keywords_string', keywords_string))
+    match = regex.search(name_part)
+    if not match:
+        return match
+    return [i.strip() for i in match.group().split(',')]
 
 
 def retun_body_ast(class_body: str, class_name: str, stored_strings: str):
@@ -151,10 +169,6 @@ def is_method(syntax: str) -> bool:
         parse and apply annotations
         parse base attr
         instantiate attr obj
-
-
-
-
 
     :return: identifies what a bodypart is and calls the appropriate function:
 
@@ -251,8 +265,8 @@ def parse_attr(attr: str, annotations: list[domain.Annotation],
     )
 
 
-def cut_method_body(method) -> tuple[str, str]:
-    result = (method.rsplit(')', 1)[0] + ')').split('(', 1)
+def cut_method_body(method: str) -> tuple[str, str]:
+    result: list[str] = (method.rsplit(')', 1)[0] + ')').split('(', 1)
     result[1] = '(' + result[1]
     result = [t.strip() for t in result]
     return tuple(result)
@@ -323,6 +337,7 @@ def parse_method(method: str, keywords: list[str], method_type: domain.MethodTyp
 def parse_enum(name: str, enum_iso: str) -> domain.DartEnum:
     return domain.DartEnum(name, split_enum_body_and_get_options(enum_iso.strip()[:-1].strip()))
 
+
 def split_enum_body_and_get_options(body: str) -> list[str]:
     body = body.strip()
     split = body.split(';', maxsplit=1)
@@ -333,6 +348,7 @@ def split_enum_body_and_get_options(body: str) -> list[str]:
     # else:
     #     enum_options = s
     # return [i.strip() for i in re.split(r'[,;]', body) if i]
+
 
 def parse_enum_options(enum_options: str) -> list[str]:
     enum_options = enum_options[1:].strip() if enum_options.startswith('{') else enum_options.strip()
@@ -348,9 +364,6 @@ def parse_enum_options(enum_options: str) -> list[str]:
         else:
             result.append(option.strip())
     return result
-
-
-
 
 
 """
@@ -381,3 +394,6 @@ list<int> bro;
     '''
     x = separate_annotations(test)
     print(x)
+    y = 'class NamedPet extends Pet with Named, thing implements words{'
+    print(get_mixin_or_implements(y, 'with'))
+    print(get_mixin_or_implements(y, 'implements'))
