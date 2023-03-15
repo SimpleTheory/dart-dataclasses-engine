@@ -1,7 +1,7 @@
 import re
 stored_string_regex = re.compile('____\w+_\w+:\d+____')
 
-symbols_to_eliminate = ['@Generate']
+symbols_to_eliminate = ['@Generate()']
 
 def substitute_strings(file_content: str) -> tuple[str, dict[str:str]]:
     """

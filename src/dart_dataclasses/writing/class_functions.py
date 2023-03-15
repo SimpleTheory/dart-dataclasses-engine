@@ -17,14 +17,14 @@ def class_functions(dart_class: domain.Class) -> str:
     """
     import dart_dataclasses.writing.json_serialization as js
     generated_code = []
-    if not check_for_bool_dataclass_args('all', dart_class):
-        return ''
+    # if not check_for_bool_dataclass_args('all', dart_class):
+    #     return ''
 
     if check_for_bool_dataclass_args('constructor', dart_class):
         generated_code.append(constructor(dart_class))
 
-        if check_for_bool_dataclass_args('staticConstructor', dart_class):
-            generated_code.append(static_constructor(dart_class))
+    if check_for_bool_dataclass_args('staticConstructor', dart_class):
+        generated_code.append(static_constructor(dart_class))
 
     if check_for_bool_dataclass_args('attributes', dart_class):
         generated_code.append(attributes(dart_class))
@@ -177,10 +177,12 @@ def check_for_bool_dataclass_args(arg_name: str, dart_dataclass: domain.Class):
         arg_value = dart_dataclass.dataclass_annotation.keyword_params[arg_name]
         return arg_value.strip().lower() == 'true'
     except KeyError:
+        if arg_name != 'all':
+            return check_for_bool_dataclass_args('all', dart_dataclass)
         return True
 
 
-def left_pad_string(string: str, num_spaces: int) -> str:
+def left_pad_string(string: str, num_spaces: int, start=True) -> str:
     """
     Left pads a multiline string with spaces. (Chatgpt generated)
     """
@@ -189,6 +191,8 @@ def left_pad_string(string: str, num_spaces: int) -> str:
 
     # Loop over each line and add the desired number of spaces to the beginning.
     for i in range(len(lines)):
+        if not start and not i:
+            continue
         lines[i] = " " * num_spaces + lines[i]
 
     # Join the lines back together into a single string.

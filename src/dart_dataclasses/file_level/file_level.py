@@ -38,7 +38,7 @@ def file_reading_procedure_for_enums(file_content: str) -> list[domain.DartEnum]
     return enums
 
 def dir_procedure(dir: str | Path) -> dict[Path: dict[str:list[domain.Class] | list[domain.Enum]]]:
-    return {Path(file): file_reading(file) for file in Path(dir).glob('*/**.dart')}
+    return {Path(file): file_reading(file) for file in Path(dir).glob('**/*.dart')}
 
 
 if __name__ == '__main__':

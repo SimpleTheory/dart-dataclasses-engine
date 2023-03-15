@@ -3,7 +3,12 @@ import dart_dataclasses.writing.class_functions as cf
 import functools
 import dart_dataclasses.writing.json_serialization as js
 import dart_dataclasses.file_level.file_level as file_stuff
+import dart_dataclasses.insertion.insertions as insert
+from pathlib import Path
 
+file = Path(r'./test_cache/class.dart')
+f2 = Path(r'D:\StudioProjects\test_dataclasses\lib\test_dataclasses.dart')
+trial = file_stuff.file_reading('./test_cache/class.dart')
 test_type = domain.Type.from_isolated_string('Map<int, Queue<List<String>>>')
 # trial_class = file_stuff.file_reading_procedure_for_classes(r'D:\StudioProjects\ari_utils\test\trying_things.dart')[1]
 trial_class2 = file_stuff.file_reading('./test_cache/class.dart')['dataclasses'][-1]
@@ -72,42 +77,43 @@ def type_cast_iterable(taipu: domain.Type, var_name: str, recursion_level=0) -> 
 
 
 if __name__ == '__main__':
-    # Variable to cast
-    var_name = 'myVar'
-    test_type_2 = domain.Type.from_isolated_string('Map<int, Map<int, Map<int, List<String>?>>?>?')
-    # print(test_type_2.to_str())
-    #
-    # # Generate casting code
-    casting_code = type_cast_iterable(test_type, var_name)
-    casting_code_2 = js.type_cast_iterable(test_type_2, var_name)
-    #
-    # # Print result
-    print(casting_code)
+    # # Variable to cast
+    # var_name = 'myVar'
+    # test_type_2 = domain.Type.from_isolated_string('Map<int, Map<int, Map<int, List<String>?>>?>?')
+    # # print(test_type_2.to_str())
+    # #
+    # # # Generate casting code
+    # casting_code = type_cast_iterable(test_type, var_name)
+    # casting_code_2 = js.type_cast_iterable(test_type_2, var_name)
+    # #
+    # # # Print result
+    # print(casting_code)
+    # # print()
+    # # print(casting_code_2)
+    # fun_funcs_to_try = [
+    #     cf.constructor,
+    #     cf.static_constructor,
+    #     cf.attributes,
+    #     cf.hashcode,
+    #     cf.equality_operator,
+    #     cf.copy_with,
+    #     cf.to_str,
+    #     js.to_json,
+    #     js.from_json
+    # ]
+    # # print()
+    # # print('-------------')
+    # # print()
+    # print(trial_class2)
+    # for func in fun_funcs_to_try:
+    #     print(func(trial_class2))
+    #     print()
+    #     print('-------------')
+    #     print()
+    # print(trial_class2.to_dart())
     # print()
-    # print(casting_code_2)
-    fun_funcs_to_try = [
-        cf.constructor,
-        cf.static_constructor,
-        cf.attributes,
-        cf.hashcode,
-        cf.equality_operator,
-        cf.copy_with,
-        cf.to_str,
-        js.to_json,
-        js.from_json
-    ]
+    # print('------------')
     # print()
-    # print('-------------')
-    # print()
-    print(trial_class2)
-    for func in fun_funcs_to_try:
-        print(func(trial_class2))
-        print()
-        print('-------------')
-        print()
-    print(trial_class2.to_dart())
-    print()
-    print('------------')
-    print()
-    from dart_dataclasses.insertion.insertions import write_class_functions_main
-    print(write_class_functions_main(trial_class2))
+    # from dart_dataclasses.insertion.insertions import write_class_functions_main
+    # print(write_class_functions_main(trial_class2))
+    insert.dataclass_insertions(file, trial['dataclasses'])

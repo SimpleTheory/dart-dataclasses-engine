@@ -145,7 +145,7 @@ pygments_style = "sphinx"
 # If true, keep warnings as "system message" paragraphs in the built documents.
 # keep_warnings = False
 
-# If this is True, todo emits a warning for each TODO entries. The default is False.
+# If this is True, t-odo emits a warning for each T-ODO entries. The default is False.
 todo_emit_warnings = True
 
 

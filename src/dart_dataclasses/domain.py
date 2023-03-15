@@ -201,14 +201,20 @@ class Attribute:
         self.private = self.name.startswith('_')
 
     @to_dart_wrapper
-    # TODO FIX THIS ADD CONFIG OPTION AND PROPER DEFAULTS
     def to_dart(self, associated_class: 'Class' = None):
         if not self.default_value:
             default_value = 'null'
         elif all([associated_class, self.static, not self.private]):
             default_value = f'{associated_class.name}.{self.name}'
-        else:
-            default_value = f'\'{self.default_value}\''
+        else:   # Hopefully fixing default value issue, there will still be import errors but somebody can just go to
+                # file and import accordingly
+            default_value = self.default_value
+            for attr in associated_class.attributes:
+                if attr.name.startswith('_') and attr.name in default_value:
+                    default_value = 'null'
+                    break
+                else:
+                    default_value = default_value.replace(attr.name, f'{associated_class.name}.{attr.name}')
         super_param = f", \'{self.super_param}\'" if self.super_param else ''
 
         return f'Attribute.create(\'{self.name}\', {self.type.to_dart()}, {self.final}, {self.static}, {self.const},' \

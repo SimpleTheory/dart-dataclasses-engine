@@ -1,5 +1,4 @@
-from enum import Enum
-from pathlib import Path, PurePath
+from pathlib import Path
 import re
 
 
@@ -20,7 +19,55 @@ def parse_config_file(config_file: Path = Path(f'./{config_file_name_and_ext}'))
     return configs
 
 
-def ensure_path_exists(path: str):
+cwd: Path = None
+config_file_dict: dict = None
+parsing_path: Path = None
+output_path: Path = None
+metadata_file: Path = None
+preferred_editor: str = None
+warning_message: str = None
+reference_private_methods: bool = None
+format_files_with_insertion: bool = None
+
+
+def config_var_declarations(inputted_cwd: Path | str):
+    global cwd
+    global config_file_dict
+    global parsing_path
+    global output_path
+    global metadata_file
+    global preferred_editor
+    global warning_message
+    global reference_private_methods
+    global format_files_with_insertion
+    # TODO: Implement config file and parsing
+    # TODO GET CWD AND BE ABLE TO PARSE ABS OR RELATIVE PATHES AND ASSERT SAID PATHES EXIST
+    try:
+        cwd = Path(inputted_cwd)
+        config_file_dict = parse_config_file(cwd.joinpath('dataclasses.config'))
+        parsing_path = cwd.joinpath(Path(config_file_dict['parsing_path']))
+        output_path = cwd.joinpath(Path(config_file_dict['output_path']))
+        metadata_file = output_path.joinpath('metadata.dart')
+
+        ensure_path_exists(parsing_path)
+        ensure_path_exists(output_path)
+
+        preferred_editor = config_file_dict['preferred_editor']
+        warning_message = '''
+    // WARNING! Any code written in this section is subject to be overwritten! Please move any code you wish to save outside
+    // of this section. Or else the next time the code generation runs your code will be overwritten! (Even if you disable
+    // said functions in the @Dataclass() annotation. If you wish to keep the capabilities of your class as a Metaclass and
+    // disable the code generation, change the annotation to @Metaclass).
+        '''.strip() if config_file_dict['warning_message'].lower() == 'true' else ''
+        reference_private_methods = config_file_dict['reference_private_methods'].lower() == 'true'
+        format_files_with_insertion = config_file_dict['format_files_with_insertion'].lower() == 'true'
+
+
+    except:
+        raise ConfigParseError()
+
+
+def ensure_path_exists(path: str | Path):
     """
     Checks if a path exists, and creates it if it doesn't.
     """
@@ -38,43 +85,16 @@ def create_config_file(project_dir: str):
             # Maybe have them fill in a questioner as its created?
 
 
-# TODO: Implement config file and parsing
-
-try:
-    config_file_dict = parse_config_file(Path(r'D:\PycharmProjects\dart_dataclasses\cache\dataclasses.config'))
-    # TODO Change to project home dir when working with bash ^^
-    parsing_path = Path(config_file_dict['parsing_path'])
-    output_path = Path(config_file_dict['parsing_path'])
-
-    # ensure_path_exists(parsing_path) # TODO UNCOMMENT
-    # ensure_path_exists(output_path)
-
-    preferred_editor: str = config_file_dict['preferred_editor']
-    warning_message: str = '''
-// WARNING! Any code written in this section is subject to be overwritten! Please move any code you wish to save outside
-// of this section. Or else the next time the code generation runs your code will be overwritten! (Even if you disable
-// said functions in the @Dataclass() annotation. If you wish to keep the capabilities of your class as a Metaclass and
-// disable the code generation, change the annotation to @Metaclass).
-    '''.strip() if config_file_dict['warning_message'].lower() == 'true' else ''
-    reference_private_methods: bool = config_file_dict['reference_private_methods'].lower() == 'true'
-    format_files_with_insertion: bool = config_file_dict['format_files_with_insertion'].lower() == 'true'
-
-    insertion_imports = [config_file_dict['parsing_path'] + '/mydataclasses.dart']
-    insertion_imports_strings = [f'import \'{file}\';' for file in insertion_imports]
-
-except:
-    raise ConfigParseError()
-
-
 def encapsulate_region(name, text):
     if preferred_editor == 'vscode':
         return f'//region {name}\n{text}\n//endregion'
     if preferred_editor == 'jetbrains':
         return f'// <editor-fold desc="{name}">\n{text}\n// </editor-fold>'
-    return f'// ------------------------ {name} --------------------------------\n{text}\n'
+    return f'// ------------------------ {name} --------------------------------\n{text}\n' \
+           f'// ------------------------ End {name} --------------------------------'
 
 
 if __name__ == '__main__':
-    print(config_file_dict)
+    config_var_declarations(r'D:\StudioProjects\test_dataclasses')
     print(parsing_path)
     print(output_path)

@@ -61,7 +61,7 @@ class bruh{
 const bruh();
 }
 
-@Dataclass()
+@Dataclass(constructor: false)
 class MyClass {
   int myField = 5;
   final String myString;
@@ -72,6 +72,7 @@ class MyClass {
     print('Hello, world!');
   }
   bruh(){}
+  @Generate()
 }
 
 @Dataclass()
@@ -79,4 +80,54 @@ class Person {
     Address address;
     List<Person>? family;
     String name;
+
+    @Generate()
+}
+@Dataclass()
+class Yess {
+    Address address;
+    List<Yess>? family;
+    String name;
+
+      // ------------------------ Dataclass Section --------------------------------
+  // <Dataclass>
+  
+  Yess({required this.address, this.family});
+  
+  factory Yess.staticConstructor({required address, family}) => Yess(address: address, family: family);
+  
+  Map<String, dynamic> get attributes__ => {"address": address, "family": family};
+  
+  @override
+  bool operator ==(Object other) =>
+    identical(this, other) ||
+    (other is Yess && runtimeType == other.runtimeType && equals(address, other.address) && equals(family, other.family));
+  
+  @override
+  int get hashCode => address.hashCode ^ family.hashCode;
+  
+  @override
+  String toString() => 'Yess(address: $address, family: $family)';
+  
+  Yess copyWithYess(Address? address, List<Yess>? family) => Yess(address: address ?? this.address, family: family ?? this.family);
+  
+  String toJson()=>jsonEncode(toMap());
+  Map<String, dynamic> toMap()=> {'__type': 'Yess', ...nestedJsonMap(attributes__)};
+  
+  factory Yess.fromJson(String json) => Yess.fromMap(jsonDecode(json));
+  
+  factory Yess.fromMap(Map map){    
+  
+      Address address = dejsonify(map['address']);
+      List? familyTemp = dejsonify(map['family']);
+  
+      List<Yess>? family =
+        familyTemp == null ? null : 
+        List<Yess>.from(familyTemp);
+  
+      return Yess(address: address, family: family);
+    }
+  // </Dataclass>
+      
+  // ------------------------ End Dataclass Section --------------------------------)
 }

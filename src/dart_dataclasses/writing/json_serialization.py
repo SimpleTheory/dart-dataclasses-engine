@@ -52,7 +52,8 @@ def part_declaration_procedure(attr: domain.Attribute, space='    ') -> str:
         temp_type = 'List'
         if 'map' in attr.type.type.lower():
             temp_type = 'Map'
-        return f'{temp_type}? {attr.name}Temp = dejsonify(map[\'{attr.name}\']);'
+        question_mark = '?' if attr.type.nullable else ''
+        return f'{temp_type}{question_mark} {attr.name}Temp = dejsonify(map[\'{attr.name}\']);'
     if attr.type.type in domain.json_safe_types:
         return f'{attr.type.to_str()} {attr.name} = map[\'{attr.name}\'];'
     # Must keep lines like this to keep integrity of extension types, like enumJsons or BigIntJson, etc...
