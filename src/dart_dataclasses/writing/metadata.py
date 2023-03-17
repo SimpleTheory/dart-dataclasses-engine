@@ -45,7 +45,9 @@ Map dejsonifyMap(Map map){
 jsonify(thing) {
   try {
     return thing.toMap();
-  } on NoSuchMethodError {
+  } 
+  on NoSuchMethodError {
+    
     if (isJsonSafe(thing)) {
       return thing;
     }
@@ -53,11 +55,10 @@ jsonify(thing) {
       return supportedTypeToMap(thing);}
     else if (thing is Iterable && !isMap(thing)) {
       return nestedJsonList(thing);
-    } //todo expand types
-    else if (thing is Iterable) {
+    }
+    else if (isMap(thing)) {
       return nestedJsonMap(thing);
-    } //todo expand types and add nested map function
-    // add more conditions?
+    }
     else {
       throw Exception('Error on handling $thing since ${thing.runtimeType} '
           'is not a base class or does not have a toJson() method');

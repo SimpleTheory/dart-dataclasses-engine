@@ -2,12 +2,12 @@ import re
 import dart_dataclasses.domain as domain
 import dart_dataclasses.parsing.file_content_cleaning as cc
 
-type_regex = r'(\w+(\<(?:[^<>]+|\<(?:[^<>]+|\<[^<>]*\>)*\>)*\>)?\??)'
+type_regex = r'(\w+\s*(\<(?:[^<>]+|\<(?:[^<>]+|\<[^<>]*\>)*\>)*\>)?\??)'
 
 
 def class_isolate_parsing_main(class_isolate, stored_strings):
     name, parent, dataclass_annotation, mixins, implementations = get_name(class_isolate[0], stored_strings)
-    getters, attr, methods =  retun_body_ast(class_isolate[1], name, stored_strings)
+    getters, attr, methods = retun_body_ast(class_isolate[1], name, stored_strings)
     return domain.Class(
         name=name,
         dataclass_annotation=dataclass_annotation,
@@ -166,21 +166,29 @@ def is_method(syntax: str) -> bool:
 
 
 def getter_or_attr(cleaned_attr, annotations, keywords, stored_strings) -> domain.Getter | domain.Attribute:
-    getter_regex = re.compile(f'{type_regex}\s+get')
+    getter_regex = re.compile(f'{type_regex}\s*get')
     if getter_regex.match(cleaned_attr):
         return parse_getter(cleaned_attr, annotations, keywords)
     return parse_attr(cleaned_attr, annotations, keywords, stored_strings)
     # return Getter with type and name
 
-
-def get_type_and_name(unpackable) -> tuple[domain.Type, str]:
+# Depreciated
+def get_type_and_name_from_a_split(unpackable) -> tuple[domain.Type, str]:
     type_, name = unpackable
+    return domain.Type.from_isolated_string(type_), name.strip()
+
+# Use and implement below
+def get_type_and_name_from_regex(type_name_iso_str: str, with_split: str = None) -> tuple[domain.Type, str]:
+    if with_split:
+        split = type_name_iso_str.split(with_split)
+        type_name_iso_str = ' '.join(split)
+    type_, name = [i[0].strip() for i in re.findall(type_regex, type_name_iso_str)]
     return domain.Type.from_isolated_string(type_), name.strip()
 
 
 def parse_getter(getter: str, annotations: list[str], keywords: list[str]) -> domain.Getter:
     getter_metadata = re.split('=>|\{', getter)[0]
-    type_, name = get_type_and_name(getter_metadata.split('get'))
+    type_, name = get_type_and_name_from_a_split(re.split('get\s+', getter_metadata))
     # name = name.strip()
     # type_ = domain.Type.from_isolated_string(type_)
     return domain.Getter(name=name,
@@ -233,7 +241,7 @@ def parse_attr(attr: str, annotations: list[domain.Annotation],
         super_ = None
     # Here should only be: type name
     # which is f'{type_regex}\s+(\w+)'
-    type_, name = get_type_and_name(re.split('\s+', attr))
+    type_, name = get_type_and_name_from_regex(attr)
     return domain.Attribute(
         name=name,
         type=type_,
@@ -277,7 +285,7 @@ def parse_method(method: str, keywords: list[str], method_type: domain.MethodTyp
     # Establish return_type, name,
     method, method_args = cut_method_body(method)
     if method_type == domain.MethodType.operator:
-        type_, name = get_type_and_name([i.strip() for i in method.split('operator')])
+        type_, name = get_type_and_name_from_a_split([i.strip() for i in method.split('operator')])
     generics_match = re.search('(<(?:[^<>]+|<(?:[^<>]+|<[^<>]*>)*>)*>)$', method)
     generics = None
     if generics_match:

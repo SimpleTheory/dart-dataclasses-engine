@@ -94,24 +94,39 @@ def type_cast_iterable(taipu: domain.Type, var_name: str, recursion_level=0, bas
 
     # generic listlike
     if len(taipu.generics) == 1 and taipu.generics[0].generics:
-        return \
-            f'{nullability_code}{cf.iterable_factory(taipu)}{var_name}.map((__e{recursion_level}) ' \
+        return f'{nullability_code}{cf.iterable_factory(taipu)}{var_name}.map((__e{recursion_level}) ' \
             f'=> {type_cast_iterable(taipu.generics[0], f"__e{recursion_level}", recursion_level + 1)}).toList())'
-    # generic maplike
-    if len(taipu.generics) > 1 and taipu.generics[1].generics:
-        return \
-            f'{nullability_code}{cf.iterable_factory(taipu)}{var_name}.map((__k{recursion_level}, __v{recursion_level}) ' \
-            f'=> MapEntry(__k{recursion_level} as {taipu.generics[0].to_str()}, ' \
-            f'{type_cast_iterable(taipu.generics[1], f"__v{recursion_level}", recursion_level + 1)})))'
+    # generic maplikes
+    if len(taipu.generics) > 1:
+
+        # Mappy key and value
+        if all([taipu.generics[1].generics, taipu.generics[0].generics]):
+            return f'{nullability_code}{cf.iterable_factory(taipu)}{var_name}.map((__k{recursion_level}, __v{recursion_level}) ' \
+                f'=> MapEntry(' \
+                f'{type_cast_iterable(taipu.generics[0], f"__k{recursion_level}", recursion_level + 1)}, ' \
+                f'{type_cast_iterable(taipu.generics[1], f"__v{recursion_level}", recursion_level + 1)})))'
+
+        # Mappy Value
+        if len(taipu.generics) > 1 and taipu.generics[1].generics:
+            return f'{nullability_code}{cf.iterable_factory(taipu)}{var_name}.map((__k{recursion_level}, __v{recursion_level}) ' \
+                f'=> MapEntry(__k{recursion_level} as {taipu.generics[0].to_str()}, ' \
+                f'{type_cast_iterable(taipu.generics[1], f"__v{recursion_level}", recursion_level + 1)})))'
+
+        # Mappy Key
+        if len(taipu.generics) > 1 and taipu.generics[0].generics:
+            return f'{nullability_code}{cf.iterable_factory(taipu)}{var_name}.map((__k{recursion_level}, __v{recursion_level}) ' \
+                f'=> MapEntry({type_cast_iterable(taipu.generics[0], f"__k{recursion_level}", recursion_level + 1)}, ' \
+                f'__v{recursion_level} as {taipu.generics[1].to_str()})))'
+    # __k{recursion_level} as {taipu.generics[0].to_str()}
     # regular listlike
     if len(taipu.generics) == 1:
         return f'{nullability_code}{cf.iterable_factory(taipu)}{var_name})'
     # regular maplike
     if len(taipu.generics) > 1:
-        f'{nullability_code}{cf.iterable_factory(taipu)}{var_name}.map((__k{recursion_level}, __v{recursion_level}) ' \
+        return f'{nullability_code}{cf.iterable_factory(taipu)}{var_name}.map((__k{recursion_level}, __v{recursion_level}) ' \
         f'=> MapEntry(__k{recursion_level} as {taipu.generics[0].to_str()},' \
         f' __v{recursion_level} as {taipu.generics[1].to_str()})))'
-    return ''
+    raise Exception('Type casting exception!')
 
 
 def type_cast(list_of_attributes_to_cast: list[domain.Attribute], base_padding=4, pad_amount=2):

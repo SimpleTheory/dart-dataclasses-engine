@@ -89,11 +89,11 @@ def create_config_file(project_dir: str):
 
 def encapsulate_region(name, text):
     if preferred_editor == 'vscode':
-        return f'//region {name}\n{text}\n//endregion'
+        return f'//region {name}\n{text}\n//endregion\n'
     if preferred_editor == 'jetbrains':
-        return f'// <editor-fold desc="{name}">\n{text}\n// </editor-fold>'
+        return f'// <editor-fold desc="{name}">\n{text}\n// </editor-fold>\n'
     return f'// ------------------------ {name} --------------------------------\n{text}\n' \
-           f'// ------------------------ End {name} --------------------------------'
+           f'// ------------------------ End {name} --------------------------------\n'
 
 
 if __name__ == '__main__':
