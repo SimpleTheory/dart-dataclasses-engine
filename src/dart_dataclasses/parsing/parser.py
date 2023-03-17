@@ -42,30 +42,12 @@ def turn_annotation_strs_to_annotation_list(annotations: list[tuple[str, str]]) 
     return [domain.Annotation.from_annotation_tuple(a) for a in annotations]
 
 
-# def clean_annotations(annotations: list[tuple[str, str]], stored_strings: dict[str:str]):
-#     cleaned_annotations = []
-#     for annotation in annotations:
-#         entry = [annotation[0]]
-#         annotation_args = annotation[1]
-#         string = cc.stored_string_regex.search(annotation_args)
-#         while string:
-#             annotation_args=annotation_args.replace(string.group(), cc.access_a_string(string.group(), stored_strings))
-#             string = cc.stored_string_regex.search(annotation_args)
-#         entry.append(annotation_args)
-#         cleaned_annotations.append(entry)
-#     return cleaned_annotations
-
-
 def get_name(name_part: str, stored_strings: dict[str:str]) -> \
         tuple[str, str | None, domain.Annotation, list[str] | None, list[str] | None]:
     name_part, annotations = separate_annotations(name_part, stored_strings=stored_strings)
     dataclass_annotation = annotations[0]
     name = re.search('class\s+(\w+)', name_part).group(1)
     parent = re.search('extends\s+(\w+)', name_part).group(1) if 'extends' in name_part else None
-    # Since classes can mixin or implement multiple classes have to think of way to capture them all
-    # TODO: add mixins and implements
-    # mixin = re.search(r'with\s+\w+\s*(\,\s*\w+\s*)*(?={|extends|implements)', name_part) if 'with' in name_part else None
-    # implements = re.search('implements\s+(\w+)', name_part).group(1) if 'implements' in name_part else None
     return name, parent, dataclass_annotation, \
         get_mixin_or_implements(name_part, 'with'), get_mixin_or_implements(name_part, 'implements')
 

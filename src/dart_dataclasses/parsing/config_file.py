@@ -28,6 +28,7 @@ preferred_editor: str = None
 warning_message: str = None
 reference_private_methods: bool = None
 format_files_with_insertion: bool = None
+default_regeneration: str = ''
 
 
 def config_var_declarations(inputted_cwd: Path | str):
@@ -40,6 +41,7 @@ def config_var_declarations(inputted_cwd: Path | str):
     global warning_message
     global reference_private_methods
     global format_files_with_insertion
+    global default_regeneration
 
     try:
         cwd = Path(inputted_cwd)
@@ -53,14 +55,16 @@ def config_var_declarations(inputted_cwd: Path | str):
 
         preferred_editor = config_file_dict['preferred_editor']
         warning_message = '''
-    // WARNING! Any code written in this section is subject to be overwritten! Please move any code you wish to save outside
-    // of this section. Or else the next time the code generation runs your code will be overwritten! (Even if you disable
-    // said functions in the @Dataclass() annotation. If you wish to keep the capabilities of your class as a Metaclass and
-    // disable the code generation, change the annotation to @Metaclass).
+    // WARNING! Any code written in this section is subject to be overwritten! 
+    // Please move any code you wish to save outside of this section. 
+    // Or else the next time the code generation runs your code will be overwritten!
+    // If you wish to keep the capabilities of your class as a Dataclass, and
+    // disable the code generation, delete the @Generate decorator.
         '''.strip() if config_file_dict['warning_message'].lower() == 'true' else ''
         reference_private_methods = config_file_dict['reference_private_methods'].lower() == 'true'
         format_files_with_insertion = config_file_dict['format_files_with_insertion'].lower() == 'true'
-
+        if config_file_dict['default_regeneration'].lower() == 'true':
+            default_regeneration = '@Generate()\n'
     except:
         raise ConfigParseError()
 

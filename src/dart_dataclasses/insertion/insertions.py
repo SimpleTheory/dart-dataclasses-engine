@@ -23,7 +23,7 @@ class Tag:
 
     @classmethod
     def create(cls, tag: re.Match, associated_class: domain.Class, file_content):
-        if tag.group() == '@Generate':
+        if tag.group() == '@Generate()':
             return cls(tag.group(), associated_class, tag.start(), 'generate', tag.end())
         start = tag.start()
         clipped = file_content[start:]
@@ -67,12 +67,12 @@ def get_class_ranges(dataclasses: list[domain.Class], file_content: str) -> list
 
 def get_and_replace_tags(file_content: str, dataclasses):
     class_ranges = get_class_ranges(dataclasses, file_content)
-    mark = re.search('@Generate|// <Dataclass>', file_content)
+    mark = re.search(r'@Generate\(\)\s+// <Dataclass>|@Generate\(\)(?!\s+//<Dataclass>)', file_content)
     while mark:
         current = Tag.create(mark, find_associated_class(mark, class_ranges), file_content)
         file_content = current.replace(file_content)
         class_ranges = get_class_ranges(dataclasses, file_content)
-        mark = re.search('@Generate|// <Dataclass>', file_content)
+        mark = re.search(r'@Generate\(\)\s+// <Dataclass>|@Generate\(\)(?!\s+//<Dataclass>)', file_content)
     return file_content
 
 
@@ -91,7 +91,8 @@ def write_class_functions_main(dart_class: domain.Class, encapsulate=True) -> st
         return cf.left_pad_string(
             conf.encapsulate_region(name='Dataclass Section',
                                     text=f'''
-    //<Dataclass>
+    
+    {conf.default_regeneration}//<Dataclass>
     
     {conf.warning_message}
     
@@ -100,7 +101,7 @@ def write_class_functions_main(dart_class: domain.Class, encapsulate=True) -> st
         '''.lstrip()), 2, False)
     return cf.left_pad_string(
         f'''
-    //<Dataclass>
+    {conf.default_regeneration}//<Dataclass>
     
     {conf.warning_message}
 
