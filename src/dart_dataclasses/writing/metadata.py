@@ -13,7 +13,7 @@ List<SupportedClasses> reflectedClasses = [...dataclasses, ...metaclasses, ...su
 Map<String, SupportedClasses> str2reflection = {...str2dataclasses, ...str2metaclasses, ...str2defaults, ...str2enumExtensions};
 Map<Type, SupportedClasses> type2reflection = {...type2dataclasses, ...type2metaclasses, ...type2defaults, ...type2enumExtensions};
 
-// True Static
+// Deserialize JSON
 
 dejsonify(thing){
   // Map or Recognized
@@ -38,6 +38,53 @@ List dejsonifyList(List list){
 Map dejsonifyMap(Map map){
   return Map.from(map.map((key, value) =>
       MapEntry(dejsonify(key), dejsonify(value))));
+}
+
+// Serialize JSON
+
+jsonify(thing) {
+  try {
+    return thing.toMap();
+  } on NoSuchMethodError {
+    if (isJsonSafe(thing)) {
+      return thing;
+    }
+    else if (supportedTypeToMap(thing) != null){
+      return supportedTypeToMap(thing);}
+    else if (thing is Iterable && !isMap(thing)) {
+      return nestedJsonList(thing);
+    } //todo expand types
+    else if (thing is Iterable) {
+      return nestedJsonMap(thing);
+    } //todo expand types and add nested map function
+    // add more conditions?
+    else {
+      throw Exception('Error on handling $thing since ${thing.runtimeType} '
+          'is not a base class or does not have a toJson() method');
+    }
+  }
+}
+
+List nestedJsonList(Iterable iter) {
+  List l = [];
+  for (var thing in iter) {
+    l.add(jsonify(thing));
+  }
+  return l;
+}
+
+Map nestedJsonMap(mapLikeThing) {
+  Map m = {};
+  var key;
+  var value;
+
+  for (MapEntry mapEntry in mapLikeThing.entries) {
+    key = jsonify(mapEntry.key);
+    value = jsonify(mapEntry.value);
+    m[key] = value;
+  }
+
+  return m;
 }
 '''
 

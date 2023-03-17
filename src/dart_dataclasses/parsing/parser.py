@@ -7,7 +7,7 @@ type_regex = r'(\w+(\<(?:[^<>]+|\<(?:[^<>]+|\<[^<>]*\>)*\>)*\>)?\??)'
 
 def class_isolate_parsing_main(class_isolate, stored_strings):
     name, parent, dataclass_annotation, mixins, implementations = get_name(class_isolate[0], stored_strings)
-    getters, attr, methods = retun_body_ast(class_isolate[1], name, stored_strings)
+    getters, attr, methods =  retun_body_ast(class_isolate[1], name, stored_strings)
     return domain.Class(
         name=name,
         dataclass_annotation=dataclass_annotation,

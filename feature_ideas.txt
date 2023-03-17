@@ -1,0 +1,10 @@
+
+
+Maybe? Add parsing to extensions
+toMap & fromMap overrides
+
+
+
+
+-------- DONE ----------------------------------------------------------------------------
+Change jsonify to be based off of reflection and statically generated because of stupidity ✓

@@ -33,7 +33,7 @@ class Tag:
     def replace(self, file_content: str):
         return file_content[:self.start] + \
             write_class_functions_main(self.associated_class, self.type == 'generate') + \
-            file_content[self.end + 1:]
+            file_content[self.end:]
 
 
 def dir_level_insertions(file_dataclasses: dict[Path: dict[str:list[domain.Class] | list[domain.Enum]]]):
@@ -113,6 +113,7 @@ def write_class_functions_main(dart_class: domain.Class, encapsulate=True) -> st
 def get_metadata_import_str():
     self = str(conf.metadata_file.relative_to(conf.cwd.parent)).replace('\\', '/')
     return f'import \'package:{self}\';'
+
 def insert_imports_if_not_there(path: Path):
     # import 'package:my_project/lib/my_library.dart';
     with open(path, 'r') as f:

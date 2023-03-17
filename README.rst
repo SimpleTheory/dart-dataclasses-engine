@@ -34,10 +34,14 @@ dart_dataclasses
 ================
 
 
-    Add a short description here!
+    Generate boiler plate and add reflection in dart!
 
 
-A longer description of your project goes here...
+Get ready to do anything in dart, from generating boiler plate for several classes,
+to serializing classes to and from json. If that's not
+enough this code generator also keeps metadata objects about said classes
+that reference static attributes of said classes so that you can access that meta-information
+at runtime for whatever you may need.
 
 
 .. _pyscaffold-notes:
