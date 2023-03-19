@@ -156,7 +156,7 @@ def type_cast(list_of_attributes_to_cast: list[domain.Attribute], base_padding=4
             f'{type_cast_iterable(attribute.type, f"{attribute.name}Temp", base_padding=base_padding + pad_amount, pad_amount=pad_amount)}'
         )
 
-    return f'\n{base_padding * " "}'.join(casts)
+    return f'\n\n{base_padding * " "}'.join(casts)
 
 
 def return_constructor(dart_class: domain.Class) -> str:

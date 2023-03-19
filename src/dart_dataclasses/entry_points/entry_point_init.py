@@ -4,7 +4,28 @@ entry_init(cwd, source=)
 from pathlib import Path
 import sys
 
-source_file = Path('../../../cache/dataclasses.config').resolve()
+default = '''
+[Examples]
+# Write relative paths to project dir (parent of this file)
+# Example: parsing_path = ./lib
+# Example: output_path = ./mydataclasses
+
+[Pathing]
+# Path to parse all dataclasses, metaclasses and enums
+parsing_path = ./lib
+# For output of non-inserted generated code (MUST BE IN LIB FOR AUTOMATIC IMPORTS TO WORK!!!!)
+output_path = ./lib/mydataclasses
+
+[Options]
+# Options: vscode jetbrains other
+preferred_editor = jetbrains
+warning_message = True
+reference_private_methods = False
+format_files_with_insertion = True
+default_regeneration = True
+'''.strip()
+
+# source_file = Path('../../../cache/dataclasses.config').resolve()
 
 
 def check_given_source(given_source: str):
@@ -14,8 +35,8 @@ def check_given_source(given_source: str):
                                 f'dataclasses.config')
     return given_source
 
-def write_to_config(cwd, source=source_file):
-    config_content = source.read_text()
+def write_to_config(cwd, source=None):
+    config_content = source.read_text() if source else default
     config_path = cwd.joinpath('dataclasses.config')
     if config_path.exists():
         raise FileExistsError(f'{config_path} already exists, please delete or move file to'
@@ -26,9 +47,9 @@ def main():
     # Parse args
     global source_file
     args = sys.argv[1:]
-    cwd = Path(args[0])
+    cwd = Path().cwd()
     try:
-        source_file = check_given_source(args[1])
+        source_file = check_given_source(args[0])
     except IndexError:
         pass
     # Write to file
