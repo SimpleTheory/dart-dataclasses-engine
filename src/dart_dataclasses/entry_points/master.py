@@ -4,16 +4,16 @@ import dart_dataclasses.entry_points.entry_point_main
 import dart_dataclasses.entry_points.entry_point_init
 
 def help_msg():
-    print('Welcome to dart_dataclasses where you can generate boiler-plate and reflective code at your command.'
+    print('\nWelcome to dart_dataclasses where you can generate boilerplate and reflective code at your command.'
           '\nSpeaking of commands there are three commands you should know:'
-          '\n    dart_dataclasses init {optional path to preset config file}'
+          '\n\n    dart_dataclasses init {optional path to preset config file}'
           '\n        - This command generates a dataclasses.config file in the CWD. By default it creates a new file,'
           '\n          however you can also copy a pre-existing dataclasses.config file if you wish.'          
-          '\n    dart_dataclasses generate'
+          '\n\n    dart_dataclasses generate'
           '\n        - This command reads your dataclasses.config file and generates all the code desired as specified'
           '\n          by the decorators in your code.'
-          '\n    dart_dataclasses help'
-          '\n        - Type this command or dart_dataclasses by itself to see this message again.'
+          '\n\n    dart_dataclasses help'
+          '\n        - Type this command or dart_dataclasses by itself to see this message again. :) \n'
           )
 
 
@@ -42,3 +42,6 @@ def main():
     cwd = Path.cwd()
     call(cwd, *args)
 
+
+if __name__ == '__main__':
+    main()
