@@ -60,10 +60,11 @@ def constructor(dart_class: domain.Class) -> str:
            f'{", ".join([f"this.{attr.name}" for attr in null])}%%%)' \
         .replace('***', '{').replace('%%%', '}')
 
-    end_iter = ''.join([f"\n  // TODO: initiate late attribute `{attr.name}`" for attr in dart_class.attributes if all([attr.late])])
+    end_iter = ''.join(
+        [f"\n  // TODO: initiate late attribute `{attr.name}`" for attr in dart_class.attributes if all([attr.late])])
     end = f'***{end_iter}\n%%%'.replace('***', '{').replace('%%%', '}') if end_iter else ';'
 
-    if dart_class.parent:
+    if dart_class.parent and not has_abstract_parent(dart_class):
         try:
             call_to_super = 'super.' + dart_class.dataclass_annotation.keyword_params['superFactory'].strip()
         except KeyError:
@@ -138,7 +139,8 @@ def separate_null_required(attrs: list[domain.Attribute]) \
     required = list(filter(lambda attribute:
                            not attribute.type.nullable and not attribute.late and not attribute.default_value, attrs))
     defaults = list(filter(lambda attribute: attribute.default_value, attrs))
-    null = list(filter(lambda attribute: attribute.type.nullable or attribute.late, attrs)) #TODO INCLUDE OR EXCLUDE LATES
+    null = list(
+        filter(lambda attribute: attribute.type.nullable or attribute.late, attrs))  # TODO INCLUDE OR EXCLUDE LATES
     return required, defaults, null
 
 
@@ -159,7 +161,6 @@ def separate_pos_and_kwarg_super(attrs: list[domain.Attribute]) -> tuple[
 
 def get_dynamic_attributes(attrs: list[domain.Attribute] | domain.Class, construction: bool = False) \
         -> list[domain.Attribute]:
-
     if isinstance(attrs, domain.Class):
         attrs = attrs.attributes
     if not construction:
@@ -168,9 +169,9 @@ def get_dynamic_attributes(attrs: list[domain.Attribute] | domain.Class, constru
             attrs
         ))
     return list(filter(
-            lambda attribute: not any([attribute.external, attribute.static, attribute.const, attribute.late]),
-            attrs
-        ))
+        lambda attribute: not any([attribute.external, attribute.static, attribute.const, attribute.late]),
+        attrs
+    ))
 
 
 def type_is_iterable(type_: domain.Type) -> bool:
@@ -212,3 +213,10 @@ def left_pad_string(string: str, num_spaces: int, start=True) -> str:
     padded_string = "\n".join(lines)
 
     return padded_string
+
+
+def has_abstract_parent(dart_class: domain.Class) -> bool:
+    try:
+        return dart_class.dataclass_annotation.keyword_params['abstractParent'] == 'true'
+    except KeyError:
+        return False
