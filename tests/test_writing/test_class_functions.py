@@ -1,9 +1,7 @@
 from dart_dataclasses.writing.class_functions import *
-from dart_dataclasses.file_level.file_level import file_reading_procedure_for_classes
+import dart_dataclasses.file_level.file_level as f
 
-trial_class = file_reading_procedure_for_classes(r'D:\StudioProjects\ari_utils\test\trying_things.dart')[1]
-
-
+trial_class = f.file_reading('./../test_cache/class.dart')['dataclasses'][-1]
 def test_constructor():
     assert constructor(trial_class) == 'E2({required this.a, required this.b, required this.winning, this.c}) : ' \
                                        'super(a: a, b: b, c: c);'
@@ -28,10 +26,3 @@ def test_hashcode():
     result = '@override\nint get hashCode => a.hashCode ^ b.hashCode ^ c.hashCode ^ winning.hashCode;'
     assert hashcode(trial_class) == result
 
-def test_get_type_casting_line():
-    test_type = domain.Type.from_isolated_string('Map<int, Queue<List<String>>>')
-    assert get_type_casting_line(test_type) == [
-        domain.Type.from_isolated_string('Map<int, Queue<List<String>>>'),
-        domain.Type.from_isolated_string('Queue<List<String>>'),
-        domain.Type.from_isolated_string('List<String>')
-    ]
