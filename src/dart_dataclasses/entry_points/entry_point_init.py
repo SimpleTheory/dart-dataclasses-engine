@@ -8,7 +8,7 @@ default = '''
 [Examples]
 # Write relative paths to project dir (parent of this file)
 # Example: parsing_path = ./lib
-# Example: output_path = ./mydataclasses
+# Example: output_path = ./lib/mydataclasses
 
 [Pathing]
 # Path to parse all dataclasses, metaclasses and enums
