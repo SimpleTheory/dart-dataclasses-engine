@@ -200,9 +200,3 @@ def left_pad_string(string: str, num_spaces: int, start=True) -> str:
 
     return padded_string
 
-
-if __name__ == '__main__':
-    from dart_dataclasses.file_level.file_level import file_reading_procedure_for_classes
-
-    trial_class = file_reading_procedure_for_classes(r'D:\StudioProjects\ari_utils\test\trying_things.dart')[1]
-    print(constructor(trial_class))
