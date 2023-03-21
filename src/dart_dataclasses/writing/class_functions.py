@@ -45,7 +45,7 @@ def class_functions(dart_class: domain.Class) -> str:
 
     if check_for_bool_dataclass_args('fromJson', dart_class):
         generated_code.append(js.from_json(dart_class))
-    return ('\n'*2).join(generated_code)
+    return ('\n' * 2).join(generated_code)
 
 
 def constructor(dart_class: domain.Class) -> str:
@@ -53,11 +53,15 @@ def constructor(dart_class: domain.Class) -> str:
         lambda attribute: not any([attribute.external, attribute.static, attribute.late, attribute.const]),
         dart_class.attributes
     ))
-    required, null = separate_null_required(attrs_to_initialize)
+    required, defaults, null = separate_null_required(attrs_to_initialize)
 
     base = f'{dart_class.name}(***{"".join([f"required this.{attr.name}, " for attr in required])}' \
+           f'{"".join([f"this.{attr.name} = {attr.default_value}, " for attr in defaults])}' \
            f'{", ".join([f"this.{attr.name}" for attr in null])}%%%)' \
         .replace('***', '{').replace('%%%', '}')
+
+    end_iter = ''.join([f"\n  // TODO: initiate late attribute `{attr.name}`" for attr in dart_class.attributes if all([attr.late])])
+    end = f'***{end_iter}\n%%%'.replace('***', '{').replace('%%%', '}') if end_iter else ';'
 
     if dart_class.parent:
         try:
@@ -70,8 +74,8 @@ def constructor(dart_class: domain.Class) -> str:
         parent = f'{call_to_super}({"".join([f"{pos.name}, " for pos in super_pos])}' \
                  f'{", ".join([f"{kwarg.super_param}: {kwarg.name}" for kwarg in super_kwarg])})'
 
-        return f'{base} : {parent};'
-    return base + ';'
+        return f'{base} : {parent}{end}'
+    return base + end
 
 
 def static_constructor(dart_class: domain.Class) -> str:
@@ -79,11 +83,12 @@ def static_constructor(dart_class: domain.Class) -> str:
         lambda attribute: not any([attribute.external, attribute.static, attribute.late, attribute.const]),
         dart_class.attributes
     ))
-    required, null = separate_null_required(attrs_to_initialize)
+    required, defaults, null = separate_null_required(attrs_to_initialize)
 
     base = f'{dart_class.name}.staticConstructor(***{"".join([f"required {attr.name}, " for attr in required])}' \
+           f'{"".join([f"{attr.name} = {attr.default_value}, " for attr in defaults])}' \
            f'{", ".join([f"{attr.name}" for attr in null])}%%%)'.replace('***', '{').replace('%%%', '}')
-    returns = f'{dart_class.name}({", ".join([f"{attr.name}: {attr.name}" for attr in required+null])})'
+    returns = f'{dart_class.name}({", ".join([f"{attr.name}: {attr.name}" for attr in required + defaults + null])})'
     return f'factory {base} => {returns};'
 
 
@@ -95,7 +100,7 @@ def attributes(dart_class: domain.Class) -> str:
 
 
 def copy_with(dart_class: domain.Class) -> str:
-    dynamic_attributes = get_dynamic_attributes(dart_class)
+    dynamic_attributes = get_dynamic_attributes(dart_class, construction=True)
     null = lambda x: x if x.endswith('?') else x + '?'
     attrs_params = ", ".join([f'{null(attr.type.to_str())} {attr.name}' for attr in dynamic_attributes])
     attr_body = ", ".join([f'{attr.name}: {attr.name} ?? this.{attr.name}' for attr in dynamic_attributes])
@@ -128,12 +133,13 @@ def to_str(dart_class: domain.Class) -> str:
 
 # ----------------------------------------------------------------------------
 # Utility Functions
-def separate_null_required(attrs: list[domain.Attribute]) -> tuple[list[domain.Attribute], list[domain.Attribute]]:
-    required = list(
-        filter(lambda attribute: not attribute.type.nullable and not attribute.late and not attribute.default_value,
-               attrs))
-    null = list(filter(lambda attribute: attribute.type.nullable or attribute.late or attribute.default_value, attrs))
-    return required, null
+def separate_null_required(attrs: list[domain.Attribute]) \
+        -> tuple[list[domain.Attribute], list[domain.Attribute], list[domain.Attribute]]:
+    required = list(filter(lambda attribute:
+                           not attribute.type.nullable and not attribute.late and not attribute.default_value, attrs))
+    defaults = list(filter(lambda attribute: attribute.default_value, attrs))
+    null = list(filter(lambda attribute: attribute.type.nullable or attribute.late, attrs)) #TODO INCLUDE OR EXCLUDE LATES
+    return required, defaults, null
 
 
 def separate_pos_and_kwarg_super(attrs: list[domain.Attribute]) -> tuple[
@@ -151,13 +157,20 @@ def separate_pos_and_kwarg_super(attrs: list[domain.Attribute]) -> tuple[
     return pos, kwarg
 
 
-def get_dynamic_attributes(attrs: list[domain.Attribute] | domain.Class) -> list[domain.Attribute]:
+def get_dynamic_attributes(attrs: list[domain.Attribute] | domain.Class, construction: bool = False) \
+        -> list[domain.Attribute]:
+
     if isinstance(attrs, domain.Class):
         attrs = attrs.attributes
+    if not construction:
+        return list(filter(
+            lambda attribute: not any([attribute.external, attribute.static, attribute.const]),
+            attrs
+        ))
     return list(filter(
-        lambda attribute: not any([attribute.external, attribute.static, attribute.const]),
-        attrs
-    ))
+            lambda attribute: not any([attribute.external, attribute.static, attribute.const, attribute.late]),
+            attrs
+        ))
 
 
 def type_is_iterable(type_: domain.Type) -> bool:
@@ -199,4 +212,3 @@ def left_pad_string(string: str, num_spaces: int, start=True) -> str:
     padded_string = "\n".join(lines)
 
     return padded_string
-

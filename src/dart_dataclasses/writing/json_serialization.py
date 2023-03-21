@@ -161,10 +161,11 @@ def type_cast(list_of_attributes_to_cast: list[domain.Attribute], base_padding=4
 
 def return_constructor(dart_class: domain.Class) -> str:
     return f'{dart_class.name}' \
-           f'({", ".join([f"{attr.name}: {attr.name}" for attr in cf.get_dynamic_attributes(dart_class)])})'
+           f'({", ".join([f"{attr.name}: {attr.name}" for attr in cf.get_dynamic_attributes(dart_class, construction=True)])})'
 
 
 def from_json(dart_class: domain.Class) -> str:
+    attrs = cf.get_dynamic_attributes(dart_class, construction=True)
     return '''
 factory ClassName.fromJson(String json) => ClassName.fromMap(jsonDecode(json));
 
@@ -176,10 +177,8 @@ factory ClassName.fromMap(Map map){
 
     return return_constructor;
   }
-    '''.replace('part_declaration', part_declaration(cf.get_dynamic_attributes(dart_class))) \
-        .replace('type_casting',
-                 type_cast([i for i in cf.get_dynamic_attributes(dart_class) if cf.type_is_iterable(i.type)])
-                 ) \
+    '''.replace('part_declaration', part_declaration(attrs)) \
+        .replace('type_casting', type_cast([i for i in attrs if cf.type_is_iterable(i.type)])) \
         .replace('return_constructor', return_constructor(dart_class)) \
         .replace('ClassName', dart_class.name) \
         .strip()
