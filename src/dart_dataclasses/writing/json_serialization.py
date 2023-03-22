@@ -200,4 +200,3 @@ def dart_enum_methods(dart_enum: domain.DartEnum):
            f'      Method.create("fromMap", {enum_to_reflected_type(dart_enum)}, MethodType.factory, false, null,' \
            f' false, {enum_from_map(dart_enum)}),\n' \
            f'    ]'
-
