@@ -167,7 +167,7 @@ def is_method(syntax: str) -> bool:
 
 def getter_or_attr(cleaned_attr, annotations, keywords, stored_strings) -> domain.Getter | domain.Attribute:
     getter_regex = re.compile(f'{type_regex}\s*get')
-    if getter_regex.match(cleaned_attr):
+    if getter_regex.match(cleaned_attr) or cleaned_attr.startswith('get '):
         return parse_getter(cleaned_attr, annotations, keywords)
     return parse_attr(cleaned_attr, annotations, keywords, stored_strings)
     # return Getter with type and name

@@ -61,7 +61,8 @@ def constructor(dart_class: domain.Class) -> str:
         .replace('***', '{').replace('%%%', '}')
 
     end_iter = ''.join(
-        [f"\n  // TODO: initiate late attribute `{attr.name}`" for attr in dart_class.attributes if all([attr.late])])
+        [f"\n  // TODO: initiate late attribute `{attr.name}`" for attr in dart_class.attributes if
+         all([attr.late, not (attr.default_value and attr.final)])])
     end = f'***{end_iter}\n%%%'.replace('***', '{').replace('%%%', '}') if end_iter else ';'
 
     if dart_class.parent and not has_abstract_parent(dart_class):
@@ -138,7 +139,8 @@ def separate_null_required(attrs: list[domain.Attribute]) \
         -> tuple[list[domain.Attribute], list[domain.Attribute], list[domain.Attribute]]:
     required = list(filter(lambda attribute:
                            not attribute.type.nullable and not attribute.late and not attribute.default_value, attrs))
-    defaults = list(filter(lambda attribute: attribute.default_value, attrs))
+    defaults = list(filter(lambda attribute: attribute.default_value and
+                                             not (attribute.default_value and attribute.final), attrs))
     null = list(
         filter(lambda attribute: attribute.type.nullable or attribute.late, attrs))  # TODO INCLUDE OR EXCLUDE LATES
     return required, defaults, null
@@ -165,11 +167,13 @@ def get_dynamic_attributes(attrs: list[domain.Attribute] | domain.Class, constru
         attrs = attrs.attributes
     if not construction:
         return list(filter(
-            lambda attribute: not any([attribute.external, attribute.static, attribute.const]),
+            lambda attribute: not any([attribute.external, attribute.static, attribute.const,
+                                       (attribute.default_value and attribute.final)]),
             attrs
         ))
     return list(filter(
-        lambda attribute: not any([attribute.external, attribute.static, attribute.const, attribute.late]),
+        lambda attribute: not any([attribute.external, attribute.static, attribute.const, attribute.late,
+                                   (attribute.default_value and attribute.final)]),
         attrs
     ))
 

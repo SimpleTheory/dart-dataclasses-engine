@@ -62,8 +62,13 @@ def dataclass_insertions(file: Path, dataclasses: list[domain.Class]):
 
 
 def get_class_ranges(dataclasses: list[domain.Class], file_content: str) -> list[tuple[domain.Class, int]]:
-    return [(class_, re.search(f'\sclass\s+{class_.name}', file_content).span()[0]) for class_ in dataclasses]
-
+    # return [(class_, re.search(f'\sclass\s+{class_.name}\b', file_content).span()[0]) for class_ in dataclasses]
+    result = []
+    for class_ in dataclasses:
+        boundary = re.search(fr'\sclass\s+{class_.name}\b', file_content)
+        current = (class_, boundary.span()[0])
+        result.append(current)
+    return result
 
 def get_and_replace_tags(file_content: str, dataclasses):
     class_ranges = get_class_ranges(dataclasses, file_content)

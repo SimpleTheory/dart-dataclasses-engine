@@ -59,7 +59,7 @@ def part_declaration_procedure(attr: domain.Attribute, space='    ') -> str:
     # Must keep lines like this to keep integrity of extension types, like enumJsons or BigIntJson, etc...
     if attr.type.nullable:
         return f'{attr.type.to_str()} {attr.name} = ' \
-               f'map[\'{attr.name}\'] == null ? null : mapFactory[\'{attr.type.type}\'](map[\'{attr.name}\']);'
+               f'map[\'{attr.name}\'] == null ? null : dejsonify(map[\'{attr.name}\']);'
     # return f'{attr.type.to_str()} {attr.name} = str2reflection[map[\'{attr.name}\']["__type"]]!.fromMap!(map[\'{attr.name}\']);'
     return f'{attr.type.to_str()} {attr.name} = dejsonify(map[\'{attr.name}\']);'
 

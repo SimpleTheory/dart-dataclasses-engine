@@ -162,6 +162,12 @@ class Type:
             generics_string = generics_string.replace(sub_generic, f'____sub_{index}____', 1)
         return generics_string, sub_generics
 
+    def __post_init__(self):
+        if not self.type or self.type == 'var':
+            self.type = 'dynamic'
+        if self.type == 'dynamic':
+            self.nullable = True
+
     @staticmethod
     def reinsert_subgeneric(str_to_sub: str, saved_subs: list[str]) -> str:
         match = re.search('____sub_(\d+)____', str_to_sub)
