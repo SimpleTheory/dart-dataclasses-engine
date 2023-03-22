@@ -1,0 +1,283 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>dart_dataclasses.parsing.file_content_cleaning &#8212; dart_dataclasses 0.0.post1.dev16+g9686a64.d20230320 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../../../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../../../_static/alabaster.css" />
+    <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+    <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+   
+  <link rel="stylesheet" href="../../../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Source code for dart_dataclasses.parsing.file_content_cleaning</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">re</span>
+<span class="n">stored_string_regex</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">compile</span><span class="p">(</span><span class="s1">&#39;____\w+_\w+:\d+____&#39;</span><span class="p">)</span>
+
+<span class="n">symbols_to_eliminate</span> <span class="o">=</span> <span class="p">[</span><span class="s1">&#39;@Generate()&#39;</span><span class="p">]</span>
+
+<div class="viewcode-block" id="substitute_strings"><a class="viewcode-back" href="../../../api/dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.substitute_strings">[docs]</a><span class="k">def</span> <span class="nf">substitute_strings</span><span class="p">(</span><span class="n">file_content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">:</span><span class="nb">str</span><span class="p">]]:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Replace order:</span>
+<span class="sd">        &#39;&#39;&#39;</span>
+<span class="sd">        \&quot;\&quot;\&quot;</span>
+<span class="sd">        &quot;</span>
+<span class="sd">        \&#39;</span>
+<span class="sd">        &#39;</span>
+<span class="sd">    Restore order should be reverse of this.</span>
+<span class="sd">    :param file_content:</span>
+<span class="sd">    :return:</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="n">stored_strings</span> <span class="o">=</span> <span class="p">{}</span>
+    <span class="n">multi</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\&#39;\&#39;\&#39;</span><span class="s1">[\s\S]+?</span><span class="se">\&#39;\&#39;\&#39;</span><span class="s1">&#39;</span>
+    <span class="n">single</span> <span class="o">=</span> <span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">.*?</span><span class="se">\&#39;</span><span class="s1">&#39;</span>
+
+    <span class="c1"># multi-line &#39;&#39;&#39;</span>
+    <span class="n">stored_strings</span><span class="p">[</span><span class="s1">&#39;multiline_single&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">multi</span><span class="p">,</span> <span class="n">file_content</span><span class="p">)</span>
+
+    <span class="c1"># multi-line &quot;&quot;&quot;</span>
+    <span class="n">stored_strings</span><span class="p">[</span><span class="s1">&#39;multiline_double&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">multi</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">),</span> <span class="n">file_content</span><span class="p">)</span>
+
+    <span class="c1"># single-line &quot;</span>
+    <span class="n">stored_strings</span><span class="p">[</span><span class="s1">&#39;singleline_double&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">single</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;</span><span class="se">\&#39;</span><span class="s1">&#39;</span><span class="p">,</span> <span class="s1">&#39;&quot;&#39;</span><span class="p">),</span> <span class="n">file_content</span><span class="p">)</span>
+
+    <span class="c1"># escapes \&#39;</span>
+    <span class="n">stored_strings</span><span class="p">[</span><span class="s1">&#39;escapes_char&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;</span><span class="se">\\\&#39;</span><span class="s1">&#39;</span><span class="p">,</span> <span class="n">file_content</span><span class="p">)</span>
+
+    <span class="c1"># single-line &#39;</span>
+    <span class="n">stored_strings</span><span class="p">[</span><span class="s1">&#39;singleline_single&#39;</span><span class="p">]</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="n">single</span><span class="p">,</span> <span class="n">file_content</span><span class="p">)</span>
+
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">match_list</span> <span class="ow">in</span> <span class="n">stored_strings</span><span class="o">.</span><span class="n">items</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">string</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">match_list</span><span class="p">):</span>
+            <span class="n">file_content</span> <span class="o">=</span> <span class="n">file_content</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">string</span><span class="p">,</span> <span class="sa">f</span><span class="s1">&#39;____</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">:</span><span class="si">{</span><span class="n">i</span><span class="si">}</span><span class="s1">____&#39;</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">file_content</span><span class="p">,</span> <span class="n">stored_strings</span></div>
+
+
+<div class="viewcode-block" id="restore_strings"><a class="viewcode-back" href="../../../api/dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.restore_strings">[docs]</a><span class="k">def</span> <span class="nf">restore_strings</span><span class="p">(</span><span class="n">file_content</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">stored_strings</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">:</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">key</span><span class="p">,</span> <span class="n">match_list</span> <span class="ow">in</span> <span class="n">stored_strings</span><span class="o">.</span><span class="n">items</span><span class="p">()</span><span class="o">.</span><span class="fm">__reversed__</span><span class="p">():</span>
+        <span class="k">for</span> <span class="n">match</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">findall</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;____</span><span class="si">{</span><span class="n">key</span><span class="si">}</span><span class="s1">:\d+____&#39;</span><span class="p">,</span> <span class="n">file_content</span><span class="p">):</span>
+            <span class="n">index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">re</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="s1">&#39;\d+&#39;</span><span class="p">,</span> <span class="n">match</span><span class="p">)</span><span class="o">.</span><span class="n">group</span><span class="p">())</span>
+            <span class="n">file_content</span> <span class="o">=</span> <span class="n">file_content</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">match</span><span class="p">,</span> <span class="n">match_list</span><span class="p">[</span><span class="n">index</span><span class="p">])</span>
+    <span class="k">return</span> <span class="n">file_content</span></div>
+
+
+<div class="viewcode-block" id="remove_comments"><a class="viewcode-back" href="../../../api/dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.remove_comments">[docs]</a><span class="k">def</span> <span class="nf">remove_comments</span><span class="p">(</span><span class="n">code</span><span class="p">):</span>
+    <span class="c1"># Regular expression to match single-line comments (// ...)</span>
+    <span class="n">pattern1</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\/\/.*?$&quot;</span>
+
+    <span class="c1"># Regular expression to match multi-line comments (/* ... */)</span>
+    <span class="n">pattern2</span> <span class="o">=</span> <span class="sa">r</span><span class="s2">&quot;\/\*[\s\S]*?\*\/&quot;</span>
+    <span class="n">pattern3</span> <span class="o">=</span> <span class="sa">r</span><span class="s1">&#39;^\/\/\/.+&#39;</span>
+
+    <span class="c1"># Remove comments from code using regular expressions</span>
+    <span class="n">code_without_comments</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern1</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">code</span><span class="p">,</span> <span class="n">flags</span><span class="o">=</span><span class="n">re</span><span class="o">.</span><span class="n">MULTILINE</span><span class="p">)</span>
+    <span class="n">code_without_comments</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern2</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">code_without_comments</span><span class="p">)</span>
+    <span class="n">code_without_comments</span> <span class="o">=</span> <span class="n">re</span><span class="o">.</span><span class="n">sub</span><span class="p">(</span><span class="n">pattern3</span><span class="p">,</span> <span class="s2">&quot;&quot;</span><span class="p">,</span> <span class="n">code_without_comments</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">code_without_comments</span></div>
+
+<div class="viewcode-block" id="remove_symbols_to_eliminate"><a class="viewcode-back" href="../../../api/dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.remove_symbols_to_eliminate">[docs]</a><span class="k">def</span> <span class="nf">remove_symbols_to_eliminate</span><span class="p">(</span><span class="n">file_content</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="k">for</span> <span class="n">symbol</span> <span class="ow">in</span> <span class="n">symbols_to_eliminate</span><span class="p">:</span>
+        <span class="n">file_content</span> <span class="o">=</span> <span class="n">file_content</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="n">symbol</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">file_content</span></div>
+
+<div class="viewcode-block" id="clean_file"><a class="viewcode-back" href="../../../api/dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.clean_file">[docs]</a><span class="k">def</span> <span class="nf">clean_file</span><span class="p">(</span><span class="n">file</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">:</span><span class="nb">str</span><span class="p">]]:</span>
+    <span class="k">with</span> <span class="nb">open</span><span class="p">(</span><span class="n">file</span><span class="p">,</span> <span class="s1">&#39;r&#39;</span><span class="p">)</span> <span class="k">as</span> <span class="n">f</span><span class="p">:</span>
+        <span class="n">file_content</span> <span class="o">=</span> <span class="n">f</span><span class="o">.</span><span class="n">read</span><span class="p">()</span>
+    <span class="n">subbed</span><span class="p">,</span> <span class="n">stored_strings</span> <span class="o">=</span> <span class="n">substitute_strings</span><span class="p">(</span><span class="n">file_content</span><span class="p">)</span>
+    <span class="n">removed</span> <span class="o">=</span> <span class="n">remove_symbols_to_eliminate</span><span class="p">(</span><span class="n">remove_comments</span><span class="p">(</span><span class="n">subbed</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">removed</span><span class="p">,</span> <span class="n">stored_strings</span></div>
+
+
+<div class="viewcode-block" id="isolate_marked_classes"><a class="viewcode-back" href="../../../api/dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.isolate_marked_classes">[docs]</a><span class="k">def</span> <span class="nf">isolate_marked_classes</span><span class="p">(</span><span class="n">file_content</span><span class="p">):</span>
+    <span class="n">class_isolates</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;(?=@Dataclass|@Metaclass)&#39;</span><span class="p">,</span> <span class="n">file_content</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]]</span>
+    <span class="k">return</span> <span class="n">class_isolates</span></div>
+
+<div class="viewcode-block" id="isolate_enums"><a class="viewcode-back" href="../../../api/dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.isolate_enums">[docs]</a><span class="k">def</span> <span class="nf">isolate_enums</span><span class="p">(</span><span class="n">file_content</span><span class="p">):</span>
+    <span class="c1"># \s*enum\s+\w+\s*(?=\{)</span>
+    <span class="n">class_isolates</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">re</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;\s*enum\s+&#39;</span><span class="p">,</span> <span class="n">file_content</span><span class="p">)[</span><span class="mi">1</span><span class="p">:]]</span>
+    <span class="k">return</span> <span class="n">class_isolates</span></div>
+
+<div class="viewcode-block" id="restore_strings_while_loop"><a class="viewcode-back" href="../../../api/dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.restore_strings_while_loop">[docs]</a><span class="k">def</span> <span class="nf">restore_strings_while_loop</span><span class="p">(</span><span class="n">source</span><span class="p">:</span> <span class="nb">str</span><span class="p">,</span> <span class="n">stored_strings</span><span class="p">:</span> <span class="nb">dict</span><span class="p">[</span><span class="nb">str</span><span class="p">:</span><span class="nb">str</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nb">str</span><span class="p">:</span>
+    <span class="n">string</span> <span class="o">=</span> <span class="n">stored_string_regex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+    <span class="k">while</span> <span class="n">string</span><span class="p">:</span>
+        <span class="n">source</span> <span class="o">=</span> <span class="n">source</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span>
+            <span class="n">string</span><span class="o">.</span><span class="n">group</span><span class="p">(),</span> <span class="n">access_a_string</span><span class="p">(</span><span class="n">string</span><span class="o">.</span><span class="n">group</span><span class="p">(),</span> <span class="n">stored_strings</span><span class="p">)[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">])</span>
+        <span class="n">string</span> <span class="o">=</span> <span class="n">stored_string_regex</span><span class="o">.</span><span class="n">search</span><span class="p">(</span><span class="n">source</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">source</span></div>
+<div class="viewcode-block" id="get_class_isolates"><a class="viewcode-back" href="../../../api/dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.get_class_isolates">[docs]</a><span class="k">def</span> <span class="nf">get_class_isolates</span><span class="p">(</span><span class="n">file_content</span><span class="p">):</span>
+    <span class="n">class_chunks</span> <span class="o">=</span> <span class="n">isolate_marked_classes</span><span class="p">(</span><span class="n">file_content</span><span class="p">)</span>
+    <span class="n">class_isolates</span> <span class="o">=</span> <span class="p">[</span><span class="n">clean_class_from_isolate_chunk</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">class_chunks</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">class_isolates</span></div>
+<div class="viewcode-block" id="get_enums"><a class="viewcode-back" href="../../../api/dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.get_enums">[docs]</a><span class="k">def</span> <span class="nf">get_enums</span><span class="p">(</span><span class="n">file_content</span><span class="p">):</span>
+    <span class="n">enum_chunks</span> <span class="o">=</span> <span class="n">isolate_enums</span><span class="p">(</span><span class="n">file_content</span><span class="p">)</span>
+    <span class="n">enum_isolates</span> <span class="o">=</span> <span class="p">[</span><span class="n">clean_class_from_isolate_chunk</span><span class="p">(</span><span class="n">i</span><span class="p">)</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">enum_chunks</span><span class="p">]</span>
+    <span class="k">return</span> <span class="n">enum_isolates</span></div>
+
+<div class="viewcode-block" id="clean_class_from_isolate_chunk"><a class="viewcode-back" href="../../../api/dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.clean_class_from_isolate_chunk">[docs]</a><span class="k">def</span> <span class="nf">clean_class_from_isolate_chunk</span><span class="p">(</span><span class="n">class_iso_chunk</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">tuple</span><span class="p">[</span><span class="nb">str</span><span class="p">,</span> <span class="nb">str</span><span class="p">]:</span>
+    <span class="n">start</span> <span class="o">=</span> <span class="kc">False</span>
+    <span class="n">bracket_cnt</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">name_final_index</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">body_final_index</span> <span class="o">=</span> <span class="mi">0</span>
+
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">class_iso_chunk</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;{&#39;</span><span class="p">:</span>
+            <span class="n">bracket_cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">start</span> <span class="ow">is</span> <span class="kc">False</span><span class="p">:</span>
+                <span class="n">start</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="n">name_final_index</span> <span class="o">=</span> <span class="n">index</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;}&#39;</span><span class="p">:</span>
+            <span class="n">bracket_cnt</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="n">start</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">bracket_cnt</span><span class="p">:</span>
+                <span class="n">body_final_index</span> <span class="o">=</span> <span class="n">index</span> <span class="o">+</span> <span class="mi">1</span>
+                <span class="k">break</span>
+
+    <span class="n">name</span> <span class="o">=</span> <span class="n">class_iso_chunk</span><span class="p">[:</span><span class="n">name_final_index</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">class_iso_chunk</span><span class="p">[</span><span class="n">name_final_index</span><span class="p">:</span><span class="n">body_final_index</span><span class="p">]</span>
+
+    <span class="k">return</span> <span class="n">name</span><span class="p">,</span> <span class="n">body</span></div>
+
+
+<div class="viewcode-block" id="access_a_string"><a class="viewcode-back" href="../../../api/dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.access_a_string">[docs]</a><span class="k">def</span> <span class="nf">access_a_string</span><span class="p">(</span><span class="n">key</span><span class="p">,</span> <span class="n">stored_strings</span><span class="p">):</span>
+    <span class="n">key</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">replace</span><span class="p">(</span><span class="s1">&#39;____&#39;</span><span class="p">,</span> <span class="s1">&#39;&#39;</span><span class="p">)</span>
+    <span class="n">key</span><span class="p">,</span> <span class="n">index</span> <span class="o">=</span> <span class="n">key</span><span class="o">.</span><span class="n">split</span><span class="p">(</span><span class="s1">&#39;:&#39;</span><span class="p">)</span>
+    <span class="n">index</span> <span class="o">=</span> <span class="nb">int</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">stored_strings</span><span class="p">[</span><span class="n">key</span><span class="p">][</span><span class="n">index</span><span class="p">]</span></div>
+
+<div class="viewcode-block" id="body_seperator"><a class="viewcode-back" href="../../../api/dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.body_seperator">[docs]</a><span class="k">def</span> <span class="nf">body_seperator</span><span class="p">(</span><span class="n">body</span><span class="p">:</span> <span class="nb">str</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">list</span><span class="p">[</span><span class="nb">str</span><span class="p">]:</span>
+    <span class="n">separation</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">split_points</span> <span class="o">=</span> <span class="p">[]</span>
+    <span class="n">body</span> <span class="o">=</span> <span class="n">body</span><span class="p">[</span><span class="mi">1</span><span class="p">:</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">()</span>
+    <span class="n">bracket_cnt</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="n">embed</span> <span class="o">=</span> <span class="mi">0</span>
+    <span class="k">for</span> <span class="n">index</span><span class="p">,</span> <span class="n">char</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">body</span><span class="p">):</span>
+        <span class="k">try</span><span class="p">:</span>
+            <span class="n">next_char</span> <span class="o">=</span> <span class="n">body</span><span class="p">[</span><span class="n">index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">]</span>
+        <span class="k">except</span> <span class="ne">IndexError</span><span class="p">:</span>
+            <span class="n">next_char</span> <span class="o">=</span> <span class="kc">None</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;(&#39;</span><span class="p">:</span>
+            <span class="n">embed</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;)&#39;</span><span class="p">:</span>
+            <span class="n">embed</span> <span class="o">-=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;;&#39;</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">bracket_cnt</span> <span class="ow">and</span> <span class="ow">not</span> <span class="n">embed</span><span class="p">:</span>
+            <span class="n">split_points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;{&#39;</span><span class="p">:</span>
+            <span class="n">bracket_cnt</span> <span class="o">+=</span> <span class="mi">1</span>
+        <span class="k">if</span> <span class="n">char</span> <span class="o">==</span> <span class="s1">&#39;}&#39;</span><span class="p">:</span>
+            <span class="n">bracket_cnt</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="k">if</span> <span class="nb">all</span><span class="p">([</span><span class="ow">not</span> <span class="n">bracket_cnt</span><span class="p">,</span> <span class="ow">not</span> <span class="n">embed</span><span class="p">,</span> <span class="n">next_char</span> <span class="o">!=</span> <span class="s1">&#39;;&#39;</span><span class="p">]):</span>
+                <span class="n">split_points</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">index</span><span class="p">)</span>
+    <span class="k">for</span> <span class="n">i</span><span class="p">,</span> <span class="n">point</span> <span class="ow">in</span> <span class="nb">enumerate</span><span class="p">(</span><span class="n">split_points</span><span class="p">):</span>
+        <span class="k">if</span> <span class="n">i</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="n">separation</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">body</span><span class="p">[:</span><span class="n">point</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="n">last_point</span> <span class="o">=</span> <span class="n">point</span><span class="o">+</span><span class="mi">1</span>
+            <span class="k">continue</span>
+        <span class="k">elif</span> <span class="nb">len</span><span class="p">(</span><span class="n">split_points</span><span class="p">)</span> <span class="o">-</span> <span class="mi">1</span> <span class="o">==</span> <span class="n">i</span><span class="p">:</span>
+            <span class="n">separation</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">body</span><span class="p">[</span><span class="n">last_point</span><span class="p">:]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="k">break</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">separation</span><span class="o">.</span><span class="n">append</span><span class="p">(</span><span class="n">body</span><span class="p">[</span><span class="n">last_point</span><span class="p">:</span><span class="n">point</span><span class="o">+</span><span class="mi">1</span><span class="p">]</span><span class="o">.</span><span class="n">strip</span><span class="p">())</span>
+            <span class="n">last_point</span> <span class="o">=</span> <span class="n">point</span><span class="o">+</span><span class="mi">1</span>
+    <span class="c1"># if separation[-1] == &#39;;&#39;:</span>
+    <span class="c1">#     separation = separation[:-1]</span>
+    <span class="c1">#     separation[-1] += &#39;;&#39;</span>
+    <span class="k">return</span> <span class="n">separation</span></div>
+
+
+<span class="k">if</span> <span class="vm">__name__</span> <span class="o">==</span> <span class="s1">&#39;__main__&#39;</span><span class="p">:</span>
+    <span class="n">b</span><span class="p">,</span> <span class="n">strings</span> <span class="o">=</span> <span class="n">clean_file</span><span class="p">(</span><span class="sa">r</span><span class="s1">&#39;D:\StudioProjects\ari_utils\lib\src\ari_utils_base.dart&#39;</span><span class="p">)</span>
+    <span class="n">b</span> <span class="o">=</span> <span class="n">isolate_marked_classes</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+    <span class="n">class_names_and_bodies</span> <span class="o">=</span> <span class="p">[</span><span class="n">clean_class_from_isolate_chunk</span><span class="p">(</span><span class="n">chunk</span><span class="p">)</span> <span class="k">for</span> <span class="n">chunk</span> <span class="ow">in</span> <span class="n">b</span><span class="p">]</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="p">[</span><span class="n">body_seperator</span><span class="p">(</span><span class="n">class_</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="k">for</span> <span class="n">class_</span> <span class="ow">in</span> <span class="n">class_names_and_bodies</span><span class="p">]</span>
+    <span class="k">pass</span>
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../../../index.html">dart_dataclasses</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../../readme.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../contributing.html">Contributions &amp; Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../changelog.html">Changelog</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../api/modules.html">Module Reference</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../../../index.html">Documentation overview</a><ul>
+  <li><a href="../../index.html">Module code</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../../../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Ari Frid.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

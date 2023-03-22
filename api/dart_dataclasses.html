@@ -1,0 +1,658 @@
+
+<!DOCTYPE html>
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="generator" content="Docutils 0.19: https://docutils.sourceforge.io/" />
+
+    <title>dart_dataclasses package &#8212; dart_dataclasses 0.0.post1.dev16+g9686a64.d20230320 documentation</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css" />
+    <script data-url_root="../" id="documentation_options" src="../_static/documentation_options.js"></script>
+    <script src="../_static/doctools.js"></script>
+    <script src="../_static/sphinx_highlight.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" />
+    <link rel="next" title="dart_dataclasses.entry_points namespace" href="dart_dataclasses.entry_points.html" />
+    <link rel="prev" title="dart_dataclasses" href="modules.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+  
+  <meta name="viewport" content="width=device-width, initial-scale=0.9, maximum-scale=0.9" />
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <section id="dart-dataclasses-package">
+<h1>dart_dataclasses package<a class="headerlink" href="#dart-dataclasses-package" title="Permalink to this heading">¶</a></h1>
+<section id="subpackages">
+<h2>Subpackages<a class="headerlink" href="#subpackages" title="Permalink to this heading">¶</a></h2>
+<div class="toctree-wrapper compound">
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="dart_dataclasses.entry_points.html">dart_dataclasses.entry_points namespace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dart_dataclasses.entry_points.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dart_dataclasses.entry_points.html#module-dart_dataclasses.entry_points.entry_point_init">dart_dataclasses.entry_points.entry_point_init module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.entry_points.html#dart_dataclasses.entry_points.entry_point_init.check_given_source"><code class="docutils literal notranslate"><span class="pre">check_given_source()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.entry_points.html#dart_dataclasses.entry_points.entry_point_init.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.entry_points.html#dart_dataclasses.entry_points.entry_point_init.write_to_config"><code class="docutils literal notranslate"><span class="pre">write_to_config()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dart_dataclasses.entry_points.html#module-dart_dataclasses.entry_points.entry_point_main">dart_dataclasses.entry_points.entry_point_main module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.entry_points.html#dart_dataclasses.entry_points.entry_point_main.entry_main"><code class="docutils literal notranslate"><span class="pre">entry_main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.entry_points.html#dart_dataclasses.entry_points.entry_point_main.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dart_dataclasses.entry_points.html#module-dart_dataclasses.entry_points.master">dart_dataclasses.entry_points.master module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.entry_points.html#dart_dataclasses.entry_points.master.help_msg"><code class="docutils literal notranslate"><span class="pre">help_msg()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.entry_points.html#dart_dataclasses.entry_points.master.main"><code class="docutils literal notranslate"><span class="pre">main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dart_dataclasses.file_level.html">dart_dataclasses.file_level namespace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dart_dataclasses.file_level.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dart_dataclasses.file_level.html#module-dart_dataclasses.file_level.cmd_line_level">dart_dataclasses.file_level.cmd_line_level module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.file_level.html#dart_dataclasses.file_level.cmd_line_level.format_file"><code class="docutils literal notranslate"><span class="pre">format_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dart_dataclasses.file_level.html#module-dart_dataclasses.file_level.file_level">dart_dataclasses.file_level.file_level module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.file_level.html#dart_dataclasses.file_level.file_level.dir_procedure"><code class="docutils literal notranslate"><span class="pre">dir_procedure()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.file_level.html#dart_dataclasses.file_level.file_level.file_reading"><code class="docutils literal notranslate"><span class="pre">file_reading()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.file_level.html#dart_dataclasses.file_level.file_level.file_reading_procedure_for_classes"><code class="docutils literal notranslate"><span class="pre">file_reading_procedure_for_classes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.file_level.html#dart_dataclasses.file_level.file_level.file_reading_procedure_for_enums"><code class="docutils literal notranslate"><span class="pre">file_reading_procedure_for_enums()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dart_dataclasses.insertion.html">dart_dataclasses.insertion namespace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dart_dataclasses.insertion.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dart_dataclasses.insertion.html#module-dart_dataclasses.insertion.insertions">dart_dataclasses.insertion.insertions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.insertion.html#dart_dataclasses.insertion.insertions.Tag"><code class="docutils literal notranslate"><span class="pre">Tag</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="dart_dataclasses.insertion.html#dart_dataclasses.insertion.insertions.Tag.associated_class"><code class="docutils literal notranslate"><span class="pre">Tag.associated_class</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dart_dataclasses.insertion.html#dart_dataclasses.insertion.insertions.Tag.create"><code class="docutils literal notranslate"><span class="pre">Tag.create()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dart_dataclasses.insertion.html#dart_dataclasses.insertion.insertions.Tag.end"><code class="docutils literal notranslate"><span class="pre">Tag.end</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dart_dataclasses.insertion.html#dart_dataclasses.insertion.insertions.Tag.replace"><code class="docutils literal notranslate"><span class="pre">Tag.replace()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dart_dataclasses.insertion.html#dart_dataclasses.insertion.insertions.Tag.start"><code class="docutils literal notranslate"><span class="pre">Tag.start</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dart_dataclasses.insertion.html#dart_dataclasses.insertion.insertions.Tag.str_to_replace"><code class="docutils literal notranslate"><span class="pre">Tag.str_to_replace</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dart_dataclasses.insertion.html#dart_dataclasses.insertion.insertions.Tag.tag"><code class="docutils literal notranslate"><span class="pre">Tag.tag</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="dart_dataclasses.insertion.html#dart_dataclasses.insertion.insertions.Tag.type"><code class="docutils literal notranslate"><span class="pre">Tag.type</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.insertion.html#dart_dataclasses.insertion.insertions.dataclass_insertions"><code class="docutils literal notranslate"><span class="pre">dataclass_insertions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.insertion.html#dart_dataclasses.insertion.insertions.dir_level_insertions"><code class="docutils literal notranslate"><span class="pre">dir_level_insertions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.insertion.html#dart_dataclasses.insertion.insertions.find_associated_class"><code class="docutils literal notranslate"><span class="pre">find_associated_class()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.insertion.html#dart_dataclasses.insertion.insertions.get_and_replace_tags"><code class="docutils literal notranslate"><span class="pre">get_and_replace_tags()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.insertion.html#dart_dataclasses.insertion.insertions.get_class_ranges"><code class="docutils literal notranslate"><span class="pre">get_class_ranges()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.insertion.html#dart_dataclasses.insertion.insertions.get_metadata_import_str"><code class="docutils literal notranslate"><span class="pre">get_metadata_import_str()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.insertion.html#dart_dataclasses.insertion.insertions.insert_imports_if_not_there"><code class="docutils literal notranslate"><span class="pre">insert_imports_if_not_there()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.insertion.html#dart_dataclasses.insertion.insertions.write_class_functions_main"><code class="docutils literal notranslate"><span class="pre">write_class_functions_main()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dart_dataclasses.parsing.html">dart_dataclasses.parsing namespace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dart_dataclasses.parsing.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dart_dataclasses.parsing.html#module-dart_dataclasses.parsing.config_file">dart_dataclasses.parsing.config_file module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.config_file.ConfigParseError"><code class="docutils literal notranslate"><span class="pre">ConfigParseError</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.config_file.config_var_declarations"><code class="docutils literal notranslate"><span class="pre">config_var_declarations()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.config_file.create_config_file"><code class="docutils literal notranslate"><span class="pre">create_config_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.config_file.encapsulate_region"><code class="docutils literal notranslate"><span class="pre">encapsulate_region()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.config_file.ensure_path_exists"><code class="docutils literal notranslate"><span class="pre">ensure_path_exists()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.config_file.parse_config_file"><code class="docutils literal notranslate"><span class="pre">parse_config_file()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dart_dataclasses.parsing.html#module-dart_dataclasses.parsing.file_content_cleaning">dart_dataclasses.parsing.file_content_cleaning module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.access_a_string"><code class="docutils literal notranslate"><span class="pre">access_a_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.body_seperator"><code class="docutils literal notranslate"><span class="pre">body_seperator()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.clean_class_from_isolate_chunk"><code class="docutils literal notranslate"><span class="pre">clean_class_from_isolate_chunk()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.clean_file"><code class="docutils literal notranslate"><span class="pre">clean_file()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.get_class_isolates"><code class="docutils literal notranslate"><span class="pre">get_class_isolates()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.get_enums"><code class="docutils literal notranslate"><span class="pre">get_enums()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.isolate_enums"><code class="docutils literal notranslate"><span class="pre">isolate_enums()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.isolate_marked_classes"><code class="docutils literal notranslate"><span class="pre">isolate_marked_classes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.remove_comments"><code class="docutils literal notranslate"><span class="pre">remove_comments()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.remove_symbols_to_eliminate"><code class="docutils literal notranslate"><span class="pre">remove_symbols_to_eliminate()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.restore_strings"><code class="docutils literal notranslate"><span class="pre">restore_strings()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.restore_strings_while_loop"><code class="docutils literal notranslate"><span class="pre">restore_strings_while_loop()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.file_content_cleaning.substitute_strings"><code class="docutils literal notranslate"><span class="pre">substitute_strings()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dart_dataclasses.parsing.html#module-dart_dataclasses.parsing.parser">dart_dataclasses.parsing.parser module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.class_isolate_parsing_main"><code class="docutils literal notranslate"><span class="pre">class_isolate_parsing_main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.cut_method_body"><code class="docutils literal notranslate"><span class="pre">cut_method_body()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.get_method_type"><code class="docutils literal notranslate"><span class="pre">get_method_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.get_mixin_or_implements"><code class="docutils literal notranslate"><span class="pre">get_mixin_or_implements()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.get_name"><code class="docutils literal notranslate"><span class="pre">get_name()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.get_type_and_name_from_a_split"><code class="docutils literal notranslate"><span class="pre">get_type_and_name_from_a_split()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.get_type_and_name_from_regex"><code class="docutils literal notranslate"><span class="pre">get_type_and_name_from_regex()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.getter_or_attr"><code class="docutils literal notranslate"><span class="pre">getter_or_attr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.is_method"><code class="docutils literal notranslate"><span class="pre">is_method()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.factory"><code class="docutils literal notranslate"><span class="pre">factory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.static"><code class="docutils literal notranslate"><span class="pre">static()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.set"><code class="docutils literal notranslate"><span class="pre">set()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.parse_attr"><code class="docutils literal notranslate"><span class="pre">parse_attr()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.parse_enum"><code class="docutils literal notranslate"><span class="pre">parse_enum()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.parse_enum_options"><code class="docutils literal notranslate"><span class="pre">parse_enum_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.parse_getter"><code class="docutils literal notranslate"><span class="pre">parse_getter()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.parse_method"><code class="docutils literal notranslate"><span class="pre">parse_method()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.preparse"><code class="docutils literal notranslate"><span class="pre">preparse()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.retrieve_from_annotation_list"><code class="docutils literal notranslate"><span class="pre">retrieve_from_annotation_list()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.retun_body_ast"><code class="docutils literal notranslate"><span class="pre">retun_body_ast()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.separate_annotations"><code class="docutils literal notranslate"><span class="pre">separate_annotations()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.split_enum_body_and_get_options"><code class="docutils literal notranslate"><span class="pre">split_enum_body_and_get_options()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.syntax_main"><code class="docutils literal notranslate"><span class="pre">syntax_main()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.parsing.html#dart_dataclasses.parsing.parser.turn_annotation_strs_to_annotation_list"><code class="docutils literal notranslate"><span class="pre">turn_annotation_strs_to_annotation_list()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="dart_dataclasses.writing.html">dart_dataclasses.writing namespace</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="dart_dataclasses.writing.html#submodules">Submodules</a></li>
+<li class="toctree-l2"><a class="reference internal" href="dart_dataclasses.writing.html#module-dart_dataclasses.writing.class_functions">dart_dataclasses.writing.class_functions module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.class_functions.attributes"><code class="docutils literal notranslate"><span class="pre">attributes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.class_functions.check_for_bool_dataclass_args"><code class="docutils literal notranslate"><span class="pre">check_for_bool_dataclass_args()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.class_functions.class_functions"><code class="docutils literal notranslate"><span class="pre">class_functions()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.class_functions.constructor"><code class="docutils literal notranslate"><span class="pre">constructor()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.class_functions.copy_with"><code class="docutils literal notranslate"><span class="pre">copy_with()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.class_functions.equality_operator"><code class="docutils literal notranslate"><span class="pre">equality_operator()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.class_functions.get_dynamic_attributes"><code class="docutils literal notranslate"><span class="pre">get_dynamic_attributes()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.class_functions.hashcode"><code class="docutils literal notranslate"><span class="pre">hashcode()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.class_functions.iterable_factory"><code class="docutils literal notranslate"><span class="pre">iterable_factory()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.class_functions.left_pad_string"><code class="docutils literal notranslate"><span class="pre">left_pad_string()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.class_functions.separate_null_required"><code class="docutils literal notranslate"><span class="pre">separate_null_required()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.class_functions.separate_pos_and_kwarg_super"><code class="docutils literal notranslate"><span class="pre">separate_pos_and_kwarg_super()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.class_functions.static_constructor"><code class="docutils literal notranslate"><span class="pre">static_constructor()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.class_functions.to_str"><code class="docutils literal notranslate"><span class="pre">to_str()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.class_functions.type_is_iterable"><code class="docutils literal notranslate"><span class="pre">type_is_iterable()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.class_functions.type_is_map"><code class="docutils literal notranslate"><span class="pre">type_is_map()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dart_dataclasses.writing.html#module-dart_dataclasses.writing.json_serialization">dart_dataclasses.writing.json_serialization module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.json_serialization.dart_enum_methods"><code class="docutils literal notranslate"><span class="pre">dart_enum_methods()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.json_serialization.enum_from_map"><code class="docutils literal notranslate"><span class="pre">enum_from_map()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.json_serialization.enum_to_reflected_type"><code class="docutils literal notranslate"><span class="pre">enum_to_reflected_type()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.json_serialization.format_type_cast"><code class="docutils literal notranslate"><span class="pre">format_type_cast()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.json_serialization.from_json"><code class="docutils literal notranslate"><span class="pre">from_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.json_serialization.part_declaration"><code class="docutils literal notranslate"><span class="pre">part_declaration()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.json_serialization.part_declaration_procedure"><code class="docutils literal notranslate"><span class="pre">part_declaration_procedure()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.json_serialization.return_constructor"><code class="docutils literal notranslate"><span class="pre">return_constructor()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.json_serialization.to_json"><code class="docutils literal notranslate"><span class="pre">to_json()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.json_serialization.type_cast"><code class="docutils literal notranslate"><span class="pre">type_cast()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.json_serialization.type_cast_iterable"><code class="docutils literal notranslate"><span class="pre">type_cast_iterable()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="dart_dataclasses.writing.html#module-dart_dataclasses.writing.metadata">dart_dataclasses.writing.metadata module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.metadata.accessory_maps"><code class="docutils literal notranslate"><span class="pre">accessory_maps()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.metadata.class_groupings"><code class="docutils literal notranslate"><span class="pre">class_groupings()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.metadata.conjoin_str"><code class="docutils literal notranslate"><span class="pre">conjoin_str()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.metadata.dynamic_lists"><code class="docutils literal notranslate"><span class="pre">dynamic_lists()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.metadata.fix_import"><code class="docutils literal notranslate"><span class="pre">fix_import()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.metadata.generate_metadata_text"><code class="docutils literal notranslate"><span class="pre">generate_metadata_text()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.metadata.get_local_imports"><code class="docutils literal notranslate"><span class="pre">get_local_imports()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.metadata.pop_lib"><code class="docutils literal notranslate"><span class="pre">pop_lib()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.metadata.pop_lib_decorator"><code class="docutils literal notranslate"><span class="pre">pop_lib_decorator()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="dart_dataclasses.writing.html#dart_dataclasses.writing.metadata.write_metadata_file"><code class="docutils literal notranslate"><span class="pre">write_metadata_file()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</div>
+</section>
+<section id="submodules">
+<h2>Submodules<a class="headerlink" href="#submodules" title="Permalink to this heading">¶</a></h2>
+</section>
+<section id="module-dart_dataclasses.domain">
+<span id="dart-dataclasses-domain-module"></span><h2>dart_dataclasses.domain module<a class="headerlink" href="#module-dart_dataclasses.domain" title="Permalink to this heading">¶</a></h2>
+<dl class="py class">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Annotation">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dart_dataclasses.domain.</span></span><span class="sig-name descname"><span class="pre">Annotation</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">name:</span> <span class="pre">str,</span> <span class="pre">positional_params:</span> <span class="pre">list[str],</span> <span class="pre">keyword_params:</span> <span class="pre">dict[slice(&lt;class</span> <span class="pre">'str'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;,</span> <span class="pre">None)]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.Annotation" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.11/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Annotation.from_annotation_tuple">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_annotation_tuple</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">annotation_tuple</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.Annotation.from_annotation_tuple" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Annotation.keyword_params">
+<span class="sig-name descname"><span class="pre">keyword_params</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">dict[slice(&lt;class</span> <span class="pre">'str'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;,</span> <span class="pre">None)]</span></em><a class="headerlink" href="#dart_dataclasses.domain.Annotation.keyword_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Annotation.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Annotation.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Annotation.positional_params">
+<span class="sig-name descname"><span class="pre">positional_params</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dart_dataclasses.domain.Annotation.positional_params" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Annotation.restore_strings">
+<span class="sig-name descname"><span class="pre">restore_strings</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="pre">stored_strings:</span> <span class="pre">dict[slice(&lt;class</span> <span class="pre">'str'&gt;,</span> <span class="pre">&lt;class</span> <span class="pre">'str'&gt;,</span> <span class="pre">None)]</span></em><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.Annotation.restore_strings" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Annotation.to_dart">
+<span class="sig-name descname"><span class="pre">to_dart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.Annotation.to_dart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Attribute">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dart_dataclasses.domain.</span></span><span class="sig-name descname"><span class="pre">Attribute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dart_dataclasses.domain.Type" title="dart_dataclasses.domain.Type"><span class="pre">dart_dataclasses.domain.Type</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">final</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">static</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">const</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">late</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">external</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">default_value</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">super_param</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.Attribute" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.11/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Attribute.const">
+<span class="sig-name descname"><span class="pre">const</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Attribute.const" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Attribute.default_value">
+<span class="sig-name descname"><span class="pre">default_value</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Attribute.default_value" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Attribute.external">
+<span class="sig-name descname"><span class="pre">external</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Attribute.external" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Attribute.final">
+<span class="sig-name descname"><span class="pre">final</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Attribute.final" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Attribute.late">
+<span class="sig-name descname"><span class="pre">late</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Attribute.late" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Attribute.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Attribute.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Attribute.private">
+<span class="sig-name descname"><span class="pre">private</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Attribute.private" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Attribute.static">
+<span class="sig-name descname"><span class="pre">static</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Attribute.static" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Attribute.super_param">
+<span class="sig-name descname"><span class="pre">super_param</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dart_dataclasses.domain.Attribute.super_param" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Attribute.to_dart">
+<span class="sig-name descname"><span class="pre">to_dart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">associated_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dart_dataclasses.domain.Class" title="dart_dataclasses.domain.Class"><span class="pre">Class</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.Attribute.to_dart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Attribute.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dart_dataclasses.domain.Type" title="dart_dataclasses.domain.Type"><span class="pre">Type</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Attribute.type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Class">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dart_dataclasses.domain.</span></span><span class="sig-name descname"><span class="pre">Class</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">dataclass_annotation</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dart_dataclasses.domain.Annotation" title="dart_dataclasses.domain.Annotation"><span class="pre">dart_dataclasses.domain.Annotation</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">attributes</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dart_dataclasses.domain.Attribute" title="dart_dataclasses.domain.Attribute"><span class="pre">dart_dataclasses.domain.Attribute</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">methods</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dart_dataclasses.domain.Method" title="dart_dataclasses.domain.Method"><span class="pre">dart_dataclasses.domain.Method</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">getters</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dart_dataclasses.domain.Getter" title="dart_dataclasses.domain.Getter"><span class="pre">dart_dataclasses.domain.Getter</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">parent</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mixins</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">implementations</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.Class" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.11/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Class.attributes">
+<span class="sig-name descname"><span class="pre">attributes</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dart_dataclasses.domain.Attribute" title="dart_dataclasses.domain.Attribute"><span class="pre">dart_dataclasses.domain.Attribute</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dart_dataclasses.domain.Class.attributes" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Class.dataclass_annotation">
+<span class="sig-name descname"><span class="pre">dataclass_annotation</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dart_dataclasses.domain.Annotation" title="dart_dataclasses.domain.Annotation"><span class="pre">Annotation</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Class.dataclass_annotation" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Class.getters">
+<span class="sig-name descname"><span class="pre">getters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dart_dataclasses.domain.Getter" title="dart_dataclasses.domain.Getter"><span class="pre">dart_dataclasses.domain.Getter</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dart_dataclasses.domain.Class.getters" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Class.implementations">
+<span class="sig-name descname"><span class="pre">implementations</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dart_dataclasses.domain.Class.implementations" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Class.methods">
+<span class="sig-name descname"><span class="pre">methods</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dart_dataclasses.domain.Method" title="dart_dataclasses.domain.Method"><span class="pre">dart_dataclasses.domain.Method</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dart_dataclasses.domain.Class.methods" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Class.mixins">
+<span class="sig-name descname"><span class="pre">mixins</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dart_dataclasses.domain.Class.mixins" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Class.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Class.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Class.parent">
+<span class="sig-name descname"><span class="pre">parent</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dart_dataclasses.domain.Class.parent" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Class.to_dart">
+<span class="sig-name descname"><span class="pre">to_dart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.Class.to_dart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.DartEnum">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dart_dataclasses.domain.</span></span><span class="sig-name descname"><span class="pre">DartEnum</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">options</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.DartEnum" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.11/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.DartEnum.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.DartEnum.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.DartEnum.options">
+<span class="sig-name descname"><span class="pre">options</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dart_dataclasses.domain.DartEnum.options" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.DartEnum.to_dart">
+<span class="sig-name descname"><span class="pre">to_dart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.DartEnum.to_dart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Getter">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dart_dataclasses.domain.</span></span><span class="sig-name descname"><span class="pre">Getter</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">return_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dart_dataclasses.domain.Type" title="dart_dataclasses.domain.Type"><span class="pre">dart_dataclasses.domain.Type</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">external</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">static</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">referenced_private_variable</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dart_dataclasses.domain.Attribute" title="dart_dataclasses.domain.Attribute"><span class="pre">dart_dataclasses.domain.Attribute</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.Getter" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.11/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Getter.external">
+<span class="sig-name descname"><span class="pre">external</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Getter.external" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Getter.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Getter.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Getter.private">
+<span class="sig-name descname"><span class="pre">private</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Getter.private" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Getter.referenced_private_variable">
+<span class="sig-name descname"><span class="pre">referenced_private_variable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dart_dataclasses.domain.Attribute" title="dart_dataclasses.domain.Attribute"><span class="pre">Attribute</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">None</span></em><a class="headerlink" href="#dart_dataclasses.domain.Getter.referenced_private_variable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Getter.return_type">
+<span class="sig-name descname"><span class="pre">return_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dart_dataclasses.domain.Type" title="dart_dataclasses.domain.Type"><span class="pre">Type</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Getter.return_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Getter.static">
+<span class="sig-name descname"><span class="pre">static</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Getter.static" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Getter.to_dart">
+<span class="sig-name descname"><span class="pre">to_dart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">associated_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dart_dataclasses.domain.Class" title="dart_dataclasses.domain.Class"><span class="pre">Class</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.Getter.to_dart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Method">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dart_dataclasses.domain.</span></span><span class="sig-name descname"><span class="pre">Method</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">name</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">return_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dart_dataclasses.domain.Type" title="dart_dataclasses.domain.Type"><span class="pre">dart_dataclasses.domain.Type</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">method_type</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dart_dataclasses.domain.MethodType" title="dart_dataclasses.domain.MethodType"><span class="pre">dart_dataclasses.domain.MethodType</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">static</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">generics</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">external</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">parameters_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">'()'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.Method" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.11/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Method.external">
+<span class="sig-name descname"><span class="pre">external</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Method.external" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Method.generics">
+<span class="sig-name descname"><span class="pre">generics</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="w"> </span><span class="p"><span class="pre">|</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/constants.html#None" title="(in Python v3.11)"><span class="pre">None</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Method.generics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Method.method_type">
+<span class="sig-name descname"><span class="pre">method_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dart_dataclasses.domain.MethodType" title="dart_dataclasses.domain.MethodType"><span class="pre">MethodType</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Method.method_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Method.name">
+<span class="sig-name descname"><span class="pre">name</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Method.name" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Method.parameters_string">
+<span class="sig-name descname"><span class="pre">parameters_string</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">'()'</span></em><a class="headerlink" href="#dart_dataclasses.domain.Method.parameters_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Method.private">
+<span class="sig-name descname"><span class="pre">private</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Method.private" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Method.return_type">
+<span class="sig-name descname"><span class="pre">return_type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference internal" href="#dart_dataclasses.domain.Type" title="dart_dataclasses.domain.Type"><span class="pre">Type</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Method.return_type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Method.static">
+<span class="sig-name descname"><span class="pre">static</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Method.static" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Method.to_dart">
+<span class="sig-name descname"><span class="pre">to_dart</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">associated_class</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference internal" href="#dart_dataclasses.domain.Class" title="dart_dataclasses.domain.Class"><span class="pre">Class</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.Method.to_dart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.MethodType">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dart_dataclasses.domain.</span></span><span class="sig-name descname"><span class="pre">MethodType</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">value</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">names</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="o"><span class="pre">*</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">module</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">qualname</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">type</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">start</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">boundary</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.MethodType" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.11/library/enum.html#enum.Enum" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">Enum</span></code></a></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.MethodType.constructor">
+<span class="sig-name descname"><span class="pre">constructor</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">2</span></em><a class="headerlink" href="#dart_dataclasses.domain.MethodType.constructor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.MethodType.factory">
+<span class="sig-name descname"><span class="pre">factory</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">3</span></em><a class="headerlink" href="#dart_dataclasses.domain.MethodType.factory" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.MethodType.named_constructor">
+<span class="sig-name descname"><span class="pre">named_constructor</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">4</span></em><a class="headerlink" href="#dart_dataclasses.domain.MethodType.named_constructor" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.MethodType.normal">
+<span class="sig-name descname"><span class="pre">normal</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">1</span></em><a class="headerlink" href="#dart_dataclasses.domain.MethodType.normal" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.MethodType.operator">
+<span class="sig-name descname"><span class="pre">operator</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">6</span></em><a class="headerlink" href="#dart_dataclasses.domain.MethodType.operator" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.MethodType.setter">
+<span class="sig-name descname"><span class="pre">setter</span></span><em class="property"><span class="w"> </span><span class="p"><span class="pre">=</span></span><span class="w"> </span><span class="pre">5</span></em><a class="headerlink" href="#dart_dataclasses.domain.MethodType.setter" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Type">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">dart_dataclasses.domain.</span></span><span class="sig-name descname"><span class="pre">Type</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">type:</span> <span class="pre">str</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">nullable:</span> <span class="pre">bool</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">generics:</span> <span class="pre">list['Type']</span> <span class="pre">=</span> <span class="pre">&lt;factory&gt;</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.Type" title="Permalink to this definition">¶</a></dt>
+<dd><p>Bases: <a class="reference external" href="https://docs.python.org/3.11/library/functions.html#object" title="(in Python v3.11)"><code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></a></p>
+<dl class="py method">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Type.clean_generics_in_generics_string">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">clean_generics_in_generics_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generics_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#tuple" title="(in Python v3.11)"><span class="pre">tuple</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">,</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dart_dataclasses.domain.Type.clean_generics_in_generics_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Type.from_isolated_string">
+<em class="property"><span class="pre">classmethod</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">from_isolated_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">isolated_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.Type.from_isolated_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Type.generics">
+<span class="sig-name descname"><span class="pre">generics</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dart_dataclasses.domain.Type" title="dart_dataclasses.domain.Type"><span class="pre">dart_dataclasses.domain.Type</span></a><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#dart_dataclasses.domain.Type.generics" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Type.get_type_list">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">get_type_list</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">generics_string</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#dart_dataclasses.domain.Type" title="dart_dataclasses.domain.Type"><span class="pre">dart_dataclasses.domain.Type</span></a><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#dart_dataclasses.domain.Type.get_type_list" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Type.nullable">
+<span class="sig-name descname"><span class="pre">nullable</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#bool" title="(in Python v3.11)"><span class="pre">bool</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Type.nullable" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Type.reinsert_subgeneric">
+<em class="property"><span class="pre">static</span><span class="w"> </span></em><span class="sig-name descname"><span class="pre">reinsert_subgeneric</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">str_to_sub</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">saved_subs</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a><span class="p"><span class="pre">[</span></span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></span></span><a class="headerlink" href="#dart_dataclasses.domain.Type.reinsert_subgeneric" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Type.to_dart">
+<span class="sig-name descname"><span class="pre">to_dart</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.Type.to_dart" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Type.to_str">
+<span class="sig-name descname"><span class="pre">to_str</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.Type.to_str" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.Type.type">
+<span class="sig-name descname"><span class="pre">type</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#str" title="(in Python v3.11)"><span class="pre">str</span></a></em><a class="headerlink" href="#dart_dataclasses.domain.Type.type" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.list_to_string">
+<span class="sig-prename descclassname"><span class="pre">dart_dataclasses.domain.</span></span><span class="sig-name descname"><span class="pre">list_to_string</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">list_</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/stdtypes.html#list" title="(in Python v3.11)"><span class="pre">list</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">extra_lines</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">padding</span></span><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="n"><a class="reference external" href="https://docs.python.org/3.11/library/functions.html#int" title="(in Python v3.11)"><span class="pre">int</span></a></span><span class="w"> </span><span class="o"><span class="pre">=</span></span><span class="w"> </span><span class="default_value"><span class="pre">6</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.list_to_string" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="dart_dataclasses.domain.to_dart_wrapper">
+<span class="sig-prename descclassname"><span class="pre">dart_dataclasses.domain.</span></span><span class="sig-name descname"><span class="pre">to_dart_wrapper</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">func</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#dart_dataclasses.domain.to_dart_wrapper" title="Permalink to this definition">¶</a></dt>
+<dd></dd></dl>
+
+</section>
+<section id="module-dart_dataclasses">
+<span id="module-contents"></span><h2>Module contents<a class="headerlink" href="#module-dart_dataclasses" title="Permalink to this heading">¶</a></h2>
+</section>
+</section>
+
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="main navigation">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">dart_dataclasses</a></h1>
+
+
+
+
+
+
+
+
+<h3>Navigation</h3>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../readme.html">Overview</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../contributing.html">Contributions &amp; Help</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../license.html">License</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../authors.html">Authors</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../changelog.html">Changelog</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">Module Reference</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">dart_dataclasses package</a></li>
+</ul>
+</li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="modules.html">dart_dataclasses</a><ul>
+      <li>Previous: <a href="modules.html" title="previous chapter">dart_dataclasses</a></li>
+      <li>Next: <a href="dart_dataclasses.entry_points.html" title="next chapter">dart_dataclasses.entry_points namespace</a></li>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+<div id="searchbox" style="display: none" role="search">
+  <h3 id="searchlabel">Quick search</h3>
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false"/>
+      <input type="submit" value="Go" />
+    </form>
+    </div>
+</div>
+<script>document.getElementById('searchbox').style.display = "block"</script>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &copy;2023, Ari Frid.
+      
+      |
+      Powered by <a href="http://sphinx-doc.org/">Sphinx 6.1.3</a>
+      &amp; <a href="https://github.com/bitprophet/alabaster">Alabaster 0.7.13</a>
+      
+      |
+      <a href="../_sources/api/dart_dataclasses.rst.txt"
+          rel="nofollow">Page source</a>
+    </div>
+
+    
+
+    
+  </body>
+</html>
