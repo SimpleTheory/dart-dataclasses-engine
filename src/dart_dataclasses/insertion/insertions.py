@@ -101,7 +101,7 @@ def write_class_functions_main(dart_class: domain.Class, encapsulate=True) -> st
     
     {conf.warning_message}
     
-    {cf.class_functions(dart_class)}
+{cf.class_functions(dart_class)}
     //</Dataclass>
         '''.lstrip()), 2, False)
     return cf.left_pad_string(

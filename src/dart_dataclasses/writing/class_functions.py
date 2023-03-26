@@ -1,5 +1,5 @@
 import dart_dataclasses.domain as domain
-
+# TODO FIX 0 ATTR CONSTRUCTION ({})
 
 def class_functions(dart_class: domain.Class) -> str:
     """
@@ -45,7 +45,7 @@ def class_functions(dart_class: domain.Class) -> str:
 
     if check_for_bool_dataclass_args('fromJson', dart_class):
         generated_code.append(js.from_json(dart_class))
-    return ('\n' * 2).join(generated_code)
+    return ('\n' * 2).join(generated_code)  # .replace('({})', '())
 
 
 def constructor(dart_class: domain.Class) -> str:
@@ -106,7 +106,7 @@ def copy_with(dart_class: domain.Class) -> str:
     null = lambda x: x if x.endswith('?') else x + '?'
     attrs_params = ", ".join([f'{null(attr.type.to_str())} {attr.name}' for attr in dynamic_attributes])
     attr_body = ", ".join([f'{attr.name}: {attr.name} ?? this.{attr.name}' for attr in dynamic_attributes])
-    return f'{dart_class.name} copyWith{dart_class.name}({attrs_params}) => {dart_class.name}({attr_body});'
+    return f'{dart_class.name} copyWith{dart_class.name}({{{attrs_params}}}) => {dart_class.name}({attr_body});'
 
 
 def equality_operator(dart_class: domain.Class) -> str:
