@@ -2,6 +2,7 @@ from pathlib import Path
 import sys
 import dart_dataclasses.entry_points.entry_point_main
 import dart_dataclasses.entry_points.entry_point_init
+import dart_dataclasses.misc.check_for_updates as updates
 
 def help_msg():
     print('\nWelcome to dart_dataclasses where you can generate boilerplate and reflective code at your command.'
@@ -40,6 +41,7 @@ def main():
 
     args = sys.argv[2:]
     cwd = Path.cwd()
+    updates.update_precheck()
     call(cwd, *args)
 
 

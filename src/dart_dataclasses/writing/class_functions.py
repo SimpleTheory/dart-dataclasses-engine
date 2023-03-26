@@ -1,5 +1,5 @@
 import dart_dataclasses.domain as domain
-# TODO FIX 0 ATTR CONSTRUCTION ({})
+
 
 def class_functions(dart_class: domain.Class) -> str:
     """
@@ -53,6 +53,8 @@ def constructor(dart_class: domain.Class) -> str:
         lambda attribute: not any([attribute.external, attribute.static, attribute.late, attribute.const]),
         dart_class.attributes
     ))
+    if not attrs_to_initialize:
+        return f'{dart_class.name}();'
     required, defaults, null = separate_null_required(attrs_to_initialize)
 
     base = f'{dart_class.name}(***{"".join([f"required this.{attr.name}, " for attr in required])}' \
@@ -85,11 +87,13 @@ def static_constructor(dart_class: domain.Class) -> str:
         lambda attribute: not any([attribute.external, attribute.static, attribute.late, attribute.const]),
         dart_class.attributes
     ))
+    if not attrs_to_initialize:
+        return f'factory {dart_class.name}.staticConstructor()=>{dart_class.name}();'
     required, defaults, null = separate_null_required(attrs_to_initialize)
 
-    base = f'{dart_class.name}.staticConstructor(***{"".join([f"required {attr.name}, " for attr in required])}' \
+    base = f'{dart_class.name}.staticConstructor({{{"".join([f"required {attr.name}, " for attr in required])}' \
            f'{"".join([f"{attr.name} = {attr.default_value}, " for attr in defaults])}' \
-           f'{", ".join([f"{attr.name}" for attr in null])}%%%)'.replace('***', '{').replace('%%%', '}')
+           f'{", ".join([f"{attr.name}" for attr in null])}}})'
     returns = f'{dart_class.name}({", ".join([f"{attr.name}: {attr.name}" for attr in required + defaults + null])})'
     return f'factory {base} => {returns};'
 
@@ -106,7 +110,9 @@ def copy_with(dart_class: domain.Class) -> str:
     null = lambda x: x if x.endswith('?') else x + '?'
     attrs_params = ", ".join([f'{null(attr.type.to_str())} {attr.name}' for attr in dynamic_attributes])
     attr_body = ", ".join([f'{attr.name}: {attr.name} ?? this.{attr.name}' for attr in dynamic_attributes])
-    return f'{dart_class.name} copyWith{dart_class.name}({{{attrs_params}}}) => {dart_class.name}({attr_body});'
+    if attrs_params:
+        return f'{dart_class.name} copyWith{dart_class.name}({{{attrs_params}}}) => {dart_class.name}({attr_body});'
+    return f'{dart_class.name} copyWith{dart_class.name}({attrs_params}) => {dart_class.name}({attr_body});'
 
 
 def equality_operator(dart_class: domain.Class) -> str:

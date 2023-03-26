@@ -1,15 +1,20 @@
 Feature Ideas:
+   • toMap & fromMap overrides
+Later:
 
-• toMap & fromMap overrides
 • Dart 3 is gonna have multi-type returns like this:
       (int x, int y) get_coords() => 0,0
       so learn the rules of when that's applicable and do so accordingly when update comes
 • Generate test suite for each dataclass
 
--- Maybe? --
-    Add parsing to extensions
+------- Maybe --------------------------------------------------------------------------
+    • Add parsing to extensions
+    • add type def parsing and in json serialization
+    • parse mixins
 
 
 -------- DONE ----------------------------------------------------------------------------
-• MAPS ARE NOT ITERABLES!!! :(
+MAPS ARE NOT ITERABLES!!! :(
 Change jsonify to be based off of reflection and statically generated because of stupidity ✓
+fix 0 attr constructors!!!
+notify users about updates
