@@ -25,9 +25,6 @@ format_files_with_insertion = True
 default_regeneration = True
 '''.strip()
 
-# source_file = Path('../../../cache/dataclasses.config').resolve()
-
-
 def check_given_source(given_source: str):
     given_source = Path(given_source)
     if any([not given_source.exists(), given_source.name == 'dataclasses', given_source.stem == 'config']):

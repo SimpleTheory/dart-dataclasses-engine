@@ -148,7 +148,7 @@ def separate_null_required(attrs: list[domain.Attribute]) \
     defaults = list(filter(lambda attribute: attribute.default_value and
                                              not (attribute.default_value and attribute.final), attrs))
     null = list(
-        filter(lambda attribute: attribute.type.nullable or attribute.late, attrs))  # TODO INCLUDE OR EXCLUDE LATES
+        filter(lambda attribute: attribute.type.nullable or attribute.late, attrs))
     return required, defaults, null
 
 
