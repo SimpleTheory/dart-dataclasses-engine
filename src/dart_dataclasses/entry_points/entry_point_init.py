@@ -11,7 +11,7 @@ default = '''
 # Example: output_path = ./lib/mydataclasses
 
 [Pathing]
-# Path to parse all dataclasses, metaclasses and enums
+# Path to parse all dataclasses and enums
 parsing_path = ./lib
 # For output of non-inserted generated code (MUST BE IN LIB FOR AUTOMATIC IMPORTS TO WORK!!!!)
 output_path = ./lib/mydataclasses

@@ -9,9 +9,9 @@ static = '''
 
 // All together
 
-List<SupportedClasses> reflectedClasses = [...dataclasses, ...metaclasses, ...supportedDefaults, ...enumExtensions];
-Map<String, SupportedClasses> str2reflection = {...str2dataclasses, ...str2metaclasses, ...str2defaults, ...str2enumExtensions};
-Map<Type, SupportedClasses> type2reflection = {...type2dataclasses, ...type2metaclasses, ...type2defaults, ...type2enumExtensions};
+List<SupportedClasses> reflectedClasses = [...dataclasses,  ...supportedDefaults, ...enumExtensions];
+Map<String, SupportedClasses> str2reflection = {...str2dataclasses, ...str2defaults, ...str2enumExtensions};
+Map<Type, SupportedClasses> type2reflection = {...type2dataclasses, ...type2defaults, ...type2enumExtensions};
 
 // Deserialize JSON
 
@@ -117,11 +117,10 @@ def fix_import(file: Path):
 
 def class_groupings(file_dataclasses: dict[Path: dict[str:list[domain.Class] | list[domain.Enum]]]) \
         -> dict[str: set[str]]:
-    # Class type must be either Metaclass or Dataclass
+    # Class type must be either or Dataclass
     final_dict = {
         'imports': {"import 'package:dataclasses/dataclasses.dart';"},
         'dataclasses': set(),
-        'metaclasses': set(),
         'enums': set(),
     }
     for file, groups in file_dataclasses.items():
@@ -155,9 +154,6 @@ def dynamic_lists(conjoined_dict: dict[str:str]) -> str:
 List<ReflectedClass> dataclasses = [
 {left_pad_string(conjoined_dict['dataclasses'], 4)}
   ];
-List<ReflectedClass> metaclasses = [
-{left_pad_string(conjoined_dict['metaclasses'], 4)}
-  ];
 List<EnumExtension> enumExtensions = [
 {left_pad_string(conjoined_dict['enums'], 4)}
   ];
@@ -165,7 +161,7 @@ List<EnumExtension> enumExtensions = [
 
 def accessory_maps(map_names=None) -> str:
     lst=[]
-    if not map_names: map_names = ['dataclasses', 'metaclasses', 'enumExtensions']
+    if not map_names: map_names = ['dataclasses', 'enumExtensions']
     for name in map_names:
         type_ = 'ReflectedClass' if name != 'enumExtensions' else 'EnumExtension'
         lst.append(f'Map<String, {type_}>str2{name} = {{for ({type_} x in {name}) x.name: x}};')
@@ -180,7 +176,7 @@ def generate_metadata_text(file_dataclasses: dict[Path: dict[str:list[domain.Cla
 
     {dynamic_lists}
 
-    {accesory_maps}
+    {accessory_maps}
 
     {static}
     """

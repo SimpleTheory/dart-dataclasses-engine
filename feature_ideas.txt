@@ -18,3 +18,4 @@ MAPS ARE NOT ITERABLES!!! :(
 Change jsonify to be based off of reflection and statically generated because of stupidity ✓
 fix 0 attr constructors!!!
 notify users about updates
+refactor-remove metaclasses

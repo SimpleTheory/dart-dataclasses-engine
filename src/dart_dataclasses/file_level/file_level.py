@@ -9,27 +9,23 @@ def file_reading(file: Path | str) -> dict[str:list[domain.Class] | list[domain.
     if file.suffix != '.dart':
         return
     file_content, strings = cc.clean_file(file)
-    temp = file_reading_procedure_for_classes(file_content, strings)
-    if temp is None:
+    dataclasses = file_reading_procedure_for_classes(file_content, strings)
+    if dataclasses is None:
         return
-    dataclasses, metaclasses = temp
     enums = file_reading_procedure_for_enums(file_content)
     return {
         'dataclasses': dataclasses,
-        'metaclasses': metaclasses,
         'enums': enums,
     }
 
 
 def file_reading_procedure_for_classes(file_content: str, strings: dict[str:list[str]]) -> \
-        tuple[list[domain.Class], list[domain.Class]] | None:
-    if ('@Dataclass' not in file_content) and ('@Metaclass' not in file_content):
+        list[domain.Class] | None:
+    if ('@Dataclass' not in file_content):
         return
     pre_parsed_classes = cc.get_class_isolates(file_content)
     classes = [par.class_isolate_parsing_main(class_isolate, strings) for class_isolate in pre_parsed_classes]
-    return [dataclass for dataclass in classes if dataclass.dataclass_annotation.name == 'Dataclass'], \
-           [metaclass for metaclass in classes if metaclass.dataclass_annotation.name == 'Metaclass']
-
+    return [dataclass for dataclass in classes if dataclass.dataclass_annotation.name == 'Dataclass']
 def file_reading_procedure_for_enums(file_content: str) -> list[domain.DartEnum] | None:
     if not re.search('\s*enum\s+', file_content):
         return

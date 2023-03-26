@@ -77,7 +77,7 @@ def clean_file(file) -> tuple[str, dict[str:str]]:
 
 
 def isolate_marked_classes(file_content):
-    class_isolates = [i.strip() for i in re.split('(?=@Dataclass|@Metaclass)', file_content)[1:]]
+    class_isolates = [i.strip() for i in re.split('(?=@Dataclass)', file_content)[1:]]
     return class_isolates
 
 def isolate_enums(file_content):
