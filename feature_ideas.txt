@@ -1,5 +1,5 @@
 Feature Ideas:
-   • toMap & fromMap overrides
+
 Later:
 
 • Dart 3 is gonna have multi-type returns like this:
@@ -11,6 +11,7 @@ Later:
     • Add parsing to extensions
     • add type def parsing and in json serialization
     • parse mixins
+    • toMap & fromMap overrides (postponed because of difficulty of implementing at the moment and unnecessary at the moment)
 
 
 -------- DONE ----------------------------------------------------------------------------
