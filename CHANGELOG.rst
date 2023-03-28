@@ -18,3 +18,6 @@ Version 0.0.4
 - Added code for automatic update checks to pypi
 - failed to implement overrides
 ============
+Version 0.0.5
+============
+- Fixed bug with const attr and no type to be dynamic instead of crashing
