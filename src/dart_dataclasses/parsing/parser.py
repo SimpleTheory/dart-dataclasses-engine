@@ -182,7 +182,11 @@ def get_type_and_name_from_regex(type_name_iso_str: str, with_split: str = None)
     if with_split:
         split = type_name_iso_str.split(with_split)
         type_name_iso_str = ' '.join(split)
-    type_, name = [i[0].strip() for i in re.findall(type_regex, type_name_iso_str)]
+    try:
+        type_, name = [i[0].strip() for i in re.findall(type_regex, type_name_iso_str)]
+    except ValueError:
+        name = type_name_iso_str
+        type_ = 'dynamic'
     return domain.Type.from_isolated_string(type_), name.strip()
 
 
