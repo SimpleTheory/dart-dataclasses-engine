@@ -76,7 +76,7 @@ def constructor(dart_class: domain.Class) -> str:
         # print(super_pos, super_kwarg)
 
         parent = f'{call_to_super}({"".join([f"{pos.name}, " for pos in super_pos])}' \
-                 f'{", ".join([f"{kwarg.super_param}: {kwarg.name}" for kwarg in super_kwarg])})'
+                 f'{", ".join([f"{kwarg.super_param if kwarg.super_param else kwarg.name}: {kwarg.name}" for kwarg in super_kwarg])})'
 
         return f'{base} : {parent}{end}'
     return base + end

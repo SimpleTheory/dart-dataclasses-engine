@@ -1,10 +1,8 @@
 =========
 Changelog
 =========
-
 Version 0.0.2
 ===========
-
 - Initial release
 ===========
 Version 0.0.3
@@ -21,3 +19,7 @@ Version 0.0.4
 Version 0.0.5
 ============
 - Fixed bug with const attr and no type to be dynamic instead of crashing
+============
+Version 0.0.6
+============
+- Made default of @Super be the parameters own name
