@@ -299,8 +299,13 @@ def parse_method(method: str, keywords: list[str], method_type: domain.MethodTyp
     if all(['external' in keywords, 'factory' in keywords, method == classname]):
         method_type = domain.MethodType.constructor
     if method_type == domain.MethodType.named_constructor or method_type == domain.MethodType.factory:
-        type_ = classname
-        name = method.split('.')[1]
+        try:
+            type_ = classname
+            name = method.split('.')[1]
+        except IndexError:
+            type_ = classname
+            name = 'returnsSingletonObject'
+            method_type = domain.MethodType.constructor
 
     elif method_type == domain.MethodType.constructor:
         type_ = classname
