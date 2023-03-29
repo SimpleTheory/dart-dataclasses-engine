@@ -71,13 +71,14 @@ def get_class_ranges(dataclasses: list[domain.Class], file_content: str) -> list
     return result
 
 def get_and_replace_tags(file_content: str, dataclasses):
+    tag_regex = re.compile(r'(?<!//)@Generate\(\)\s+// <Dataclass>|(?<!//)@Generate\(\)(?!\s+//<Dataclass>)')
     class_ranges = get_class_ranges(dataclasses, file_content)
-    mark = re.search(r'@Generate\(\)\s+// <Dataclass>|@Generate\(\)(?!\s+//<Dataclass>)', file_content)
+    mark = tag_regex.search(file_content)
     while mark:
         current = Tag.create(mark, find_associated_class(mark, class_ranges), file_content)
         file_content = current.replace(file_content)
         class_ranges = get_class_ranges(dataclasses, file_content)
-        mark = re.search(r'@Generate\(\)\s+// <Dataclass>|@Generate\(\)(?!\s+//<Dataclass>)', file_content)
+        mark = tag_regex.search(file_content)
     return file_content
 
 

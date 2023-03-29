@@ -31,3 +31,9 @@ Version 0.0.6
 ============
 Version 0.0.7
 ============
+- Modified insertion tag regex to ignore `//@Generate()` in all cases but the `//` must immediately precede
+  it with no spaces, so now commented `//@Generate()` will be ignored.
+
+============
+Version 0.0.8
+============
