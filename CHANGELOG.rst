@@ -23,3 +23,5 @@ Version 0.0.5
 Version 0.0.6
 ============
 - Made default of @Super be the parameters own name
+- Took out trinary null check operator in part declaration of fromMap as the dejsonify function in
+  static takes care of it for me
