@@ -181,7 +181,7 @@ class Type:
         generics = ''
         if self.generics:
             generics = f'<{", ".join([t.to_str() for t in self.generics])}>'
-        null = '?' if self.nullable else ''
+        null = '?' if self.nullable and self.type != 'dynamic' else ''
         return result + generics + null
 
     @to_dart_wrapper

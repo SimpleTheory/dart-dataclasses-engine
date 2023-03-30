@@ -33,6 +33,7 @@ Version 0.0.7
 ============
 - Modified insertion tag regex to ignore `//@Generate()` in all cases but the `//` must immediately precede
   it with no spaces, so now commented `//@Generate()` will be ignored.
+- Made dynamic type to_str in the Type class not have added ?
 
 ============
 Version 0.0.8

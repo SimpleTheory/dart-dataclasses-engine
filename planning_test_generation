@@ -1,0 +1,21 @@
+Add to conf testing directory to scan
+Add entry point which:
+    parses ast
+    scans each file in test dir:
+        in each file scans for @CreateTests(cls, reference)
+        if not dataclass replaces with // Error `cls` is not a dataclass
+        if is dataclass replace with
+            A.
+                check annotation for what is true
+                generate tests for said true things (within group dataclass)
+                generate template tests for
+                    all method types
+
+    test('Test Name', () => {
+    // STATIC|FACTORY Class.Method.name
+    // Regular Reference.Method.name
+    //
+      // ReturnType result = Method.name();
+      // expect(result, );
+    });
+
