@@ -24,7 +24,7 @@ def find_match(file_content: str) -> re.Match | None:
     for regex in regexes:
         potential_match = regex.search(file_content)
         if potential_match:
-            print(regex.pattern)
+            # print(regex.pattern)
             return potential_match
     return None
 
@@ -54,7 +54,7 @@ def file_level_test_insertion(file: Path, dataclasses: dict[str: domain.Class]):
     if not re.search(r'''import ["']dart:convert['"];''', file_content):
         file_content = "import 'dart:convert';\n" + file_content
 
-    print(file_content)
+    # print(file_content)
     # Replace with write
     with open(file, 'w') as f:
         f.write(file_content)

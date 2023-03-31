@@ -21,7 +21,7 @@ def file_reading(file: Path | str) -> dict[str:list[domain.Class] | list[domain.
 
 def file_reading_procedure_for_classes(file_content: str, strings: dict[str:list[str]]) -> \
         list[domain.Class] | None:
-    if ('@Dataclass' not in file_content):
+    if '@Dataclass' not in file_content:
         return
     pre_parsed_classes = cc.get_class_isolates(file_content)
     classes = [par.class_isolate_parsing_main(class_isolate, strings) for class_isolate in pre_parsed_classes]

@@ -1,15 +1,19 @@
 Feature Ideas:
+• Write complete documentation
+    - For this (the engine)(module {readme, library level etc} and function specific)
+    - For wrapper (dart side)(module and function specific)
+    - Refactor stupid shit
+    - Make video
 
 Later:
 
 • Dart 3 is gonna have multi-type returns like this:
       (int x, int y) get_coords() => 0,0
       so learn the rules of when that's applicable and do so accordingly when update comes
-• Generate test suite for each dataclass
 
 ------- Maybe --------------------------------------------------------------------------
     • Add parsing to extensions
-    • add type def parsing and in json serialization
+    • add type def parsing with their content in json serialization
     • parse mixins
     • toMap & fromMap overrides (postponed because of difficulty of implementing at the moment and unnecessary at the moment)
 
@@ -20,3 +24,4 @@ Change jsonify to be based off of reflection and statically generated because of
 fix 0 attr constructors!!!
 notify users about updates
 refactor-remove metaclasses
+Generate test suite for each dataclass
