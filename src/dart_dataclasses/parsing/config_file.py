@@ -23,6 +23,7 @@ cwd: Path = None
 config_file_dict: dict = None
 parsing_path: Path = None
 output_path: Path = None
+testing_path: Path = None
 metadata_file: Path = None
 preferred_editor: str = None
 warning_message: str = None
@@ -42,11 +43,13 @@ def config_var_declarations(inputted_cwd: Path | str):
     global reference_private_methods
     global format_files_with_insertion
     global default_regeneration
+    global testing_path
 
     try:
         cwd = Path(inputted_cwd)
         config_file_dict = parse_config_file(cwd.joinpath('dataclasses.config'))
         parsing_path = cwd.joinpath(Path(config_file_dict['parsing_path']))
+        testing_path = cwd.joinpath(Path(config_file_dict['testing_path']))
         output_path = cwd.joinpath(Path(config_file_dict['output_path']))
         metadata_file = output_path.joinpath('metadata.dart')
 
@@ -90,6 +93,8 @@ def create_config_file(project_dir: str):
 def encapsulate_region(name, text):
     if preferred_editor == 'vscode':
         return f'//region {name}\n{text}\n//endregion\n'
+    if preferred_editor == 'pound_vscode':
+        return f'//#region {name}\n{text}\n//#endregion\n'
     if preferred_editor == 'jetbrains':
         return f'// <editor-fold desc="{name}">\n{text}\n// </editor-fold>\n'
     return f'// ------------------------ {name} --------------------------------\n{text}\n' \

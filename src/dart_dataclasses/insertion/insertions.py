@@ -22,19 +22,29 @@ class Tag:
             self.end += 1
 
     @classmethod
-    def create(cls, tag: re.Match, associated_class: domain.Class, file_content):
+    def create_for_dataclass_insertions(cls, tag: re.Match, associated_class: domain.Class, file_content):
         if tag.group() == '@Generate()':
             return cls(tag.group(), associated_class, tag.start(), 'generate', tag.end())
         start = tag.start()
         clipped = file_content[start:]
         end = re.search('// </Dataclass>', clipped).end()
-        return cls(tag.group(), associated_class, start, 'replace', start + end, file_content[start:end + 1])
+        return cls(tag.group(), associated_class, start, 'replace', start + end, file_content[start:end])
+
+    @classmethod
+    def create_general(cls, tag: re.Match, associated_class: domain.Class = None):
+        tag_type = tag.group().split(')')[0] + ')'
+        return cls(tag.group(0), associated_class, tag.start(0),
+                   tag_type, tag.end(0), tag.group(0))
 
     def replace(self, file_content: str):
         return file_content[:self.start] + \
             write_class_functions_main(self.associated_class, self.type == 'generate') + \
             file_content[self.end:]
 
+    def replace_with(self, file_content: str, func: callable, *args, **kwargs):
+        return file_content[:self.start] + \
+            func(*args, **kwargs) + \
+            file_content[self.end:]
 
 def dir_level_insertions(file_dataclasses: dict[Path: dict[str:list[domain.Class] | list[domain.Enum]]]):
     for file, file_objects in file_dataclasses.items():
@@ -75,7 +85,7 @@ def get_and_replace_tags(file_content: str, dataclasses):
     class_ranges = get_class_ranges(dataclasses, file_content)
     mark = tag_regex.search(file_content)
     while mark:
-        current = Tag.create(mark, find_associated_class(mark, class_ranges), file_content)
+        current = Tag.create_for_dataclass_insertions(mark, find_associated_class(mark, class_ranges), file_content)
         file_content = current.replace(file_content)
         class_ranges = get_class_ranges(dataclasses, file_content)
         mark = tag_regex.search(file_content)
@@ -98,7 +108,7 @@ def write_class_functions_main(dart_class: domain.Class, encapsulate=True) -> st
             conf.encapsulate_region(name='Dataclass Section',
                                     text=f'''
     
-    {conf.default_regeneration}//<Dataclass>
+{conf.default_regeneration}//<Dataclass>
     
     {conf.warning_message}
     
@@ -107,7 +117,7 @@ def write_class_functions_main(dart_class: domain.Class, encapsulate=True) -> st
         '''.lstrip()), 2, False)
     return cf.left_pad_string(
         f'''
-    {conf.default_regeneration}//<Dataclass>
+{conf.default_regeneration}//<Dataclass>
     
     {conf.warning_message}
 

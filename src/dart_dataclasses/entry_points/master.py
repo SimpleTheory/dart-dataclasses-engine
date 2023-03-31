@@ -3,6 +3,7 @@ import sys
 import dart_dataclasses.entry_points.entry_point_main
 import dart_dataclasses.entry_points.entry_point_init
 import dart_dataclasses.misc.check_for_updates as updates
+import dart_dataclasses.entry_points.entry_point_test_generation as test_generation
 
 def help_msg():
     print('\nWelcome to dart_dataclasses where you can generate boilerplate and reflective code at your command.'
@@ -13,6 +14,9 @@ def help_msg():
           '\n\n    dart_dataclasses generate'
           '\n        - This command reads your dataclasses.config file and generates all the code desired as specified'
           '\n          by the decorators in your code.'
+          '\n\n    dart_dataclasses test_generation'   
+          '\n        - This command reads your dataclasses.config file, as well as your parsing path, and testing path'
+          '\n          to generate tests for your dataclasses wherever specified.'
           '\n\n    dart_dataclasses help'
           '\n        - Type this command or dart_dataclasses by itself to see this message again. :) \n'
           )
@@ -21,7 +25,8 @@ def help_msg():
 possible_calls = {
     'init': dart_dataclasses.entry_points.entry_point_init.write_to_config,
     'generate': dart_dataclasses.entry_points.entry_point_main.entry_main,
-    'help': help_msg
+    'help': help_msg,
+    'test_generation': test_generation.entry_test_generation
     }
 
 

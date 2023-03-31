@@ -45,7 +45,7 @@ def class_functions(dart_class: domain.Class) -> str:
 
     if check_for_bool_dataclass_args('fromJson', dart_class):
         generated_code.append(js.from_json(dart_class))
-    return ('\n' * 2).join(generated_code)  # .replace('({})', '())
+    return ('\n' * 2).join(generated_code)
 
 
 def constructor(dart_class: domain.Class) -> str:
@@ -100,9 +100,7 @@ def static_constructor(dart_class: domain.Class) -> str:
 
 def attributes(dart_class: domain.Class) -> str:
     attr_strs = [f'"{attr.name}": {attr.name}' for attr in get_dynamic_attributes(dart_class)]
-    return f'Map<String, dynamic> get attributes__ => ***{", ".join(attr_strs)}%%%;' \
-        .replace('***', '{') \
-        .replace('%%%', '}')
+    return f'Map<String, dynamic> get attributes__ => {{{", ".join(attr_strs)}}};'
 
 
 def copy_with(dart_class: domain.Class) -> str:

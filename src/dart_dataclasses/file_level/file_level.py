@@ -4,7 +4,7 @@ import dart_dataclasses.parsing.file_content_cleaning as cc
 import dart_dataclasses.parsing.parser as par
 from pathlib import Path
 
-def file_reading(file: Path | str) -> dict[str:list[domain.Class] | list[domain.Enum]]:
+def file_reading(file: Path | str) -> dict[str:list[domain.Class] | list[domain.Enum]] | None:
     file = Path(file)
     if file.suffix != '.dart':
         return
@@ -33,7 +33,7 @@ def file_reading_procedure_for_enums(file_content: str) -> list[domain.DartEnum]
     enums = [par.parse_enum(*enum_iso) for enum_iso in pre_parsed_enums]
     return enums
 
-def dir_procedure(dir: str | Path) -> dict[Path: dict[str:list[domain.Class] | list[domain.Enum]]]:
+def dir_procedure(dir: str | Path) -> dict[Path: dict[str:list[domain.Class] | list[domain.Enum]] | None]:
     return {Path(file): file_reading(file) for file in Path(dir).glob('**/*.dart')}
 
 

@@ -38,3 +38,5 @@ Version 0.0.7
 ============
 Version 0.0.8
 ============
+- Added bug fixes primarily aesthetic
+- Implemented a 0th draft of test generation

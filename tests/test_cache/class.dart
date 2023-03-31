@@ -83,25 +83,36 @@ class Person {
 
     @Generate()
 }
+
+class Address{
+  const Address();
+}
+
 @Dataclass()
 class Yess {
     Address address;
     List<Yess>? family;
     String name;
 
+    void someFunc(){}
+    static String smiley() => ':)';
+    String sad()=>':(';
+
+    Yess operator +(String s) => Yess.copyWithYess(name: name + s);
+
       // ------------------------ Dataclass Section --------------------------------
   // <Dataclass>
   
-  Yess({required this.address, this.family});
+  Yess({required this.address, this.family, required this.name});
   
-  factory Yess.staticConstructor({required address, family}) => Yess(address: address, family: family);
+  factory Yess.staticConstructor({required address, family, required name}) => Yess(address: address, family: family);
   
-  Map<String, dynamic> get attributes__ => {"address": address, "family": family};
+  Map<String, dynamic> get attributes__ => {"address": address, "family": family, "name": name};
   
   @override
   bool operator ==(Object other) =>
     identical(this, other) ||
-    (other is Yess && runtimeType == other.runtimeType && equals(address, other.address) && equals(family, other.family));
+    (other is Yess && runtimeType == other.runtimeType && equals(address, other.address) && equals(family, other.family) && equals(name, other.name));
   
   @override
   int get hashCode => address.hashCode ^ family.hashCode;
@@ -109,7 +120,7 @@ class Yess {
   @override
   String toString() => 'Yess(address: $address, family: $family)';
   
-  Yess copyWithYess(Address? address, List<Yess>? family) => Yess(address: address ?? this.address, family: family ?? this.family);
+  Yess copyWithYess(Address? address, List<Yess>? family, String? name) => Yess(address: address ?? this.address, family: family ?? this.family, name: name ?? this.name);
   
   String toJson()=>jsonEncode(toMap());
   Map<String, dynamic> toMap()=> {'__type': 'Yess', ...nestedJsonMap(attributes__)};
@@ -120,6 +131,7 @@ class Yess {
   
       Address address = dejsonify(map['address']);
       List? familyTemp = dejsonify(map['family']);
+      String name = dejsonify(map['name'])
   
       List<Yess>? family =
         familyTemp == null ? null : 

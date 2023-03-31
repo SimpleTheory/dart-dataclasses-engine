@@ -4,14 +4,17 @@ import functools
 import dart_dataclasses.writing.json_serialization as js
 import dart_dataclasses.file_level.file_level as file_stuff
 import dart_dataclasses.insertion.insertions as insert
+import dart_dataclasses.insertion.insert_tests as test_insert
 from pathlib import Path
+import dart_dataclasses.parsing.config_file as conf
 
 file = Path(r'./test_cache/class.dart')
 f2 = Path(r'D:\StudioProjects\test_dataclasses\lib\test_dataclasses.dart')
+file_for_test_gen = Path(r'./test_cache/test_classes.dart')
 trial = file_stuff.file_reading('./test_cache/class.dart')
 test_type = domain.Type.from_isolated_string('Map<int, Queue<List<String>>>')
 # trial_class = file_stuff.file_reading_procedure_for_classes(r'D:\StudioProjects\ari_utils\test\trying_things.dart')[1]
-trial_class2 = file_stuff.file_reading('./test_cache/class.dart')['dataclasses'][-1]
+trial_class2: domain.Class = file_stuff.file_reading('./test_cache/class.dart')['dataclasses'][-1]
 # trial_class3 = file_stuff.file_reading('./../tests/test_cache/dart_core_datetime.dart')['dataclasses'][0]
 
 
@@ -116,4 +119,8 @@ if __name__ == '__main__':
     # print()
     # from dart_dataclasses.insertion.insertions import write_class_functions_main
     # print(write_class_functions_main(trial_class2))
-    insert.dataclass_insertions(file, trial['dataclasses'])
+    # insert.dataclass_insertions(file, trial['dataclasses'])
+    # Assuming no default regen
+    conf.default_regeneration = '@Generate'
+    conf.preferred_editor = 'jetbrains'
+    yes = test_insert.file_level_test_insertion(file_for_test_gen, {trial_class2.name: trial_class2})
