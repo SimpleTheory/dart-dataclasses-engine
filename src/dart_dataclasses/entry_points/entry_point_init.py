@@ -15,7 +15,7 @@ default = '''
 parsing_path = ./lib
 # For output of non-inserted generated code (MUST BE IN LIB FOR AUTOMATIC IMPORTS TO WORK!!!!)
 output_path = ./lib/mydataclasses
-# For insertion of generated tests of code given the right decorators
+# For insertion of generated tests given the right decorators
 testing_path = ./test
 
 [Options]
