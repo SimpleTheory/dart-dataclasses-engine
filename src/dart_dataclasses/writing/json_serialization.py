@@ -187,7 +187,7 @@ factory ClassName.fromMap(Map map){
 def enum_from_map(dart_enum: domain.DartEnum):
     option_ifs = ' '.join([f'if (map[\'value\'] == \'{dart_enum.name}.{enum_option}\'){{return {dart_enum.name}.{enum_option};}}'
                            for enum_option in dart_enum.options])
-    return f'(Map<String, dynamic> map){{{option_ifs} throw Exception("Enum {dart_enum.name} can not instantiate ' \
+    return f'(Map map){{{option_ifs} throw Exception("Enum {dart_enum.name} can not instantiate ' \
            f'from map $map");}}'
 
 
