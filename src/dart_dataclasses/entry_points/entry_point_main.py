@@ -39,5 +39,5 @@ def main():
 
 if __name__ == '__main__':
     # main()
-    entry_main(r'D:\StudioProjects\test_dataclasses')
-    # entry_main(r'D:\StudioProjects\nutrition_app')
+    # entry_main(r'D:\StudioProjects\test_dataclasses')
+    entry_main(r'D:\StudioProjects\nutrition_app')

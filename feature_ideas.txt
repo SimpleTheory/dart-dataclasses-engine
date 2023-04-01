@@ -1,4 +1,7 @@
 Feature Ideas:
+• Refactor JSON bc
+    - Maps can't be keys in JSON
+    - remove __type in API call for toMap()
 • Write complete documentation
     - For this (the engine)(module {readme, library level etc} and function specific)
     - For wrapper (dart side)(module and function specific)
