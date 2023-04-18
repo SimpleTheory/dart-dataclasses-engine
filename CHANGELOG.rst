@@ -45,4 +45,5 @@ Version 0.0.8
 Version 0.0.9
 ============
 - Made enum factory from Map dynamic map because of errors and fixed bug where enum only files wouldn't be parsed
--
+- Fixed bug where generated test insertions would come out incomplete based off the tags because the insertions
+    would subsume each other

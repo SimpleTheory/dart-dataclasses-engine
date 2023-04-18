@@ -1,5 +1,4 @@
 Feature Ideas:
-• Test generator eats certain tests make sure it creates all the tests!!!!
 
 • Refactor JSON bc
     - Maps can't be keys in JSON
