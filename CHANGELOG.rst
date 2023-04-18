@@ -39,4 +39,10 @@ Version 0.0.7
 Version 0.0.8
 ============
 - Added bug fixes primarily aesthetic
+- Can now comment out the generation decorators with //@ (no spaces)
 - Implemented a 0th draft of test generation
+============
+Version 0.0.9
+============
+- Made enum factory from Map dynamic map because of errors and fixed bug where enum only files wouldn't be parsed
+-

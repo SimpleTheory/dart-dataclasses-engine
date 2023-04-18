@@ -10,7 +10,12 @@ known_old = re.compile(r'(?<!//)@(CreateTests)\(\s*(\w+),\s*[\'"](\w+)[\'"]\)(.*
 known_new = re.compile(r'(?<!//)@(CreateTests)\(\s*(\w+),\s*[\'"](\w+)[\'"]\)', re.DOTALL)
 template_old = re.compile(r'(?<!//)@(CreateTestTemplates)\(\s*(\w+),\s*[\'"](\w+)[\'"]\)\s+(.*?)}\);\n}(?=\n)', re.DOTALL)
 template_new = re.compile(r'(?<!//)@(CreateTestTemplates)\(\s*(\w+),\s*[\'"](\w+)[\'"]\)', re.DOTALL)
-regexes = [known_old, template_old, known_new, template_new]
+
+# ORDER FOR THIS LIST IS CRITICAL!!!
+# known_old is 1st because otherwise the new will overwrite the old
+# known_new is 2nd because if template_old was 2nd it would eat the generated code as
+#   template_old matches with template_new + known_generation
+regexes = [known_old, known_new, template_old,  template_new]
 
 # GROUPS
 # 1 Type, 2 Class, 3 Reference, 4 Content if old
