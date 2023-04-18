@@ -30,4 +30,5 @@ def entry_test_generation(cwd):
 
 
 if __name__ == '__main__':
-    entry_test_generation(r'D:\StudioProjects\test_dataclasses')
+    # entry_test_generation(r'D:\StudioProjects\test_dataclasses')
+    entry_test_generation(r'D:\StudioProjects\nutrition_app')
