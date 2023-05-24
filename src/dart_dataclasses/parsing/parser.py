@@ -47,7 +47,8 @@ def get_name(name_part: str, stored_strings: dict[str:str]) -> \
     name_part, annotations = separate_annotations(name_part, stored_strings=stored_strings)
     dataclass_annotation = annotations[0]
     name = re.search('class\s+(\w+)', name_part).group(1)
-    parent = re.search('extends\s+(\w+)', name_part).group(1) if 'extends' in name_part else None
+    # Potentially Make work with something like Hi extends Bloc<InitSettingsEvent, InitSettingsState>
+    parent = re.search('extends\s+([\w]+)', name_part).group(1) if 'extends' in name_part else None
     return name, parent, dataclass_annotation, \
         get_mixin_or_implements(name_part, 'with'), get_mixin_or_implements(name_part, 'implements')
 
@@ -57,7 +58,8 @@ def get_mixin_or_implements(name_part: str, get_type: str) -> list[str] | None:
     keywords = ['with', 'extends', 'implements']
     keywords.remove(get_type)
     keywords_string = '|'.join(keywords)
-    regex = re.compile('(?<=get_type)\s+\w+\s*(\,\s*\w+\s*)*(?={|keywords_string)'
+    # Potentially Make work with something like Hi extends Bloc<InitSettingsEvent, InitSettingsState>
+    regex = re.compile('(?<=get_type)\s+[\w]+\s*(\,\s*[\w]+\s*)*(?={|keywords_string)'
                        .replace('get_type', get_type)
                        .replace('keywords_string', keywords_string))
     match = regex.search(name_part)

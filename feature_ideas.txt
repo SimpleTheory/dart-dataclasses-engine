@@ -11,13 +11,16 @@ Feature Ideas:
 
 Later:
 
-• Dart 3 is gonna have multi-type returns like this:
+• Dart 3 is going to have multi-type returns like this:
       (int x, int y) get_coords() => 0,0
       so learn the rules of when that's applicable and do so accordingly when update comes
+• Make work with emojis
+• Allow parser to detect parents like this Bloc<InitSettingsEvent, InitSettingsState> (right now only receives Bloc
+    without any subclasses)
+• add type def parsing with their content in json serialization
 
 ------- Maybe --------------------------------------------------------------------------
     • Add parsing to extensions
-    • add type def parsing with their content in json serialization
     • parse mixins
     • toMap & fromMap overrides (postponed because of difficulty of implementing at the moment and unnecessary at the moment)
 
