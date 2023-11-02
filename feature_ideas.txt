@@ -1,5 +1,6 @@
 Feature Ideas:
-
+• Iterables are deep copied at the moment with the copyWith generated method, detect if an attribute is iterable and
+  create a shallow copy of it within the copyWith generated func!!!
 • Refactor JSON bc
     - Maps can't be keys in JSON
     - remove __type in API call for toMap()
