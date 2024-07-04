@@ -69,7 +69,7 @@ def update_precheck():
     if check_msg_to_see_if_pkg_was_outdated(msg):
         print(msg)
         print()
-        answer = input('There is a new version available, would you still like to run anyway? (y/N)').lower()
+        answer = input('There is a new version available, would you still like to run anyway? (y/N)\n')
         if answer != 'y':
             sys.exit(0)
 
