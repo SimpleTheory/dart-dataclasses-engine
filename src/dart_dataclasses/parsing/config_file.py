@@ -6,14 +6,14 @@ class ConfigParseError(Exception):
     pass
 
 
-config_file_name_and_ext = 'dataclases.config'
+config_file_name_and_ext = 'dataclasses.config'
 
 
 def parse_config_file(config_file: Path = Path(f'./{config_file_name_and_ext}')):
     with open(config_file, 'r') as f:
         content = f.read()
     lines = [line.strip() for line in content.splitlines()]
-    lines_split = [re.split('\s*=\s*', line) for line in lines
+    lines_split = [re.split(r'\s*=\s*', line) for line in lines
                    if all([line, not line.startswith('#'), not line.startswith('[')])]
     configs = {line[0]: line[1] for line in lines_split}
     return configs
@@ -29,6 +29,7 @@ preferred_editor: str = None
 warning_message: str = None
 reference_private_methods: bool = None
 format_files_with_insertion: bool = None
+default_map_method_for_non_dataclass_api_instantiation: str = 'fromApiMap'
 default_regeneration: str = ''
 
 
@@ -44,6 +45,7 @@ def config_var_declarations(inputted_cwd: Path | str):
     global format_files_with_insertion
     global default_regeneration
     global testing_path
+    global default_map_method_for_non_dataclass_api_instantiation
 
     try:
         cwd = Path(inputted_cwd)
@@ -66,6 +68,7 @@ def config_var_declarations(inputted_cwd: Path | str):
         '''.strip() if config_file_dict['warning_message'].lower() == 'true' else ''
         reference_private_methods = config_file_dict['reference_private_methods'].lower() == 'true'
         format_files_with_insertion = config_file_dict['format_files_with_insertion'].lower() == 'true'
+        default_map_method_for_non_dataclass_api_instantiation = config_file_dict['default_map_method_for_non_dataclass_api_instantiation']
         if config_file_dict['default_regeneration'].lower() == 'true':
             default_regeneration = '@Generate()\n'
     except:

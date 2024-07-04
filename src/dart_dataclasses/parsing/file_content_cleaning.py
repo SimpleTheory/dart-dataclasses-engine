@@ -1,8 +1,11 @@
 import re
-stored_string_regex = re.compile('____\w+_\w+:\d+____')
+from dart_dataclasses.utils import suppress_syntax_warning
+
+stored_string_regex = re.compile(r'____\w+_\w+:\d+____')
 
 symbols_to_eliminate = ['@Generate()']
 
+@suppress_syntax_warning
 def substitute_strings(file_content: str) -> tuple[str, dict[str:str]]:
     """
     Replace order:
@@ -42,8 +45,8 @@ def substitute_strings(file_content: str) -> tuple[str, dict[str:str]]:
 
 def restore_strings(file_content: str, stored_strings: dict[str:str]) -> str:
     for key, match_list in stored_strings.items().__reversed__():
-        for match in re.findall(f'____{key}:\d+____', file_content):
-            index = int(re.search('\d+', match).group())
+        for match in re.findall(fr'____{key}:\d+____', file_content):
+            index = int(re.search(r'\d+', match).group())
             file_content = file_content.replace(match, match_list[index])
     return file_content
 
@@ -82,7 +85,7 @@ def isolate_marked_classes(file_content):
 
 def isolate_enums(file_content):
     # \s*enum\s+\w+\s*(?=\{)
-    class_isolates = [i.strip() for i in re.split('\s*enum\s+', file_content)[1:]]
+    class_isolates = [i.strip() for i in re.split(r'\s*enum\s+', file_content)[1:]]
     return class_isolates
 
 def restore_strings_while_loop(source: str, stored_strings: dict[str:str]) -> str:
@@ -169,6 +172,19 @@ def body_seperator(body: str) -> list[str]:
     #     separation = separation[:-1]
     #     separation[-1] += ';'
     return separation
+
+def replace_typedefs(file_content: str, typedefs: dict[str:str]):
+    flag = True
+    while flag:
+        replacements = []
+        for typedef, actual_type in typedefs.items():
+            original = file_content
+            file_content = re.sub(typedef, actual_type, file_content)
+            if original != file_content:
+                replacements.append(True)
+        if len(replacements) == 0:
+            flag = False
+    return file_content
 
 
 if __name__ == '__main__':

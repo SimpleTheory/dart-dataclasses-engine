@@ -36,9 +36,9 @@ class Tag:
         return cls(tag.group(0), associated_class, tag.start(0),
                    tag_type, tag.end(0), tag.group(0))
 
-    def replace(self, file_content: str):
+    def replace(self, file_content: str, all_: list[domain.Class | domain.DartEnum]):
         return file_content[:self.start] + \
-            write_class_functions_main(self.associated_class, self.type == 'generate') + \
+            write_class_functions_main(self.associated_class, all_, self.type == 'generate') + \
             file_content[self.end:]
 
     def replace_with(self, file_content: str, func: callable, *args, **kwargs):
@@ -46,22 +46,23 @@ class Tag:
             func(*args, **kwargs) + \
             file_content[self.end:]
 
-def dir_level_insertions(file_dataclasses: dict[Path: dict[str:list[domain.Class] | list[domain.Enum]]]):
+def dir_level_insertions(file_dataclasses: dict[Path: dict[str:list[domain.Class] | list[domain.DartEnum]]]):
     for file, file_objects in file_dataclasses.items():
         if not file_objects:
             continue
         dataclasses = file_objects['dataclasses']
+        all_ = comprehensive_list_of_all_dataclasses_and_enums(file_dataclasses)
         if dataclasses:
-            dataclass_insertions(file, dataclasses)
+            dataclass_insertions(file, dataclasses, all_)
             insert_imports_if_not_there(file)
             if conf.format_files_with_insertion:
                 cmd.format_file(file)
 
 
-def dataclass_insertions(file: Path, dataclasses: list[domain.Class]):
+def dataclass_insertions(file: Path, dataclasses: list[domain.Class], dataclasses_and_enums: list[domain.Class | domain.DartEnum]):
     with open(file, 'r') as f:
         file_content = f.read()
-    new_file_content = get_and_replace_tags(file_content, dataclasses)
+    new_file_content = get_and_replace_tags(file_content, dataclasses, dataclasses_and_enums)
     # Untag to not be stuck in recursive loop
     new_file_content = new_file_content. \
         replace('//<Dataclass>', '// <Dataclass>'). \
@@ -69,6 +70,16 @@ def dataclass_insertions(file: Path, dataclasses: list[domain.Class]):
     # print(new_file_content)
     with open(file, 'w') as f:
         f.write(new_file_content)
+
+def comprehensive_list_of_all_dataclasses_and_enums(initial_file_classes: dict[Path: dict[str: list[domain.Class | domain.DartEnum] | None]]) -> list[domain.Class | domain.DartEnum]:
+    result = []
+    for file_dict in initial_file_classes.values():
+        if file_dict:
+            for class_collection in file_dict.values():
+                if class_collection:
+                    for class_obj in class_collection:
+                        result.append(class_obj)
+    return result
 
 
 def get_class_ranges(dataclasses: list[domain.Class], file_content: str) -> list[tuple[domain.Class, int]]:
@@ -80,13 +91,13 @@ def get_class_ranges(dataclasses: list[domain.Class], file_content: str) -> list
         result.append(current)
     return result
 
-def get_and_replace_tags(file_content: str, dataclasses):
+def get_and_replace_tags(file_content: str, dataclasses, dataclasses_and_enums: list[domain.Class | domain.DartEnum]):
     tag_regex = re.compile(r'(?<!//)@Generate\(\)\s+// <Dataclass>|(?<!//)@Generate\(\)(?!\s+//<Dataclass>)')
     class_ranges = get_class_ranges(dataclasses, file_content)
     mark = tag_regex.search(file_content)
     while mark:
         current = Tag.create_for_dataclass_insertions(mark, find_associated_class(mark, class_ranges), file_content)
-        file_content = current.replace(file_content)
+        file_content = current.replace(file_content, dataclasses_and_enums)
         class_ranges = get_class_ranges(dataclasses, file_content)
         mark = tag_regex.search(file_content)
     return file_content
@@ -102,7 +113,7 @@ def find_associated_class(tag: re.Match, class_ranges: list[tuple[domain.Class, 
             return class__pos[0]
 
 
-def write_class_functions_main(dart_class: domain.Class, encapsulate=True) -> str:
+def write_class_functions_main(dart_class: domain.Class, all_: list[domain.Class | domain.DartEnum], encapsulate=True) -> str:
     if encapsulate:
         return cf.left_pad_string(
             conf.encapsulate_region(name='Dataclass Section',
@@ -112,7 +123,7 @@ def write_class_functions_main(dart_class: domain.Class, encapsulate=True) -> st
     
     {conf.warning_message}
     
-{cf.class_functions(dart_class)}
+{cf.class_functions(dart_class, all_)}
     //</Dataclass>
         '''.lstrip()), 2, False)
     return cf.left_pad_string(
@@ -121,7 +132,7 @@ def write_class_functions_main(dart_class: domain.Class, encapsulate=True) -> st
     
     {conf.warning_message}
 
-    {cf.class_functions(dart_class)}
+    {cf.class_functions(dart_class, all_)}
     //</Dataclass>
         '''.lstrip(), 2, False)
 

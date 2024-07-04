@@ -3,29 +3,9 @@ entry_init(cwd, source=)
 """
 from pathlib import Path
 import sys
+from dart_dataclasses.utils import project_root
 
-default = '''
-[Examples]
-# Write relative paths to project dir (parent of this file)
-# Example: parsing_path = ./lib
-# Example: output_path = ./lib/mydataclasses
-
-[Pathing]
-# Path to parse all dataclasses and enums
-parsing_path = ./lib
-# For output of non-inserted generated code (MUST BE IN LIB FOR AUTOMATIC IMPORTS TO WORK!!!!)
-output_path = ./lib/mydataclasses
-# For insertion of generated tests given the right decorators
-testing_path = ./test
-
-[Options]
-# Options: vscode, pound_vscode, jetbrains, other
-preferred_editor = jetbrains
-warning_message = True
-reference_private_methods = False
-format_files_with_insertion = True
-default_regeneration = True
-'''.strip()
+default = (project_root() / 'cache/dataclasses.config').read_text().strip()
 
 def check_given_source(given_source: str):
     given_source = Path(given_source)

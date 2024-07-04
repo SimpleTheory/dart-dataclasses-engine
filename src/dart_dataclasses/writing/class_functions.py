@@ -1,7 +1,8 @@
 import dart_dataclasses.domain as domain
+from dart_dataclasses.utils import deprecated
 
 
-def class_functions(dart_class: domain.Class) -> str:
+def class_functions(dart_class: domain.Class, all_: list[domain.Class | domain.DartEnum]) -> str:
     """
     Generation order
 
@@ -16,6 +17,7 @@ def class_functions(dart_class: domain.Class) -> str:
 
     """
     import dart_dataclasses.writing.json_serialization as js
+    import dart_dataclasses.writing.api_serialization as api
     generated_code = []
     # if not check_for_bool_dataclass_args('all', dart_class):
     #     return ''
@@ -38,13 +40,20 @@ def class_functions(dart_class: domain.Class) -> str:
         generated_code.append(to_str(dart_class))
 
     if check_for_bool_dataclass_args('copyWith', dart_class):
-        generated_code.append(copy_with(dart_class))
+        generated_code.append(api.copy_with(dart_class, all_))
 
     if check_for_bool_dataclass_args('toJson', dart_class):
         generated_code.append(js.to_json(dart_class))
 
     if check_for_bool_dataclass_args('fromJson', dart_class):
         generated_code.append(js.from_json(dart_class))
+
+    if check_for_bool_dataclass_args('toApi', dart_class):
+        generated_code.append(api.to_api(dart_class))
+
+    if check_for_bool_dataclass_args('fromApi', dart_class):
+        generated_code.append(api.from_api(dart_class, all_))
+
     return ('\n' * 2).join(generated_code)
 
 
@@ -102,7 +111,7 @@ def attributes(dart_class: domain.Class) -> str:
     attr_strs = [f'"{attr.name}": {attr.name}' for attr in get_dynamic_attributes(dart_class)]
     return f'Map<String, dynamic> get attributes__ => {{{", ".join(attr_strs)}}};'
 
-
+@deprecated
 def copy_with(dart_class: domain.Class) -> str:
     dynamic_attributes = get_dynamic_attributes(dart_class, construction=True)
     null = lambda x: x if x.endswith('?') else x + '?'

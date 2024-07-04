@@ -87,6 +87,8 @@ class Person {
 class Address{
   const Address();
 }
+typedef SomePlaceHolder = Address;
+typedef NestedList<X> = List<List<X>>;
 
 @Dataclass()
 class Yess {
@@ -142,4 +144,9 @@ class Yess {
   // </Dataclass>
       
   // ------------------------ End Dataclass Section --------------------------------)
+}
+
+enum LolEnum{
+    int a,
+    int b,
 }

@@ -22,7 +22,7 @@ def entry_main(cwd):
         config.config_var_declarations(cwd)
     except config.ConfigParseError:
         print('ConfigParseError: Either the file was not found in the CWD or'
-              ' the config file has some error in it. To generate'
+              ' the config file has some error in it. To generate '
               'a config file in the CWD use command: dart_dataclasses init')
         sys.exit(1)
     initial_file_classes = file_level.dir_procedure(config.parsing_path)
@@ -40,4 +40,4 @@ def main():
 if __name__ == '__main__':
     # main()
     # entry_main(r'D:\StudioProjects\test_dataclasses')
-    entry_main(r'D:\StudioProjects\nutrition_app')
+    entry_main(r'C:\projects\flutter_projects\nutrition_app')

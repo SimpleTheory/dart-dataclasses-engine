@@ -45,6 +45,20 @@ Version 0.0.8
 Version 0.0.9
 ============
 - Made enum factory from Map dynamic map because of errors and fixed bug where enum only files wouldn't be parsed
-- Fixed bug where generated test insertions would come out incomplete based off the tags because the insertions
-    would subsume each other
+- Fixed bug where generated test insertions would come out incomplete based off the tags because the insertions would subsume each other
 - Pages with only enums and no dataclasses were skipped and now they aren't
+============
+Version 0.0.10
+============
+- Introduced a few main features that have been on the backburner for a while:
+    1. Introduced toApi and fromApi into the class functions (json serialization without the __type crutch)
+    2. Fixed copyWith methods for it to properly clone an object by value and not by reference was done in similiar fashion to api by recursively generating the iterables and call sub copyWiths when applicable)
+    3. Added crude typedef support by replacing typedef instances with the corresponding class value and having it identify types cast with it that way
+- Additionally Fixed many minor bugs or other internal changes including but not limited to:
+    - Parser couldn't detect truncated named constructors
+    - Some function refactoring
+    - Added util functions file
+    - Made regex string literals to avoid new syntax warning on them
+    - Added value to config file to allow for new updates, as such the config file and it's source were modified a bit
+    - etc ...
+

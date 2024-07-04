@@ -170,10 +170,10 @@ class Type:
 
     @staticmethod
     def reinsert_subgeneric(str_to_sub: str, saved_subs: list[str]) -> str:
-        match = re.search('____sub_(\d+)____', str_to_sub)
+        match = re.search(r'____sub_(\d+)____', str_to_sub)
         while match:
             str_to_sub = str_to_sub.replace(match.group(0), saved_subs[int(match.group(1))])
-            match = re.search('____sub_(\d+)____', str_to_sub)
+            match = re.search(r'____sub_(\d+)____', str_to_sub)
         return str_to_sub
 
     def to_str(self):

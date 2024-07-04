@@ -1,6 +1,7 @@
 import re
 import dart_dataclasses.domain as domain
 import dart_dataclasses.parsing.file_content_cleaning as cc
+from dart_dataclasses.utils import find_and_replace
 
 type_regex = r'(\w+\s*(\<(?:[^<>]+|\<(?:[^<>]+|\<[^<>]*\>)*\>)*\>)?\??)'
 
@@ -46,9 +47,9 @@ def get_name(name_part: str, stored_strings: dict[str:str]) -> \
         tuple[str, str | None, domain.Annotation, list[str] | None, list[str] | None]:
     name_part, annotations = separate_annotations(name_part, stored_strings=stored_strings)
     dataclass_annotation = annotations[0]
-    name = re.search('class\s+(\w+)', name_part).group(1)
+    name = re.search(r'class\s+(\w+)', name_part).group(1)
     # Potentially Make work with something like Hi extends Bloc<InitSettingsEvent, InitSettingsState>
-    parent = re.search('extends\s+([\w]+)', name_part).group(1) if 'extends' in name_part else None
+    parent = re.search(r'extends\s+([\w]+)', name_part).group(1) if 'extends' in name_part else None
     return name, parent, dataclass_annotation, \
         get_mixin_or_implements(name_part, 'with'), get_mixin_or_implements(name_part, 'implements')
 
@@ -59,7 +60,7 @@ def get_mixin_or_implements(name_part: str, get_type: str) -> list[str] | None:
     keywords.remove(get_type)
     keywords_string = '|'.join(keywords)
     # Potentially Make work with something like Hi extends Bloc<InitSettingsEvent, InitSettingsState>
-    regex = re.compile('(?<=get_type)\s+[\w]+\s*(\,\s*[\w]+\s*)*(?={|keywords_string)'
+    regex = re.compile(r'(?<=get_type)\s+[\w]+\s*(\,\s*[\w]+\s*)*(?={|keywords_string)'
                        .replace('get_type', get_type)
                        .replace('keywords_string', keywords_string))
     match = regex.search(name_part)
@@ -69,11 +70,12 @@ def get_mixin_or_implements(name_part: str, get_type: str) -> list[str] | None:
 
 
 def retun_body_ast(class_body: str, class_name: str, stored_strings: str):
+    class_body, named_constructors = get_and_kill_named_constructors(class_body, class_name)
     bodyparts = cc.body_seperator(class_body)
     ast = [syntax_main(bp, class_name, stored_strings) for bp in bodyparts]
     getter = []
     attr = []
-    methods = []
+    methods = [*named_constructors]
     for part in ast:
         if isinstance(part, domain.Getter):
             getter.append(part)
@@ -82,6 +84,11 @@ def retun_body_ast(class_body: str, class_name: str, stored_strings: str):
         elif isinstance(part, domain.Attribute):
             attr.append(part)
     return getter, attr, methods
+
+def get_and_kill_named_constructors(class_body: str, class_name: str):
+    regex = re.compile(r'CLS\.(\w+)\s*(\<(?:[^<>]+|\<(?:[^<>]+|\<[^<>]*\>)*\>)*\>)?\s*\(([^;]*?)\)\s*(:.+?;)'.replace('CLS', class_name), flags=re.MULTILINE | re.DOTALL)
+    class_body, named_constructors = find_and_replace(regex, '', class_body)
+    return class_body, [parse_shortened_named_constructor(named_con, class_name) for named_con in named_constructors]
 
 
 def syntax_main(syntax_isolate: str, classname: str, stored_strings: dict[str:str], *args):
@@ -97,7 +104,7 @@ def syntax_main(syntax_isolate: str, classname: str, stored_strings: dict[str:st
 
 # Be on the lookout for errors caused by this function for not grabbing enough words or for wierd things
 def preparse(syntax: str, return_list: list[str] = None) -> tuple[str, list[str] | None]:
-    pre_word_regex = re.compile('(static|const|final|factory|set|external|late)\s+')  # Add more preparse words here
+    pre_word_regex = re.compile(r'(static|const|final|factory|set|external|late)\s+')  # Add more preparse words here
     syntax_characteristics = [] if return_list is None else return_list
     pre_word = pre_word_regex.match(syntax)
     if pre_word:
@@ -109,9 +116,9 @@ def preparse(syntax: str, return_list: list[str] = None) -> tuple[str, list[str]
 
 
 def get_method_type(cleaned_method: str, keywords, classname) -> domain.MethodType:
-    named_constructor_regex = re.compile(f'{classname}\.\w+')
-    operator_regex = re.compile(f'{type_regex}\s+operator')
-    regular_constructor_regex = re.compile(f'^{classname}\s*\(')
+    named_constructor_regex = re.compile(fr'{classname}\.\w+')
+    operator_regex = re.compile(fr'{type_regex}\s+operator')
+    regular_constructor_regex = re.compile(fr'^{classname}\s*\(')
     if 'factory' in keywords:
         return domain.MethodType.factory
     elif 'set' in keywords:
@@ -127,7 +134,7 @@ def get_method_type(cleaned_method: str, keywords, classname) -> domain.MethodTy
 
 
 def is_method(syntax: str) -> bool:
-    """
+    r"""
     if there exists '(' before '=' or '{' it is a method else attribute
     -------------
     methods:
@@ -168,7 +175,7 @@ def is_method(syntax: str) -> bool:
 
 
 def getter_or_attr(cleaned_attr, annotations, keywords, stored_strings) -> domain.Getter | domain.Attribute:
-    getter_regex = re.compile(f'{type_regex}\s*get')
+    getter_regex = re.compile(fr'{type_regex}\s*get')
     if getter_regex.match(cleaned_attr) or cleaned_attr.startswith('get '):
         return parse_getter(cleaned_attr, annotations, keywords)
     return parse_attr(cleaned_attr, annotations, keywords, stored_strings)
@@ -193,8 +200,8 @@ def get_type_and_name_from_regex(type_name_iso_str: str, with_split: str = None)
 
 
 def parse_getter(getter: str, annotations: list[str], keywords: list[str]) -> domain.Getter:
-    getter_metadata = re.split('=>|\{', getter)[0]
-    type_, name = get_type_and_name_from_a_split(re.split('get\s+', getter_metadata))
+    getter_metadata = re.split(r'=>|\{', getter)[0]
+    type_, name = get_type_and_name_from_a_split(re.split(r'get\s+', getter_metadata))
     # name = name.strip()
     # type_ = domain.Type.from_isolated_string(type_)
     return domain.Getter(name=name,
@@ -318,7 +325,7 @@ def parse_method(method: str, keywords: list[str], method_type: domain.MethodTyp
         type_ = domain.Type('void', False)
         name = method
     else:
-        x = re.search(f'{type_regex}\s+(\w+)', method)
+        x = re.search(fr'{type_regex}\s+(\w+)', method)
         # type_ = x.group(1) + x.group(2) if x.group(2) else x.group(1)
         type_ = x.group(1) if x else 'dynamic'
         # print(type_)
@@ -334,6 +341,17 @@ def parse_method(method: str, keywords: list[str], method_type: domain.MethodTyp
         parameters_string=method_args,
     )
 
+
+def parse_shortened_named_constructor(match: re.Match, class_name):
+    return domain.Method(
+        name=match.group(1),
+        return_type=domain.Type.from_isolated_string(class_name),
+        method_type=domain.MethodType.named_constructor,
+        static=False,
+        generics=match.group(2),
+        external=False,
+        parameters_string='()' if not match.group(3) else match.group(3),
+    )
 
 def parse_enum(name: str, enum_iso: str) -> domain.DartEnum:
     return domain.DartEnum(name, split_enum_body_and_get_options(enum_iso.strip()[:-1].strip()))
@@ -353,7 +371,7 @@ def split_enum_body_and_get_options(body: str) -> list[str]:
 
 def parse_enum_options(enum_options: str) -> list[str]:
     enum_options = enum_options[1:].strip() if enum_options.startswith('{') else enum_options.strip()
-    enum_options = re.sub('(\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))', '', enum_options)  # gets rid of nested ()
+    enum_options = re.sub(r'(\((?:[^()]+|\((?:[^()]+|\([^()]*\))*\))*\))', '', enum_options)  # gets rid of nested ()
     enum_options_list = [i.strip() for i in enum_options.split(',')]
     result = []
     for option in enum_options_list:
@@ -362,6 +380,8 @@ def parse_enum_options(enum_options: str) -> list[str]:
         if '(' in option:
             # print(option[0])
             result.append(option.split('(')[0].strip())
+        elif not option.strip():
+            continue
         else:
             result.append(option.strip())
     return result

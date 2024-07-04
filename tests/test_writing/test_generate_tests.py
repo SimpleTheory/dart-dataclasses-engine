@@ -1,6 +1,7 @@
+from dart_dataclasses.utils import project_root
 from dart_dataclasses.writing.generate_tests import *
 import dart_dataclasses.file_level.file_level as file_stuff
-trial_class2: domain.Class = file_stuff.file_reading(r'D:\PycharmProjects\dart_dataclasses\tests\test_cache\class.dart')['dataclasses'][-1]
+trial_class2: domain.Class = file_stuff.file_reading(project_root() / r'tests\test_cache\class.dart')['dataclasses'][-1]
 
 def test_known():
     print()

@@ -5,11 +5,14 @@ import sys
 module = 'dart-dataclasses-engine'
 index_to_check = 'https://test.pypi.org/simple/'
 
+
 class Package:
     def __init__(self, name: str, outdated_ver: str, latest_ver: str):
         self.name = name
         self.outdated_ver = outdated_ver
         self.latest_ver = latest_ver
+
+
 def get_outdated_packages(index_url=None) -> list[Package]:
     if index_url:
         command = ['pip', 'list', '--outdated', '--format=json', '--index-url', index_url]
@@ -21,13 +24,15 @@ def get_outdated_packages(index_url=None) -> list[Package]:
         outdated_packages.append(Package(package['name'], package['version'], package['latest_version']))
     return outdated_packages
 
+
 def this_is_in_outdated_packages(outdated: list[Package]) -> Package | None:
     for package in outdated:
         if package.name == module:
             return package
     return None
 
-def message(pkg: Package, index_url = None) -> str:
+
+def message(pkg: Package, index_url=None) -> str:
     index = ''
     if index_url:
         index = f'-i {index_url} '
@@ -37,6 +42,7 @@ def message(pkg: Package, index_url = None) -> str:
            f'To upgrade enter this command in the CMD:\n\n' \
            f'pip install --upgrade {index}{pkg.name}'
 
+
 def update_precheck():
     msg = run()
     if msg:
@@ -45,6 +51,7 @@ def update_precheck():
         answer = input('There is a new version available, would you still like to run anyway? (y/N)').lower()
         if answer != 'y':
             sys.exit(0)
+
 
 def run() -> str | None:
     if 'index_to_check' not in globals():
@@ -57,6 +64,7 @@ def run() -> str | None:
         return message(this, index)
     else:
         return None
+
+
 def entry_main():
     print(run())
-
