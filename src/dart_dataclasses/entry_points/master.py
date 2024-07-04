@@ -17,6 +17,9 @@ def help_msg():
           '\n\n    dart_dataclasses test_generation'   
           '\n        - This command reads your dataclasses.config file, as well as your parsing path, and testing path'
           '\n          to generate tests for your dataclasses wherever specified.'
+          '\n\n    dart_dataclasses available_updates'   
+          '\n        - This command checks uses pip to see if there are any available updates to this package, note that'
+          '\n          internet is required to run this command.'
           '\n\n    dart_dataclasses help'
           '\n        - Type this command or dart_dataclasses by itself to see this message again. :) \n'
           )
@@ -26,7 +29,8 @@ possible_calls = {
     'init': dart_dataclasses.entry_points.entry_point_init.write_to_config,
     'generate': dart_dataclasses.entry_points.entry_point_main.entry_main,
     'help': help_msg,
-    'test_generation': test_generation.entry_test_generation
+    'test_generation': test_generation.entry_test_generation,
+    'available_updates': updates.run
     }
 
 
@@ -40,8 +44,13 @@ def main():
         help_msg()
         sys.exit(0)
     except KeyError:
-        print(f'"{func_call}" is not a valid command for dart_dataclasses. Current valid commands are'
-              f'\neither generate, init or help. (for example: dart_dataclasses help)')
+        print(f'"{func_call}" is not a valid command for dart_dataclasses. Current valid commands are:'
+              f'\n    - generate'
+              f'\n    - test_generate'
+              f'\n    - init'
+              f'\n    - available_updates'
+              f'\n    - help'
+              f'\n For more in-depth examples see dart_dataclasses help')
         sys.exit(0)
 
     args = sys.argv[2:]
