@@ -18,8 +18,8 @@ def help_msg():
           '\n        - This command reads your dataclasses.config file, as well as your parsing path, and testing path'
           '\n          to generate tests for your dataclasses wherever specified.'
           '\n\n    dart_dataclasses available_updates'   
-          '\n        - This command checks uses pip to see if there are any available updates to this package, note that'
-          '\n          internet is required to run this command.'
+          '\n        - This command checks pip to see if there are any available updates, note that internet is'
+          '\n           required to run this command.'
           '\n\n    dart_dataclasses help'
           '\n        - Type this command or dart_dataclasses by itself to see this message again. :) \n'
           )
