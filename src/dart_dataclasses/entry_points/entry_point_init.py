@@ -3,9 +3,35 @@ entry_init(cwd, source=)
 """
 from pathlib import Path
 import sys
-from dart_dataclasses.utils import project_root
 
-default = (project_root() / 'cache/dataclasses.config').read_text().strip()
+default = '''
+[Examples]
+# Write relative paths to project dir (parent of this file)
+# Example: parsing_path = ./lib
+# Example: output_path = ./mydataclasses
+
+[Pathing]
+# Path to parse all dataclasses and enums
+parsing_path = ./lib
+# For output of non-inserted generated code (MUST BE IN LIB FOR AUTOMATIC IMPORTS TO WORK!!!!)
+output_path = ./lib/mydataclasses
+# For insertion of generated tests given the right decorators
+testing_path = ./test
+
+[Options]
+# Options: vscode, pound_vscode, jetbrains, other
+# (this will change some internal settings namely how the generated code will be organized)
+preferred_editor = jetbrains
+warning_message = True
+reference_private_methods = False
+# Will run dart format on files with insertion
+format_files_with_insertion = True
+# This causes generated class to auto-mark their code for replacement if the program is rerun
+default_regeneration = True
+# What method should the program call if it doesn't know how to instantiate the class from an unmarked Map
+# (just use name with no preceding .)
+default_map_method_for_non_dataclass_api_instantiation = fromApiMap
+'''.strip()
 
 def check_given_source(given_source: str):
     given_source = Path(given_source)

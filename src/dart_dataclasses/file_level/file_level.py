@@ -3,7 +3,6 @@ import dart_dataclasses.domain as domain
 import dart_dataclasses.parsing.file_content_cleaning as cc
 import dart_dataclasses.parsing.parser as par
 from pathlib import Path
-
 from dart_dataclasses.utils import project_root
 
 
