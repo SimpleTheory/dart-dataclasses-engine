@@ -195,6 +195,9 @@ def find_proper_dataclass_copy_method(the_dataclass: domain.Class):
         return method
     elif (method := f'clone') in method_names:
         return method
+    else:
+        return f'copyWith{the_dataclass.name}'
+
 
 
 
