@@ -174,9 +174,14 @@ def is_method(syntax: str) -> bool:
     return False
 
 
+def identify_getter(cleaned_attr) -> bool:
+    if 'get' in cleaned_attr and re.search(r'=>|\{', cleaned_attr):
+        getter_metadata = re.split(r'=>|\{', cleaned_attr)[0]
+        return bool(re.search(r'\s+get\s+', getter_metadata))
+    return False
+
 def getter_or_attr(cleaned_attr, annotations, keywords, stored_strings) -> domain.Getter | domain.Attribute:
-    getter_regex = re.compile(fr'{type_regex}\s*get')
-    if getter_regex.match(cleaned_attr) or cleaned_attr.startswith('get '):
+    if identify_getter(cleaned_attr):
         return parse_getter(cleaned_attr, annotations, keywords)
     return parse_attr(cleaned_attr, annotations, keywords, stored_strings)
     # return Getter with type and name
