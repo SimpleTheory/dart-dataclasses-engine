@@ -129,6 +129,8 @@ def base_known_tests(dart_class: domain.Class, reference: str) -> str:
             and cf.check_for_bool_dataclass_args('staticConstructor', dart_class):
         tests.append(static_constructor(dart_class, reference))
 
+    # TODO ADD TESTS FOR fromApi toApi toApiMap and negatives for equals (and deepEquality on copyWith?)
+
     return cf.left_pad_string("\n\n".join(tests), 2)
 
 

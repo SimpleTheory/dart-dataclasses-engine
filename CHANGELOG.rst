@@ -61,4 +61,10 @@ Version 0.0.10
     - Made regex string literals to avoid new syntax warning on them
     - Added value to config file to allow for new updates, as such the config file and it's source were modified a bit
     - etc ...
-
+============
+Version 0.0.11
+============
+- Fixed bug with check_for_updates where when called from entry point it would crash
+- Fixed a runaway regex in identifying getters that would hang the program and replaced it with a simpler funciton
+- Fixed typos in cli print messages
+- (Still have yet to add test generation for new functions fromApi, toApi)
