@@ -74,7 +74,7 @@ def update_precheck():
             sys.exit(0)
 
 
-def run() -> str:
+def run(*args) -> str:
     if 'index_to_check' not in globals():
         index = None
     else:
